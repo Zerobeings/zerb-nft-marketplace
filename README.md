@@ -1,5 +1,5 @@
 <p align="center" width="100%">
-    <img width="80%" src="https://github.com/Zerobeings/zerb-nft-marketplace/blob/215030268868a06e3234be083b30d45bced055e9/public/images/Zerb_README.png">
+    <img width="80%" src="https://github.com/Zerobeings/zerb-nft-marketplace/blob/d8efbd0ef60c217cea009f85d1dc30407ad8dc98/public/images/Zerb_README.png">
 </p>
 
 # 🚧 Market gm ☕️ is currently in testing phase 🚧
