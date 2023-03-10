@@ -1,0 +1,73 @@
+
+<div class="flex flex-wrap justify-center items-center" style="row-gap: 3rem; column-gap: 0.5rem; margin-top: 1rem; margin-right: auto; margin-left: auto; margin-bottom: 30px;">
+<% if(listings.length > 0) {%>
+  <% listings.forEach((listings,i) => {%> 
+
+            <% const IDtoken = listings.asset.id; %>
+            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-center items-center">
+              <div class="col justify-center items-center">
+                <div class="card mb-4 rounded-3 shadow-sm justify-center items-center" style="width: 14rem;">
+                  <div class="card-body justify-center items-center">
+                    <h2 style="font-size: 20px;"><%=`${NFTs[0].contractMetadata.name}`%> #
+                      <% if (String(IDtoken).length > 6) {%>
+                      <%=String(IDtoken).slice(0,5) %>...
+                      <%} else {%>
+                        <%=IDtoken%>
+                        <%}%>
+                      </h2>
+                    <a href="/goerli-listingDetails/<%=listings.assetContractAddress%>/<%=IDtoken%>/" onclick="return onLoading()">
+                      <img class="items-center asyncImage" style="border-radius: 10px ; width: 75%; height: 75%;" src="/images/loading.png" data-src="<%=listings.asset.image%>"  alt="...">
+                    </a>
+                    <div style=" font-size: 18px; margin-top: 10px; margin-bottom: 5px;">
+                      <a>Price: <%=listings.buyoutCurrencyValuePerToken.displayValue%> <%=listings.buyoutCurrencyValuePerToken.symbol%></a>
+                      <br>
+                        <%if(listings.type === 0) {%>
+                           <a href="/goerli-listingDetails/<%=listings.assetContractAddress%>/<%=IDtoken%>/" onclick="return onLoading()"><button style="width: 90%;" class="button">Buy/Offer</button></a>
+                          <%} else {%>
+                            <a href="/goerli-listingDetails/<%=listings.assetContractAddress%>/<%=IDtoken%>/" onclick="return onLoading()"><button style="width: 90%;" class="button">Place Bid</button></a>
+                          <%}%>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+           
+            <%})%>
+      <%} else {%>
+  
+
+  <div class="flex flex-wrap justify-center items-center" style="row-gap: 3rem; column-gap: 0.5rem; margin-top: 1rem; margin-right: auto; margin-left: auto;">
+        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-center items-center">
+          <div class="col justify-center items-center">
+            <div class="card mb-4 rounded-3 shadow-sm justify-center items-center" style="width: 14rem;">
+              <div class="card-body justify-center items-center">
+                    <h2 style="font-size: 20px;">No Listings</h2>
+                    <a target="_blank"><img class="items-center" style="border-radius: 10px ; width: 75%; height: 75%;" src="/images/nolistings.png"  alt="..."></a>
+                    <div style=" font-size: 18px; margin-top: 10px; margin-bottom: 5px;">
+                        <a id="token" style="overflow: hidden;text-overflow: ellipsis;">Token ID: :[</a>
+                    </div>
+              </div>
+            </div>
+          </div>
+        </div>
+  </div>
+  
+  <%}%>
+
+</div>
+
+<script>
+
+function embed(code, i) { 
+  var embedCode = document.getElementById(code).innerHTML;
+  navigator.clipboard.writeText(embedCode);
+  var copyCode = document.getElementById("embedWeb"+i);
+  copyCode.innerHTML = "Copied iframe code for your website"
+}
+
+function copyNoticeEmbed(i){
+    var copyAddy = document.getElementById("embedWeb"+i);
+    copyAddy.innerHTML = "Copy iframe code";
+  }
+</script>
+

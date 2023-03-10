@@ -1,0 +1,57 @@
+<nav id="navbar">
+
+    <div id="mySidepanelM" class="sidepanelM" style="z-index:3">
+      <a href="javascript:void(0)" class="closebtnM" onclick="closeNav()">×</a>
+      <a href="/marketgm" onclick="return onLoading4()" style="white-space: nowrap;">Market gm ☕️</a>
+      <a href="https://learn.zerobeings.xyz/#/" target="_blank">Learn</a>
+      <a style="white-space: nowrap;" href="/myListings">My Listings</a>
+      <% if (session.zerb) { %>
+      <a href="/login" onclick="return onLoading4()">Logout</a>
+      <% } else { %>
+        <a href="/login" onclick="return onLoading4()">Login</a>
+        <% }%>
+      <div style="display: flex; position: absolute; bottom: 3px;">
+        <a target="_blank" href="https://twitter.com/Zero_beings" onclick="return onLoading4()"><i class="fa-brands fa-twitter" style="color: #818181;text-decoration: none; padding-left: 5px;"></i></a>
+        <a target="_blank" href="https://discord.gg/sjbVYr6ZXS" onclick="return onLoading4()"><i class="fa-brands fa-discord" style="color: #818181;text-decoration: none; padding-left: 5px;"></i></a>
+        <a target="_blank" href="https://github.com/Zerobeings" onclick="return onLoading4()"><i class="fa-brands fa-github" style="color: #818181;text-decoration: none; padding-left: 5px;"></i></a>
+      </div>  
+    </div>
+  
+   
+      
+      
+      <a href="/marketgm" onclick="return onLoading4()">
+        <img class="logoZerb" style="width: 150px;" src="/images/zerobeings_logo_m.png"/>
+        <img class="logoZerb2" style="width: 40px;" src="/images/zerobeings_logo.png"/>
+      </a>  
+          
+    
+      <a style="margin: auto;">
+        <a style="margin-left: 12px; margin-right: 12px;text-decoration: none;" class="imgDesktop navLinks" href="https://docs.factoria.app/#/" target="_blank">Factoria</a>
+        <a style="margin-left: 12px; margin-right: 12px;text-decoration: none;" class="imgDesktop navLinks" href="https://learn.zerobeings.xyz/#/" target="_blank">Learn</a>
+        <a style="margin-left: 12px; margin-right: 48px; text-decoration: none;" class="imgDesktop navLinks" href="/myListings" onclick="return onLoading4()">My Listings</a>
+        <%if(nfts != null){%>
+          <img id="profileImg" style="justify-self: end; margin-right: 0px;" class="imgProfile asyncImage imgDesktop" src="/images/loading.png" data-src="<%=nfts.media[0].gateway%>" alt=""></img>
+          <%} else {%>
+        <img id="profileImg" style="justify-self: end; margin-right: 0px;" class="imgProfile asyncImage imgDesktop" src="/images/loading.png" data-src="<%=nft.media[0].gateway%>" alt=""></img>
+        <%}%>
+        <% if (session.zerb) { %>
+        <button id="address" name="address" value="<%=session.zerb.account%>" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'"><%=session.zerb.account%></button>
+          
+        <% } else { %>
+          <button name="address" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'">Login</button>
+        <% }%>
+      </a>
+
+      <a class="openbtnM imgMobile" onclick="openNav()">☰</a> 
+    </nav>
+  
+    <script>
+      function openNav() {
+       document.getElementById("mySidepanelM").style.width = "250px";
+     }
+     
+     function closeNav() {
+       document.getElementById("mySidepanelM").style.width = "0";
+     }
+     </script>

@@ -1,0 +1,15 @@
+{
+    "background_color": "black",
+    "description": "Zerb gm ☕️",
+    "display": "fullscreen",
+    "icons": [
+      {
+        "src": "icon/zero-icon.png",
+        "sizes": "192x192",
+        "type": "image/png"
+      }
+    ],
+    "name": "Zerb gm ☕️",
+    "short_name": "Zerb gm ☕️",
+    "start_url": "/login"
+  }

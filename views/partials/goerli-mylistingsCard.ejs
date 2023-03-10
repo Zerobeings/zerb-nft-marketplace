@@ -1,0 +1,106 @@
+
+<div class="flex flex-wrap justify-center items-center" style="row-gap: 3rem; column-gap: 0.5rem; margin-top: 1rem; margin-right: auto; margin-left: auto; margin-bottom: 30px;">
+    <% if(listings.length > 0) {%>
+      <% listings.forEach((listings,i) => {%> 
+                <% const IDtoken = listings.asset.id; %>
+                <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-center items-center">
+                  <div class="col justify-center items-center">
+                    <div class="card mb-4 rounded-3 shadow-sm justify-center items-center" style="width: 14rem;">
+                      <div class="card-body justify-center items-center">
+                        <h2 style="font-size: 20px;"><%=`${NFTs[0].contractMetadata.name}`%> #
+                          <% if (String(IDtoken).length > 6) {%>
+                          <%=String(IDtoken).slice(0,5) %>...
+                          <%} else {%>
+                            <%=IDtoken%>
+                            <%}%>
+                          </h2>
+                          <a href="/goerli-listingDetails/<%=listings.assetContractAddress%>/<%=IDtoken%>/" onclick="return onLoading4()">
+                            
+                            <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".png" 
+                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".svg"
+                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".jpeg"
+                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".jpg"
+                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".gif"
+                              || listings.asset.image.indexOf(".", listings.asset.image.length-5) === -1){%>
+                                <img class="items-center asyncImage" style="border-radius: 10px ; width: 75%; height: 75%;" src="/images/loading.png" data-src="<%=listings.asset.image%>"  alt="...">
+                                <%} %>
+                              
+                                <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".wav" 
+                                || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".mp3" 
+                                || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".ogg"){%>
+                                  <audio style="width: 75%; height:30px; border-radius: 10px;" controls><source src="<%=listings.asset.image%>"></audio>
+                                  <%}%>
+                             
+                              <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".mp4"
+                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".webm"
+                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".ogg"){%>
+                                  <video style="width: 75%; height:75%; border-radius: 10px;" controls><source src="<%=listings.asset.image%>"></video>
+                                  <%}%>
+                              <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".doc"
+                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".docx"
+                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".pdf"
+                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".txt"){%>
+                                  <iframe src="https://docs.google.com/gview?url=<%=listings.asset.image%>&embedded=true" width="75%" height="75%" frameborder="0"></iframe>
+                                  <%}%>
+
+
+                          </a>
+                        <div style=" font-size: 18px; margin-top: 10px; margin-bottom: 5px;">
+                          <a>Price: <%=listings.buyoutCurrencyValuePerToken.displayValue%> <%=listings.buyoutCurrencyValuePerToken.symbol%></a>
+                          <br>
+                          <%if((listings.sellerAddress).toLowerCase() === (session.zerb.account).toLowerCase()){%>
+                            <%if(listings.type === 0){%>
+                            <button id="canceldirectlisting" class="buttonlogout" onclick="canceldListing('<%=listings.id%>', '<%=listings.type%>','<%=listings.assetContractAddress%>')">Cancel Listing</button>
+                            <%}%>
+                            <%if(listings.type === 1){%>
+                              <button type="submit" id="closeAuction" class="buttonlogout" onclick="canceldListing('<%=listings.id%>', '<%=listings.type%>', '<%=listings.assetContractAddress%>')">Close Auction</button>
+                              <%}%>
+                            <div style="display: flex; margin: 10px; justify-content: space-evenly;">
+                              <a target="_blank" href="https://gateway.ipfscdn.io/ipfs/QmbAgC8YwY36n8H2kuvSWsRisxDZ15QZw3xGZyk9aDvcv7/marketplace.html?contract=0xC65CE759f006928451343874538A328dFcbAD325&chain=%7B%22name%22%3A%22Goerli%22%2C%22chain%22%3A%22ETH%22%2C%22rpc%22%3A%5B%22https%3A%2F%2Fgoerli.rpc.thirdweb.com%2F5a9bc94b87f7cbbbfbbc234bf1e07f0adf5f3cf3012c9f26f9fc9820d64df93a%22%5D%2C%22nativeCurrency%22%3A%7B%22name%22%3A%22Goerli+Ether%22%2C%22symbol%22%3A%22ETH%22%2C%22decimals%22%3A18%7D%2C%22shortName%22%3A%22gor%22%2C%22chainId%22%3A5%2C%22testnet%22%3Atrue%2C%22slug%22%3A%22goerli%22%7D&listingId=<%=listings.id%>&theme=dark&primaryColor=teal&secondaryColor=teal"><i class="fa-solid fa-globe" style="color: white;text-decoration: none; padding-left: 5px;"></i></a>
+                              <div class="tooltip">
+                                    <a onclick="embed('embeded<%=listings.id%>', '<%=listings.id%>')" onmouseout="copyNoticeEmbed('<%=listings.id%>')">
+                                <i class="fa-solid fa-code" style="color:white; cursor: pointer;"></i>
+                                    <code style="display: none;" id="embeded<%=listings.id%>"><iframe
+                                    src="https://gateway.ipfscdn.io/ipfs/QmbAgC8YwY36n8H2kuvSWsRisxDZ15QZw3xGZyk9aDvcv7/marketplace.html?contract=0xC65CE759f006928451343874538A328dFcbAD325&chain=%7B%22name%22%3A%22Goerli%22%2C%22chain%22%3A%22ETH%22%2C%22rpc%22%3A%5B%22https%3A%2F%2Fgoerli.rpc.thirdweb.com%2F5a9bc94b87f7cbbbfbbc234bf1e07f0adf5f3cf3012c9f26f9fc9820d64df93a%22%5D%2C%22nativeCurrency%22%3A%7B%22name%22%3A%22Goerli+Ether%22%2C%22symbol%22%3A%22ETH%22%2C%22decimals%22%3A18%7D%2C%22shortName%22%3A%22gor%22%2C%22chainId%22%3A5%2C%22testnet%22%3Atrue%2C%22slug%22%3A%22goerli%22%7D&listingId=<%=listings.id%>&theme=dark&primaryColor=teal&secondaryColor=teal"
+                                    width="600px"
+                                    height="600px"
+                                    style="max-width:100%;"
+                                    frameborder="0"
+                                    ></iframe></code>
+                                    <span class="tooltiptext" id="embedWeb<%=listings.id%>">Copy iframe code</span>
+                                </a>
+                              </div>
+                            </div>  
+                          <%}%>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+               
+                <%})%>
+          <%} else {%>
+      
+    
+      <div class="flex flex-wrap justify-center items-center" style="row-gap: 3rem; column-gap: 0.5rem; margin-top: 1rem; margin-right: auto; margin-left: auto;">
+            <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-center items-center">
+              <div class="col justify-center items-center">
+                <div class="card mb-4 rounded-3 shadow-sm justify-center items-center" style="width: 14rem;">
+                  <div class="card-body justify-center items-center">
+                        <h2 style="font-size: 20px;">No Listings</h2>
+                        <a target="_blank"><img class="items-center" style="border-radius: 10px ; width: 75%; height: 75%;" src="/images/nolistings.png"  alt="..."></a>
+                        <div style=" font-size: 18px; margin-top: 10px; margin-bottom: 5px;">
+                            <a id="token" style="overflow: hidden;text-overflow: ellipsis;">Token ID: :[</a>
+                        </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+      </div>
+      
+      <%}%>
+    
+    </div>
+    
+    
+    

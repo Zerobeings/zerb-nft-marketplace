@@ -1,0 +1,84 @@
+
+    <% if (NFTs[0].contractMetadata.openSea.imageUrl){%>
+    <img style="width: 200px; border-radius: 10px; margin-bottom: 10px;" src="<%=NFTs[0].contractMetadata.openSea.imageUrl%>"/>
+    <%} else {%>
+        <img style="width: 200px; border-radius: 10px; margin-bottom: 10px;" src="<%=NFTs[0].media[0].gateway%>"/>
+    <%}%>
+    <div style="display: flex; margin: 10px; justify-content: space-evenly;">
+        <%if (NFTs[0].contract.address === '0x8fba3ebe77d3371406a77eeaf40c89c1ed55364a' 
+        || NFTs[0].contract.address === '0xb6c29b68fecedbf005743c3eaf5139328b651deb' 
+        || NFTs[0].contract.address === '0x8f170F73076b7A45749677B1681b13366B3C80f7' 
+        || NFTs[0].contract.address === '0x6866ed9a183f491024692971a8f78b048fb6b89b'
+        || NFTs[0].contract.address === '0x8d085750cdabca5e8485d0310b7eb0fc0ef2103c'
+        || NFTs[0].contract.address === '0xbe4bef8735107db540de269ff82c7de9ef68c51b' 
+        || NFTs[0].contractMetadata.openSea.safelistRequestStatus === 'verified') {%>
+        <img style="width: 18px;" src="/images/verified.png">
+        <%} %>
+        <% if (NFTs[0].contractMetadata.openSea.twitterUsername != null){%>
+        <a target="_blank" href="https://twitter.com/<%=NFTs[0].contractMetadata.openSea.twitterUsername%>"><i class="fa-brands fa-twitter" style="color: white;text-decoration: none; padding-left: 5px;"></i></a>
+        <%}%>
+        <% if (NFTs[0].contractMetadata.openSea.discordUrl != null){%>
+        <a target="_blank" href="<%=NFTs[0].contractMetadata.openSea.discordUrl%>"><i class="fa-brands fa-discord" style="color: white;text-decoration: none; padding-left: 5px;"></i></a>
+        <%}%>
+        <% if (NFTs[0].contractMetadata.openSea.externalUrl != null){%>
+        <a target="_blank" href="<%=NFTs[0].contractMetadata.openSea.externalUrl%>"><i class="fa-solid fa-globe" style="color: white;text-decoration: none; padding-left: 5px;"></i></a>
+        <%}%>
+     </div>  
+ 
+    <div class="grid-collectionInfo">
+        <%if(NFTs[0].contractMetadata.name != null){%>
+        <div class="bluz" style="text-align: right;">Name:</div>
+        <div style="text-align: left;"><%=NFTs[0].contractMetadata.name%></div>
+        <%}%>
+        
+        <%if(NFTs[0].metadata.description != null){%>
+        <div class="bluz" style="text-align: right;">About:</div>  
+        <div style="text-align: left;"><%=NFTs[0].metadata.description%></div>
+        <%} else {%>
+          <div class="bluz" style="text-align: right;">About:</div>  
+          <div style="text-align: left;">Test NFT collection to support development.</div>
+          <%}%>
+
+        <div class="bluz" style="text-align: right;">Floor:</div>
+        <div style="text-align: left;">
+            <% if (fp != null){%>
+                <% if(fp['openSea']['floorPrice'] != null){%>
+                  <a>
+                  <%= JSON.stringify(fp['openSea']['floorPrice'])%>
+                  <%= fp['openSea']['priceCurrency']%>
+                  <a class="link" style="text-decoration: none; margin-left: auto;" target="_blank" href="<%=fp['openSea']['collectionUrl']%>">Opensea</a>
+                  <%} else {%>
+                    <a style="background-color: #333;">NA for Opensea</a>
+                  <%}%>
+                  </a><br>
+                <a>
+                  <% if(fp['looksRare']['floorPrice'] != null){%>  
+                  <%= JSON.stringify(fp['looksRare']['floorPrice'])%>
+                  <%= fp['looksRare']['priceCurrency']%>
+                  <a class="link" style="text-decoration: none; margin-left: auto;" target="_blank" href="<%=fp['looksRare']['collectionUrl']%>">Looksrare</a>
+                  <%}else {%>
+                    <a style="background-color: #333;">NA for Looksrare</a>
+                  <%}%>
+                </a>
+                  <%}else { %>
+                    💎
+                    <%}%>
+        </div> 
+
+        <% if (NFTs[0].contractMetadata.tokenType != null){%>
+        <div class="bluz" style="text-align: right;">Type:</div>
+        <div style="text-align: left;"><%=NFTs[0].contractMetadata.tokenType%></div>
+        <%}%>
+        <% if (NFTs[0].contractMetadata.openSea.description != null && NFTs[0].contractMetadata.openSea.description.trim().length != 0){%>
+        <div class="bluz" style="text-align: right;">Description:</div>
+        <div style="text-align: left; font: 12px;"><%=NFTs[0].contractMetadata.openSea.description%></div>
+        <%}%>
+        <% if (royalties.royalties.length > 0 ){%>
+        <div class="bluz" style="text-align: right;">Royalties:</div>
+        <div style="text-align: left;"><%=((royalties.royalties[0].value/10000) * 100)%> %</div>
+        <%}%>
+    </div>
+
+    
+
+

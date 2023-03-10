@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+   
+</header>
+
+
+<main>
+      
+  <div class="centerLogin" style="margin-bottom:10px; justify-content: center;align-items: center; display:grid; ">
+    <div style="font-size: 42px;">ACCOUNT</div>
+    <div id="btns" class="invisible">
+        <button id="login" class="buttonlogin" style="align-items: center; position: absolute;">login as zerb</button>
+        <button id="logout" class="buttonlogout" style="align-items: center; position: absolute;">logout of zerb</button>
+  </div>
+    <p class="footer" style="justify-content: center;align-items: center; display: flex; margin-top: 60px;">
+        Powered by 
+        <a style="text-decoration:none; margin-left: 5px;" class="link" target="_blank" href="https://privateparty.dev/">Privateparty</a>
+        <div style="justify-content: center; display: flex; ">
+          <a style="width:100%; position: absolute; margin-bottom: 10px;" href="https://mint.zerobeings.xyz/">
+            <img style="width:100%; position: absolute; margin-bottom: 10px;" src="/images/mint.png" />
+          </a>
+        </div>
+    </p>
+  </div>
+  <pre class='session hidden'></pre>
+  <div class='error'></div>
+</main>
+
+<script>
+    const params = new URLSearchParams(window.location.search)
+    const party = new Privateparty({
+    walletconnect: "<infura api key>" //for mobile
+    })
+    document.addEventListener("DOMContentLoaded", async () => {
+      let session = await party.session("zerb", { fresh: true })
+      if (session && session.account) {
+        // logged in => display logout button
+        document.querySelector("#login").classList.add("hidden")
+        document.querySelector("#logout").addEventListener("click", async (e) => {
+          try {
+            let session = await party.disconnect("zerb")
+            let callback = params.get("callback") ? params.get("callback") : location.href
+            location.href = '/login'
+          } catch (e) {
+            alert(e.message)
+          }
+        })
+      } else {
+        // logged out => display login button
+        document.querySelector("#logout").classList.add("hidden")
+        document.querySelector("#login").addEventListener("click", async (e) => {
+          try {
+            let session = await party.connect("zerb", null, null)
+            let callback = params.get("callback") ? params.get("callback") : location.href
+            location.href = '/'
+          } catch (e) {
+            alert(e.message)
+          }
+        })
+      }
+     document.querySelector("#btns").classList.remove("invisible")  
+    })
+    </script>
+</body>
+</html>

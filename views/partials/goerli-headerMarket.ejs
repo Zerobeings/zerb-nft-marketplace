@@ -1,0 +1,57 @@
+ <nav id="navbar">
+
+  <div id="mySidepanelM" class="sidepanelM" style="z-index:3">
+    <a href="javascript:void(0)" class="closebtnM" onclick="closeNav()">×</a>
+    <a href="/goerli-marketgm" onclick="return onLoading4()" style="white-space: nowrap;color: orange;">goerli-Market</a>
+    <a href="https://learn.zerobeings.xyz/#/" target="_blank">Learn</a>
+    <a href="/goerli-myListings" onclick="return onLoading4()" style="white-space: nowrap;">My Listings</a>
+    <% if (session.zerb) { %>
+    <a href="/login" onclick="return onLoading4()">Logout</a>
+    <% } else { %>
+      <a href="/login" onclick="return onLoading4()">Login</a>
+      <% }%>
+    <div style="display: flex; position: absolute; bottom: 3px;">
+      <a target="_blank" href="https://twitter.com/Zero_beings" onclick="return onLoading4()"><i class="fa-brands fa-twitter" style="color: #818181;text-decoration: none; padding-left: 5px;"></i></a>
+      <a target="_blank" href="https://discord.gg/sjbVYr6ZXS" onclick="return onLoading4()"><i class="fa-brands fa-discord" style="color: #818181;text-decoration: none; padding-left: 5px;"></i></a>
+      <a target="_blank" href="https://github.com/Zerobeings" onclick="return onLoading4()"><i class="fa-brands fa-github" style="color: #818181;text-decoration: none; padding-left: 5px;"></i></a>
+    </div>  
+  </div>
+
+ 
+    
+    
+    <a href="/goerli-marketgm" onclick="return onLoading4()">
+      <img class="logoZerb" style="width: 150px;" src="/images/zerobeings_logo_m_goerli.png"/>
+      <img class="logoZerb2" style="width: 40px;" src="/images/zerobeings_logo_goerli.png"/>
+    </a> 
+        
+    <form action="/goerli-marketgm" method="POST" class="marketForm" style="margin-left: auto; margin-right: auto;" id="searchForm">
+      <input type="search" placeholder="Collection" class="inputMarket required" name="collection" onkeyup="enableSubmit()">
+      <input type="submit" value="Submit" class="submit hidden" onclick="return onLoading4()" disabled>
+    </form>
+    
+    <a style="margin-left: 12px; margin-right: 12px;text-decoration: none;" class="imgDesktop navLinks" href="https://docs.factoria.app/#/" target="_blank">Factoria</a>
+    <a style="margin-left: 12px; margin-right: 12px;text-decoration: none;" class="imgDesktop navLinks" href="https://learn.zerobeings.xyz/#/" target="_blank">Learn</a>
+    <a style="margin-left: 12px; margin-right: 24px; text-decoration: none; white-space: nowrap;" class="imgDesktop navLinks" href="/goerli-myListings" onclick="return onLoading4()">My Listings</a>
+
+    <img id="profileImg" style="justify-self: end; margin-right: 0px;" class="imgProfile asyncImage imgDesktop" src="/images/loading.png" data-src="<%=NFTs[0].media[0].gateway%>" alt=""></img>
+    <% if (session.zerb) { %>
+    <button id="address" name="address" value="<%=session.zerb.account%>" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'"><%=session.zerb.account%></button>
+      
+    <% } else { %>
+      <button name="address" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'">Login</button>
+    <% }%>
+
+      <a class="openbtnM imgMobile" onclick="openNav()">☰</a> 
+  
+  </nav>
+
+  <script>
+    function openNav() {
+     document.getElementById("mySidepanelM").style.width = "250px";
+   }
+   
+   function closeNav() {
+     document.getElementById("mySidepanelM").style.width = "0";
+   }
+   </script>

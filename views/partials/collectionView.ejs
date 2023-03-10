@@ -1,0 +1,190 @@
+  <div class="flex flex-wrap justify-center items-center" style="row-gap: 3rem; column-gap: 0.5rem; margin-top: 1rem; margin-right: auto; margin-left: auto;">
+    <% if(NFTs.length > 0) { %>
+      <% NFTs.forEach((nft,i) => {%> 
+        <% const IDtoken = BigInt(nft.id.tokenId); %>
+        <% const key = `${nft.tokenUri.raw}-${i}-${nft.id.tokenId}`;%>
+        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-center items-center">
+          <div class="col justify-center items-center">
+            <div class="card mb-4 rounded-3 shadow-sm justify-center items-center" style="width: 14rem;">
+            <a style="text-decoration: none; color: white;" href="/collectiondetails/<%=nft.contract.address%>/<%=IDtoken%>">
+              <div class="card-body justify-center items-center cardhover">
+                <h2 style="font-size: 20px;"><%= nft.title %></h2> 
+                  <%if (nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".png"
+                  || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".svg"
+                  || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".jpeg"
+                  || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".jpg"
+                  || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".gif"
+                  || nft.media[0].raw.indexOf(".", nft.media[0].raw.length-5) === -1
+                  || nft.media[0].format === "png"
+                  || nft.media[0].format === "svg"
+                  || nft.media[0].format === "jpeg"
+                  || nft.media[0].format === "jpg"
+                  || nft.media[0].format === "gif") {%>
+                    <img class="items-center asyncImage" style="border-radius: 10px ; width: 75%; height: 75%;" src="/images/loading.png" data-src="<%=nft.media[0].gateway%>"  alt="...">
+                    <%} %>
+                  <%if (nft.metadata.animation_url != null) {%>
+                    <%if (nft.metadata.animation_url.substr(nft.metadata.animation_url.length-4).toLowerCase() === ".wav" 
+                    || nft.metadata.animation_url.substr(nft.metadata.animation_url.length-4).toLowerCase() === ".mp3" 
+                    || nft.metadata.animation_url.substr(nft.metadata.animation_url.length-4).toLowerCase() === ".ogg"){%>
+                      <audio style="width: 75%; height:30px; border-radius: 10px;" controls><source src="<%=nft.metadata.animation_url%>"></audio>
+                      <%}%>
+                  <%}%>
+                  <%if (nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".mp4"
+                  || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".webm"
+                  || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".ogg"
+                  || nft.media[0].format === "mp4"
+                  || nft.media[0].format === "webm"
+                  || nft.media[0].format === "ogg"){%>
+                      <video style="width: 75%; height:75%; border-radius: 10px;" controls><source src="<%=nft.media[0].gateway%>"></video>
+                      <%}%>
+                  <%if (nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".doc"
+                  || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".docx"
+                  || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".pdf"
+                  || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".txt"
+                  || nft.media[0].format === "doc"
+                  || nft.media[0].format === "docx"
+                  || nft.media[0].format === "pdf"
+                  || nft.media[0].format === "txt"){%>
+                      <iframe src="https://docs.google.com/gview?url=<%=nft.media[0].gateway%>&embedded=true" width="75%" height="75%" frameborder="0"></iframe>
+                      <%}%>
+                </a>
+                <div style=" font-size: 18px; margin-top: 10px; margin-bottom: 5px;">
+                    <a id="token" style="overflow: hidden;text-overflow: ellipsis;">Token ID: 
+                      <% if (String(IDtoken).length > 6) {%>
+                        <%=String(IDtoken).slice(0,3) %>...
+                        <%} else {%>
+                          <%=IDtoken%>
+                          <%}%>
+                    </a>
+                    <div class="tooltip">
+                      <button class="copyBtn" onclick="copyAddr('<%=IDtoken%>', '<%=nft.contract.address%>+<%=IDtoken%>+<%=nft.id.tokenId%>')" onmouseout="copyNoticeToken('<%=nft.contract.address%>+<%=IDtoken%>+<%=nft.id.tokenId%>')">
+                        <span class="tooltiptext" id="myTooltip<%=nft.contract.address%>+<%=IDtoken%>+<%=nft.id.tokenId%>">Copy Token</span>
+                        <span><img src="/images/copy.png" style="width:15px ;"></span>
+                      </button>
+                    </div>
+                </div>
+                  <a id="copyAddr" target="_blank" class="link" style="text-decoration: none;" value="<%=nft.contract.address%>" href="https://etherscan.io/address/<%=nft.contract.address%>"><%=nft.contract.address.substr(0,4)%>...<%=nft.contract.address.substr(nft.contract.address.length-4)%></a>
+                  <div class="tooltip">
+                    <button class="copyBtn" onclick="copyAddr('<%=nft.contract.address%>', '<%=nft.contract.address%>+<%=IDtoken%>')" onmouseout="copyNoticeCon('<%=nft.contract.address%>+<%=IDtoken%>')">
+                      <span class="tooltiptext" id="myTooltip<%=nft.contract.address%>+<%=IDtoken%>">Copy Contract</span>
+                      <span><img src="/images/copy.png" style="width:15px ;"></span>
+                    </button>
+                  </div>
+                  <br>
+                  <div style="margin-top: 5px; margin-bottom: 10px;">
+                    <a href="https://looksrare.org/collections/<%=nft.contract.address%>/<%=IDtoken%>/" target="_blank" style="text-decoration: none;">
+                      <img style="height: 20px; width:20px; margin-right: 10px;" src="/images/icon-darkbg@512.png">
+                    </a>
+                    <a href="https://opensea.io/assets/ethereum/<%=nft.contract.address%>/<%=IDtoken%>/" target="_blank" style="text-decoration: none;">
+                      <img style="height: 20px; width:20px; margin-left:10px;" src="https://storage.googleapis.com/opensea-static/Logomark/Logomark-Blue.svg">
+                    </a>
+                  </div>
+                  <div style="margin-top: 5px; margin-bottom: 10px;">
+                    <%if (nft.metadata.file != null) {%>
+                        <a href="<%=nft.metadata.file%>" target="_blank" style="text-decoration: none;">
+                          <img style="height: 40px; width:40px; margin-right:10px;" src="/images/filelocation.png">
+                        </a>
+                      <%}%>
+                      <%if (nft.metadata.file != null) {%>
+                        <a href="<%=nft.metadata.license_url%>" target="_blank" style="text-decoration: none;">
+                          <img style="height: 40px; width:40px; margin-right:10px;" src="/images/NFTlicense.png">
+                        </a>
+                      <%}%>
+                  </div>
+              </div>
+            
+            </div>
+          </div>
+        </div>
+        <%})%>
+    <%}%> 
+  </div>
+
+  <p id="page" name="newKey" class="hidden"> <%=nfts.nextToken%></p>
+ 
+    <% if (pages > 0) { %>
+      <table style="margin-left: auto; margin-right: auto; border: none;" class="tablePages">
+        <tr>
+            <td>
+             <form action="/marketgm" method="POST">
+                  <input type="text" value="<%=JSON.stringify(pageKeysM)%>" name="pageKeysM" class="hidden" readonly>
+                  <input type="text" value="<%=contractM%>" name="contractM" class="hidden" readonly>
+                  <input type="submit" value="First Page" class="paginationButtons" onclick="return onLoading()">
+              </form>
+            </td>
+          <% if (current == 1 || current == 2) { %>
+            <td>
+              <form action="/marketgm" method="POST">
+                  <input type="text" value="<%=JSON.stringify(pageKeysM)%>" name="pageKeysM" class="hidden" readonly>
+                  <input type="text" value="<%=contractM%>" name="contractM" class="hidden" readonly>
+                  <input type="submit" value="Previous" class="paginationButtons" onclick="return onLoading()">
+              </form>
+            </td>
+          <% } else { %>
+            <td>
+              <form action="/marketgm/<%=Number(current) - 1%>" method="POST">
+                  <input type="text" value="<%=JSON.stringify(pageKeysM)%>" name="pageKeysM" class="hidden" readonly>
+                  <input type="text" value="<%=contractM%>" name="contractM" class="hidden" readonly>
+                  <input type="submit" value="Previous" class="paginationButtons" onclick="return onLoading()">
+              </form>
+            </td>
+          <% } %>
+          <td><a class="paginationButtons"><%= Number(current) %>/<%=pages%></a></td>
+          <% if (current == pages) { %>
+            <td><a class="paginationButtons">Next</a></td>
+          <% } else { %>
+            <td>
+              <form action="/marketgm/<%= Number(current) + 1%>" method="POST">
+                  <input type="text" value="<%=JSON.stringify(pageKeysM)%>" name="pageKeysM" class="hidden" readonly>
+                  <input type="text" value="<%=contractM%>" name="contractM" class="hidden" readonly>
+                  <input type="submit" value="Next" class="paginationButtons" onclick="return onLoading()">
+              </form>
+            </td>
+          <% } %>
+        </tr>
+      </table>
+    <% } %>
+
+    <% if (pages == null && nfts.nextToken != null) { %>
+      <table style="margin-left: auto; margin-right: auto; border: none;" class="tablePages">
+        <tr>
+            <td>
+             <form action="/marketgm" method="POST">
+                  <input type="text" value="<%=JSON.stringify(pageKeysM)%>" name="pageKeysM" class="hidden" readonly>
+                  <input type="text" value="<%=contractM%>" name="contractM" class="hidden" readonly>
+                  <input type="submit" value="First Page" class="paginationButtons" onclick="return onLoading()">
+              </form>
+            </td>
+          <% if (current == 1 || current == 2) { %>
+            <td>
+              <form action="/marketgm" method="POST">
+                  <input type="text" value="<%=JSON.stringify(pageKeysM)%>" name="pageKeysM" class="hidden" readonly>
+                  <input type="text" value="<%=contractM%>" name="contractM" class="hidden" readonly>
+                  <input type="submit" value="Previous" class="paginationButtons" onclick="return onLoading()">
+              </form>
+            </td>
+          <% } else { %>
+            <td>
+              <form action="/marketgm/<%=Number(current) - 1%>" method="POST">
+                  <input type="text" value="<%=JSON.stringify(pageKeysM)%>" name="pageKeysM" class="hidden" readonly>
+                  <input type="text" value="<%=contractM%>" name="contractM" class="hidden" readonly>
+                  <input type="submit" value="Previous" class="paginationButtons" onclick="return onLoading()">
+              </form>
+            </td>
+          <% } %>
+          <% if (current == pages) { %>
+              <td class="paginationButtons">Next</td>
+          <% } else { %>
+            <td>
+              <form action="/marketgm/<%= Number(current) + 1%>" method="POST">
+                  <input type="text" value="<%=JSON.stringify(pageKeysM)%>" name="pageKeysM" class="hidden" readonly>
+                  <input type="text" value="<%=contractM%>" name="contractM" class="hidden" readonly>
+                  <input type="submit" value="Next" class="paginationButtons" onclick="return onLoading()">
+              </form>
+            </td>
+          <% } %>
+        </tr>
+      </table>
+    <% } %>
+   
+

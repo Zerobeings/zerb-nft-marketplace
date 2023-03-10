@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+ 
+
+</head>
+<body class="container">
+
+
+<header>
+  <%- include('../partials/goerli-headerlistings'); %>
+</header>
+
+<main>
+  <div>
+    <h1 style="color: orange;">goerli - Market gm ☕</h1>
+    <div style="text-align: center;">0.5% Platform Fee & <a class="link" style="text-decoration: none;" href="https://eips.ethereum.org/EIPS/eip-2981">EIP-2981</a> Royalties Honored</div>
+    <div style="text-align:center;color: rgb(65, 188, 225) ; font-size: 40px; margin: 20px; margin-bottom: 42px;">Listings Overview</div>
+    <div id="overlay"></div>
+  </div>
+  
+<br>
+
+<%if (listingsForBids != null && listingsForBids.length !=0) {%>
+<div style="max-width: 1355px; position: relative; margin: auto; max-height: 100%; border: 2px solid white; border-radius: 10px;">
+  <h2 style="margin: 20px; text-align: left;" class="bluz titleM">My Bids
+    <a style="float: right;" class="bluz titleM">Total Bids <%=listingsForBids.length%></a>
+  </h2>
+  <%- include('../partials/goerli-mybids'); %>
+</div>
+<%}%>
+
+<div style="max-width: 1375px; position: relative; margin: auto; max-height: 100%;">
+
+  <div class="grid-market">
+    <div class="market1" id="market1">
+      <h2 class="bluz titleM" style="margin: 20px; text-align: left; justify-items: center;">Create Listing <button style="float: right;" id="createlistinginput" class="marketbtn">Connect</button></h2>
+      <a class='error' style="overflow-wrap: break-word; font-size: 14px;"></a>
+      <br>
+      <a id="marketInfo" class="marketInfo">Connect to markpkace contract to create a listing</a>
+      <br>
+      <br>
+      <%- include('../partials/createListing'); %>
+    </div>
+    <div class="market2">
+      <h2 style="margin: 20px; text-align: left;" class="bluz titleM">My Listings
+        <a style="float: right;" class="bluz titleM">Listings <%=listings.length%></a>
+      </h2>
+      <%- include('../partials/goerli-mylistingsCard'); %>
+    </div>  
+    <div class="market3">
+      <h2 style="margin: 20px; text-align: left;" class="bluz titleM">My Portfolio
+        <a style="float: right;" class="bluz titleM">Items <%=nfts.totalCount%> </a>
+      </h2>
+      <%- include('../partials/goerli-myPortfolio'); %>
+    </div>
+  </div>
+</div>
+</main>
+
+
+<footer id="footer">
+    <%- include('../partials/goerli-footerMarket'); %>
+</footer>
+
+
+<script>
+  function copyAddr(address, i) { 
+    navigator.clipboard.writeText(address);
+    //alert("Copied Contract Address: " + address);
+    var copyAddy = document.getElementById("myTooltip"+i);
+    copyAddy.innerHTML = "Copied"
+  }
+  
+  function copyNoticeToken(i){
+    var copyAddy = document.getElementById("myTooltip"+i);
+    copyAddy.innerHTML = "Copy Token";
+  }
+  
+  function copyNoticeCon(i){
+    var copyAddy = document.getElementById("myTooltip"+i);
+    copyAddy.innerHTML = "Copy Contract";
+  }
+  
+  function enableSubmit(){
+  let inputs = document.getElementsByClassName('required'); // Enter your class name for a required field, this should also be reflected within your form fields.
+  let create = document.querySelector('input[type="submit"]');
+  let isValid = true;
+  
+  for (var i = 0; i < inputs.length; i++){
+    let changedInput = inputs[i];
+        if (changedInput.value.trim() === "" || changedInput.value === null){
+          isValid = false;
+          break;
+          }
+    } 
+    create.disabled = !isValid;
+  }
+  
+  localStorage.clear();
+  localStorage.setItem('toList', 'none');
+  localStorage.setItem('listType', 'none');
+  const checkScreen = window.matchMedia('(max-width: 1000px)');
+
+    function populateListing(nca, idt, sls){
+      document.getElementById('NFTContractAddress').value = nca;
+      document.getElementById('NFTTokenID').value = idt;
+      
+      var toList = localStorage.getItem('toList');
+
+      if (toList === "none") {
+        localStorage.setItem('toList',sls);
+        document.getElementById(sls).classList.add('borderSelectedListing');
+      } else {
+        document.getElementById(toList).classList.remove('borderSelectedListing');
+        document.getElementById(sls).classList.add('borderSelectedListing');
+        localStorage.setItem('toList',sls);
+      }
+
+        if(checkScreen.matches){
+          smoothScroll(document.getElementById('market1'));
+        }
+      
+    }
+
+    function listingType(typeID){
+
+      var listType = localStorage.getItem('listType');
+
+      if (listType === "none") {
+          localStorage.setItem('listType', typeID);
+          document.getElementById(typeID).classList.add('toggleListType');
+          document.getElementById('inputType').value = typeID;
+      } else {
+          document.getElementById(listType).classList.remove('toggleListType');
+          document.getElementById(typeID).classList.add('toggleListType');
+          localStorage.setItem('listType',typeID);
+          document.getElementById('inputType').value = typeID;
+      }
+
+      if(typeID === "1"){
+            document.getElementById('listingForm').classList.remove('hidden')
+            document.getElementById('ReservePrice').classList.remove('hidden');
+            document.getElementById('ReservePriceLabel').classList.remove('hidden');
+            document.getElementById('ReservePriceLabel2').classList.remove('hidden');
+            document.getElementById('ReservePriceLabel3').classList.remove('hidden');
+            document.getElementById('ReservePrice').classList.add('required');
+            document.getElementById('ReservePrice').onkeyup.value = "enableSubmit()";
+          } else {
+            document.getElementById('listingForm').classList.remove('hidden')
+            document.getElementById('ReservePrice').classList.add('hidden');
+            document.getElementById('ReservePriceLabel').classList.add('hidden');
+            document.getElementById('ReservePriceLabel2').classList.add('hidden');
+            document.getElementById('ReservePriceLabel3').classList.add('hidden');
+            document.getElementById('ReservePrice').classList.remove('required');
+            document.getElementById('ReservePrice').onkeyup.value = "";
+          }
+    }
+  
+function embed(code, i) { 
+  var embedCode = document.getElementById(code).innerHTML;
+  navigator.clipboard.writeText(embedCode);
+  var copyCode = document.getElementById("embedWeb"+i);
+  copyCode.innerHTML = "Copied iframe code for your website"
+}
+
+function copyNoticeEmbed(i){
+  var copyAddy = document.getElementById("embedWeb"+i);
+  copyAddy.innerHTML = "Copy iframe code";
+}
+
+  </script>
+  <script src="/js/imgLoader.js"></script>
+  <script src="/js/imLoading.js"></script>
+  <script src="/js/smoothscroll.js"></script>
+  <script src="/js/marketV2.js"></script>
+  <script src="/js/goerli-createlisting.js"></script>
+  <script src="/js/goerli-cancellisting.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.2/web3.min.js"></script>
+  <script src="https://unpkg.com/@walletconnect/ethereum-provider@2.4.7/dist/index.umd.js"></script>
+  <script src="https://unpkg.com/web3modal@1.9.5/dist/index.js"></script>
+</body>
+</html>
