@@ -7,7 +7,11 @@
                   <div class="col justify-center items-center">
                     <div class="card mb-4 rounded-3 shadow-sm justify-center items-center" style="width: 14rem;">
                       <div class="card-body justify-center items-center">
-                        <h2 style="font-size: 20px;"><%=`${NFTs[0].contractMetadata.name}`%> #
+                        <%if(NFTs[0] != null) {%>
+                          <h2 style="font-size: 20px;"><%=`${NFTs[0].contractMetadata.name}`%> #
+                            <%} else {%>
+                              <h2 style="font-size: 20px;">Token #
+                              <%}%>
                           <% if (String(IDtoken).length > 6) {%>
                           <%=String(IDtoken).slice(0,5) %>...
                           <%} else {%>
