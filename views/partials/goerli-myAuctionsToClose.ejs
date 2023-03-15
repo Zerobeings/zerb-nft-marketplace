@@ -1,65 +1,61 @@
 <div class="flex flex-wrap justify-center items-center" style="row-gap: 3rem; column-gap: 0.5rem; margin-top: 1rem; margin-right: auto; margin-left: auto; margin-bottom: 30px;">
-    <% if(myAuctionsToClose.length > 0) {%>
-      <%myAuctionsToClose.forEach((listings,i) => {%> 
-            <% const IDtoken = listings.asset.id; %>
-                <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-center items-center">
-                  <div class="col justify-center items-center">
-                    <div class="card mb-4 rounded-3 shadow-sm justify-center items-center" style="width: 14rem;">
-                      <div class="card-body justify-center items-center">
-                        <h2 style="font-size: 20px;">Token #
-                          <% if (String(IDtoken).length > 6) {%>
-                          <%=String(IDtoken).slice(0,5) %>...
-                          <%} else {%>
-                            <%=IDtoken%>
-                            <%}%>
-                          </h2>
-                          <a href="/goerli-listingDetails/<%=listings.assetContractAddress%>/<%=IDtoken%>/" onclick="return onLoading4()">
+  <% if(myAuctionsToClose.length > 0) {%>
+    <%myAuctionsToClose.forEach((listings,i) => {%>
+      <% let timeLeft = Math.round(parseInt(listings.endTimeInEpochSeconds - (Math.floor(Date.now()/1000)))/86400)%>
+        <%if (timeLeft <= 0) {%> 
+          <% const IDtoken = listings.asset.id; %>
+              <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-center items-center">
+                <div class="col justify-center items-center">
+                  <div class="card mb-4 rounded-3 shadow-sm justify-center items-center" style="width: 14rem;">
+                    <div class="card-body justify-center items-center">
+                      <h2 style="font-size: 20px;">Token #
+                        <% if (String(IDtoken).length > 6) {%>
+                        <%=String(IDtoken).slice(0,5) %>...
+                        <%} else {%>
+                          <%=IDtoken%>
+                          <%}%>
+                        </h2>
+                        <a href="/goerli-listingDetails/<%=listings.assetContractAddress%>/<%=IDtoken%>/" onclick="return onLoading4()">
+                          
+                          <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".png" 
+                            || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".svg"
+                            || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".jpeg"
+                            || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".jpg"
+                            || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".gif"
+                            || listings.asset.image.indexOf(".", listings.asset.image.length-5) === -1){%>
+                              <img class="items-center asyncImage" style="border-radius: 10px ; width: 75%; height: 75%;" src="/images/loading.png" data-src="<%=listings.asset.image%>"  alt="...">
+                              <%} %>
                             
-                            <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".png" 
-                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".svg"
-                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".jpeg"
-                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".jpg"
-                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".gif"
-                              || listings.asset.image.indexOf(".", listings.asset.image.length-5) === -1){%>
-                                <img class="items-center asyncImage" style="border-radius: 10px ; width: 75%; height: 75%;" src="/images/loading.png" data-src="<%=listings.asset.image%>"  alt="...">
-                                <%} %>
-                              
-                                <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".wav" 
-                                || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".mp3" 
-                                || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".ogg"){%>
-                                  <audio style="width: 75%; height:30px; border-radius: 10px;" controls><source src="<%=listings.asset.image%>"></audio>
-                                  <%}%>
-                             
-                              <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".mp4"
-                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".webm"
+                              <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".wav" 
+                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".mp3" 
                               || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".ogg"){%>
-                                  <video style="width: 75%; height:75%; border-radius: 10px;" controls><source src="<%=listings.asset.image%>"></video>
-                                  <%}%>
-                              <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".doc"
-                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".docx"
-                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".pdf"
-                              || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".txt"){%>
-                                  <iframe src="https://docs.google.com/gview?url=<%=listings.asset.image%>&embedded=true" width="75%" height="75%" frameborder="0"></iframe>
-                                  <%}%>
-                          </a>
+                                <audio style="width: 75%; height:30px; border-radius: 10px;" controls><source src="<%=listings.asset.image%>"></audio>
+                                <%}%>
+                           
+                            <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".mp4"
+                            || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".webm"
+                            || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".ogg"){%>
+                                <video style="width: 75%; height:75%; border-radius: 10px;" controls><source src="<%=listings.asset.image%>"></video>
+                                <%}%>
+                            <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".doc"
+                            || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".docx"
+                            || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".pdf"
+                            || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".txt"){%>
+                                <iframe src="https://docs.google.com/gview?url=<%=listings.asset.image%>&embedded=true" width="75%" height="75%" frameborder="0"></iframe>
+                                <%}%>
+                        </a>
                         <div style=" font-size: 18px; margin-top: 10px; margin-bottom: 5px;">
-                          <div><a class="bluz">My Bid:</a> <%=bid.currencyValue.displayValue%> <%=bid.currencyValue.symbol%></div>
-                            <br>
-
-                          <% let timeLeft = Math.round(parseInt(listings.endTimeInEpochSeconds - (Math.floor(Date.now()/1000)))/86400)%>
-                            <%if ((timeLeft +  2630000) >= 0) {%>
-                              <div style="margin-bottom: 5px;" >Auction Ended</div>
-                                <button type="submit" id="closeAuction" class="buttonlogout" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.zerb.account%>')">Close Auction</button>
-                            <%}%>
+                            <div style="margin-bottom: 5px;" >Auction Ended</div>
+                            <button type="submit" id="closeAuction" class="buttonlogout" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.zerb.account%>')">Close Auction</button>
                         </div>
-                      </div>
                     </div>
                   </div>
                 </div>
-              <%})%>
-            <%}%>  
-          
+              </div>
+              <%}%>
+            <%})%>
+          <%}%>  
 </div>
-    
-    
-    
+  
+  
+  

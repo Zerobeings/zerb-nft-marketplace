@@ -1098,12 +1098,11 @@ party.app.post('/goerli-myListings/:page', party.protect('zerb', { redirect: "/l
       )};
   
       for (i = 0; i < nonActiveAuctions.length; i++) {
-          const myWins = await marketContract.auction.getWinner(nonActiveAuctions[i].id); //get the listing connected to the specific offer
-          if(myWins === wallet.toLowerCase()){
-            myAuctionsToClose.push(nonActiveAuctions[i]);
-          }
-        
-      };
+        const myWins = await marketContract.auction.getWinner(nonActiveAuctions[i].id); //get the listing connected to the specific offer
+        if(myWins.toLowerCase() === wallet.toLowerCase() || nonActiveAuctions[i].sellerAddress.toLowerCase() === wallet.toLowerCase()){
+          myAuctionsToClose.push(nonActiveAuctions[i]);
+        }      
+    };
 
       res.render('pages/goerli-myListings', {
         session: req.session,

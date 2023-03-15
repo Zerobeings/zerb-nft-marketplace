@@ -24,12 +24,12 @@
 
 <%if (myAuctionsToClose != null && myAuctionsToClose.length !=0) {%>
   <div style="max-width: 1355px; position: relative; margin: auto; max-height: 100%; border: 2px solid white; border-radius: 10px;">
-    <h2 style="margin: 20px; text-align: left;" class="bluz titleM">Ended Auctions
-      <a style="float: right;" class="bluz titleM">Total Auctions to Close <%=myAuctionsToClose.length%></a>
-    </h2>
+    <h2 style="margin: 20px; text-align: left;" class="bluz titleM">Auctions to Close</h2>
     <%- include('../partials/goerli-myAuctionsToClose'); %>
   </div>
   <%}%>
+
+  <br>
 
 <%if (listingsForBids != null && listingsForBids.length !=0) {%>
 <div style="max-width: 1355px; position: relative; margin: auto; max-height: 100%; border: 2px solid white; border-radius: 10px;">
