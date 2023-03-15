@@ -1042,13 +1042,19 @@ party.app.post('/goerli-myListings/:page', party.protect('zerb', { redirect: "/l
       
       pageKeysP[page-1]=nfts.pageKey
 
-      const listings = await marketContract.getActiveListings({seller: wallet}); //get active listings from an address
-      const allListings = await marketContract.getActiveListings(); //get all listings, this includes listings sold. This is used to find bids by logged in wallet address
+      const listings = await marketContract.getActiveListings({seller: wallet}); //get active listings for a specific wallet address
+      const allListings = await marketContract.getActiveListings(); //get active listings. This is used to find bids by logged in wallet address
+      const everyListing = await marketContract.getAllListings(); // get all active and inactive listing
+      
       const bidsListings = [];
       const myBids = [];
       const bids = [];
       const listingsForBids = [];
   
+      const allAuctionListings = []; //all auction listings
+      const nonActiveAuctions = []; //all non-active listings
+      const myAuctionsToClose = []; //all my auctions to close
+
       if(allListings.length > 0) {
         allListings.forEach((alistings,i) => {
             if(alistings.type === 1){
@@ -1074,6 +1080,31 @@ party.app.post('/goerli-myListings/:page', party.protect('zerb', { redirect: "/l
         }
       }
 
+      if(everyListing.length > 0) {
+        everyListing.forEach((eListing,i) => {
+            if(eListing.type === 1){
+              allAuctionListings.push(eListing); //push auction based listings to an array
+            }
+          }
+        )};
+  
+      if(allAuctionListings.length > 0) { 
+        allAuctionListings.forEach(el1 => {      
+          el1IsPresentInArr2 = bidsListings.some(el2 => el2.id === el1.id); 
+            if (!el1IsPresentInArr2) { 
+              nonActiveAuctions.push(el1);    
+            }
+        }
+      )};
+  
+      for (i = 0; i < nonActiveAuctions.length; i++) {
+          const myWins = await marketContract.auction.getWinner(nonActiveAuctions[i].id); //get the listing connected to the specific offer
+          if(myWins === wallet.toLowerCase()){
+            myAuctionsToClose.push(nonActiveAuctions[i]);
+          }
+        
+      };
+
       res.render('pages/goerli-myListings', {
         session: req.session,
         nfts,
@@ -1092,6 +1123,7 @@ party.app.post('/goerli-myListings/:page', party.protect('zerb', { redirect: "/l
         pageKeysP,
         bids,
         listingsForBids,
+        myAuctionsToClose,
       });
     } catch (error) {
       // console.log(error);
@@ -1112,6 +1144,7 @@ party.app.post('/goerli-myListings/:page', party.protect('zerb', { redirect: "/l
         pageKeysP:null,
         bids:null,
         listingsForBids:null,
+        myAuctionsToClose:null,
       });
     }
   }
