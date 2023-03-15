@@ -58,7 +58,7 @@
                               <div style="margin-bottom: 5px;" >Auction Ended</div>
                               <%}%>
                             <%if(auctionEnded === true){%>
-                            <button type="submit" id="closeAuction" class="buttonlogout" onclick="canceldListing('<%=listings.id%>', '1', '<%=listings.assetContractAddress%>')">Close Auction</button>
+                            <button type="submit" id="closeAuction" class="buttonlogout" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.zerb.account%>')">Close Auction</button>
                               <%}%>
                         </div>
                       </div>
