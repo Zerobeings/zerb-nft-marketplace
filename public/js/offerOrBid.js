@@ -50,7 +50,7 @@ if(makeOffer != null){
                 if(buyitnow != null && buyListing !=null && buyAtAmount !=null){
                     buyitnow.addEventListener("click", async (e) => { 
                         document.getElementById("overlay").style.display = "block";
-                        document.querySelector(".error").innerHTML = "Awaiting Transaction"
+                        document.querySelector(".error").innerHTML = "Awaiting Buy/Buyout Transaction"
 
                         var listingID = buyListing;
                         var buyAmount = buyAtAmount;
@@ -62,6 +62,7 @@ if(makeOffer != null){
                     
                         if (listingType === "0"){
                             try {
+                                document.querySelector(".error").innerHTML = "Initiating Direct Listing Buy Transaction";
                                 const buyTx = await marketplace.methods.buy(listingID,`${selectedAccount}`,_quantityWanted,NATIVE_TOKEN_ADDRESS,buyAmount).send({from:`${selectedAccount}`, value:finalPrice});
                                 document.getElementById('offer').classList.add('hidden');
                                 document.getElementById('offer').style.display = 'none';
@@ -80,6 +81,7 @@ if(makeOffer != null){
                             }
                         } else {
                             try {
+                                document.querySelector(".error").innerHTML = "Initiating Auction Buyout Transaction";
                                 const buyTx = await marketplace.methods.offer(listingID, _quantityWanted, NATIVE_TOKEN_ADDRESS, buyAmount, _expirationTimestamp).send({from:`${selectedAccount}`, value:finalPrice});
                                 document.getElementById('offer').classList.add('hidden');
                                 document.getElementById('offer').style.display = 'none';
@@ -104,7 +106,7 @@ if(makeOffer != null){
                         e.preventDefault(); //prevent default submission behavior
 
                         document.getElementById("overlay").style.display = "block";
-                        document.querySelector(".error").innerHTML = "Awaiting Transaction"
+                        document.querySelector(".error").innerHTML = "Awaiting Offer/Bid Transaction"
 
                         const _wrapper = document.getElementById('wrapper').innerHTML;
                         const NATIVE_TOKENS = JSON.parse(_wrapper);

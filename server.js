@@ -10,7 +10,7 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const { ThirdwebSDK, NATIVE_TOKEN_ADDRESS, ChainId, NATIVE_TOKENS } = require ("@thirdweb-dev/sdk"); //adding thirdweb marketplace contract functions
 const gsdk = new ThirdwebSDK("goerli"); //goerli marketplace network
-const sdk = new ThirdwebSDK("mainnet"); //mainnet marketplace contract
+const sdk = new ThirdwebSDK("ethereum"); //mainnet marketplace contract
 const party = new Privateparty({
   walletconnect: process.env.INFURA,
 });
