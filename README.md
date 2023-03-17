@@ -7,9 +7,21 @@
 # 🚧 Mainnet contract interactions have not been tested 🚧
 
 # Market gm ☕️ - An NFT marketplace 
-To take a deeper dive into market gm ☕️ , check out the [documents](learn.zerobeings.xyz)
+
+## Introduction
+Market gm ☕️ is a new NFT marketplace that allows you to buy, directly sell, and auction NFTs inside and outside the marketplace. This flexibility is achieved through the thirdWeb marketplace contract ([contract audit report](https://gateway.ipfscdn.io/ipfs/QmNgNaLwzgMxcx9r6qDvJmTFam6xxUxX7Vp8E99oRt7i74/)). 
 
 > 0.5% platform fee & [EIP-2981](https://eips.ethereum.org/EIPS/eip-2981) royalties honored, filetype flexibility, auto-generated IPFS site, and fully customizable.
+
+To take a deeper dive into market gm ☕️ , check out the [documents](learn.zerobeings.xyz)
+
+## News & Community
+
+>
+> * Twitter: [https://twitter.com/Zero_beings](https://twitter.com/Zero_beings)
+> * Discord: [https://discord.gg/rZMzVCx96W](https://discord.gg/rZMzVCx96W)
+> * Medium: [https://zerobeings.medium.com/](https://zerobeings.medium.com/)
+>
 
 ## Quickstart
 Follow the guide below to get started on your own NFT marketplace today! Otherwise you can [mint](mint.zerobeings.xyz) a Zero Being and start using [Market gm ☕️](gm.zerobeings.xyz) today!
@@ -37,7 +49,9 @@ If you still want to use Web3Modal v1.0 but just upgrade the WalletConnect ether
 3. Navigate to the project directory `cd zerb-nft-marketplace`.
 4. Install dependencies with `npm install`.
 5. Change `.env.example` to `.env` and add your environment variables.
-6. Run `node server` (🚨 not recommended by Wallet Connect) or set up a [localtunnel](https://theboroer.github.io/localtunnel-www/) (recommended).
+6. Change mbox.example.json and gbox.example.json to mbox.json and gbox.json
+7. Remove mbox.json and gbox.json from .gitignore for private repositories
+8. Run `node server` (🚨 not recommended by Wallet Connect) or set up a [localtunnel](https://theboroer.github.io/localtunnel-www/) (recommended).
 
 ### Making it your Own
 1. Change the NFT gating contract and user name.
