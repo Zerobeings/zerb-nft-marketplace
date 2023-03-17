@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+ 
+
+</head>
+<body class="container">
+
+
+<header>
+  <%- include('../partials/goerli-headerlistings'); %>
+</header>
+
+<main>
+  <div>
+    <h1 style="color: orange;">goerli - Market gm ☕</h1>
+    <div style="text-align: center;">0.5% Platform Fee & <a class="link" style="text-decoration: none;" href="https://eips.ethereum.org/EIPS/eip-2981">EIP-2981</a> Royalties Honored</div>
+    <div style="text-align:center;color: rgb(65, 188, 225) ; font-size: 40px; margin: 20px; margin-bottom: 42px;">Auctions to Close Overview</div>
+    <div id="overlay"></div>
+  </div>
+
+<br>
+
+<%if (myAuctionsToClose != null && myAuctionsToClose.length !=0) {%>
+  <div style="max-width: 1355px; position: relative; margin: auto; max-height: 100%; border: 2px solid white; border-radius: 10px;">
+    <h2 style="margin: 20px; text-align: left;" class="bluz titleM">Auctions to Close
+      <a style="float: right;color: orange;" class="titleM">⚠️ You have 7 Days to Close, otherwise Auctions must be Closed Manually</a>
+    </h2>
+    <%- include('../partials/goerli-myAuctionsToClose'); %>
+  </div>
+  <%} else {%>
+    <div style="max-width: 1355px; position: relative; margin: auto; max-height: 100%; border: 2px solid white; border-radius: 10px;">
+      <h2 style="margin: 20px; text-align: left; color: orange;" class="titleM">No Auctions to Close</h2>
+    </div>
+    <%}%>
+
+<br>
+
+</main>
+
+<footer id="footer">
+    <%- include('../partials/goerli-footerMarket'); %>
+</footer>
+
+<script src="/js/imgLoader.js"></script>
+<script src="/js/imLoading.js"></script>
+<script src="/js/marketV2.js"></script>
+<script src="/js/goerli-cancellisting.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/web3/1.8.2/web3.min.js"></script>
+<script src="https://unpkg.com/@walletconnect/ethereum-provider@2.4.7/dist/index.umd.js"></script>
+<script src="https://unpkg.com/web3modal@1.9.5/dist/index.js"></script>
+
+</body>
+</html>

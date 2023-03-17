@@ -2,7 +2,7 @@
   <% if(myAuctionsToClose.length > 0) {%>
     <%myAuctionsToClose.forEach((listings,i) => {%>
       <% let timeLeft = Math.round(parseInt(listings.endTimeInEpochSeconds - (Math.floor(Date.now()/1000)))/86400)%>
-        <%if (timeLeft <= 0) {%> 
+        <%if (timeLeft <= 0 && timeLeft >= -7) {%> 
           <% const IDtoken = listings.asset.id; %>
               <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-center items-center">
                 <div class="col justify-center items-center">
@@ -15,8 +15,6 @@
                           <%=IDtoken%>
                           <%}%>
                         </h2>
-                        <a href="/goerli-listingDetails/<%=listings.assetContractAddress%>/<%=IDtoken%>/" onclick="return onLoading4()">
-                          
                           <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".png" 
                             || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".svg"
                             || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".jpeg"
@@ -43,10 +41,10 @@
                             || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".txt"){%>
                                 <iframe src="https://docs.google.com/gview?url=<%=listings.asset.image%>&embedded=true" width="75%" height="75%" frameborder="0"></iframe>
                                 <%}%>
-                        </a>
+                        
                         <div style=" font-size: 18px; margin-top: 10px; margin-bottom: 5px;">
-                            <div style="margin-bottom: 5px;" >Auction Ended</div>
-                            <button type="submit" id="closeAuction" class="buttonlogout" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.zerb.account%>')">Close Auction</button>
+                            <div style="margin-bottom: 5px;" ><a class="bluz">Time to Close: </a><%=timeLeft + 7%> days</div>
+                            <button type="submit" id="closeAuction" class="closeauction" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.zerb.account%>')">Close Auction</button>
                         </div>
                     </div>
                   </div>

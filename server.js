@@ -620,6 +620,125 @@ party.app.get('/listingDetails/:contract/:IDToken', party.protect('zerb',{ redir
   }
 });
 
+// My Auctions to Close Page
+party.app.get('/auctions', party.protect('zerb',{ redirect: "/login" }), async (req, res, next) => {
+  const wallet = `${req.session.zerb.account}`;
+  const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`;
+  const pageCount = 1;
+  var pageKey = '';
+  const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
+  const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract
+
+  try {
+    const nfts = await fetch(fetchURL, { method: 'GET' }).then((data) =>
+      data.json()
+    );
+    
+    const NFTs = nfts.ownedNfts;
+    const allListings = await marketContract.getActiveListings(); //get active listings. This is used to find bids by logged in wallet address
+    const everyListing = await marketContract.getAllListings(); // get all active and inactive listing
+    
+    const bidsListings = []; // all active auction listings
+    const myBids = [];
+    const bids = [];
+    const listingsForBids = [];
+
+    const allAuctionListings = []; //all auction listings
+    const nonActiveAuctions = []; //all non-active listings
+    const myAuctionsToClose = []; //all my auctions to close
+
+    if(allListings.length > 0) {
+      allListings.forEach((alistings,i) => {
+          if(alistings.type === 1){
+            bidsListings.push(alistings); //push auction based listings to an array
+          }
+        }
+      )};
+    
+    if(bidsListings != null){
+    for (i = 0; i < bidsListings.length; i++) {
+     const offers = await marketContract.getOffers(bidsListings[i].id); //get offers for the listing from thirdweb sdk
+      myBids.push(offers)  
+    };
+    }
+
+    for (i = 0; i < myBids.length; i++) {
+      for(p = 0; p < myBids[i].length; p++){
+        if((myBids[i][p].buyerAddress).toLowerCase() === wallet.toLowerCase()){
+          bids.push(myBids[i][p]);
+          const bidList = await marketContract.getListing(myBids[i][p].listingId); //get the listing connected to the specific offer
+          listingsForBids.push(bidList);
+        }
+      }
+    }
+
+    if(everyListing.length > 0) {
+      everyListing.forEach((eListing,i) => {
+          if(eListing.type === 1){
+            allAuctionListings.push(eListing); //push auction based listings to an array
+          }
+        }
+      )};
+
+    if(allAuctionListings.length > 0) { 
+      allAuctionListings.forEach(el1 => {      
+        el1IsPresentInArr2 = bidsListings.some(el2 => el2.id === el1.id); 
+          if (!el1IsPresentInArr2) { 
+            nonActiveAuctions.push(el1);    
+          }
+      }
+    )};
+
+    for (i = 0; i < nonActiveAuctions.length; i++) {
+        const myWins = await marketContract.auction.getWinner(nonActiveAuctions[i].id); //get the listing connected to the specific offer
+        if(myWins.toLowerCase() === wallet.toLowerCase() || nonActiveAuctions[i].sellerAddress.toLowerCase() === wallet.toLowerCase()){
+          myAuctionsToClose.push(nonActiveAuctions[i]);
+        }      
+    }
+
+    res.render('pages/auctions', {
+      session: req.session,
+      nfts,
+      NFTs,
+      rarity: null,
+      pages: null,
+      current: null,
+      summary: null,
+      fp: null,
+      sumatt: null,
+      pageKey:null,
+      contract:null,
+      listings:null,
+      contractM:null,
+      pageKeysP:null,
+      bids,
+      listingsForBids,
+      myAuctionsToClose,
+    });
+  } catch (error) {
+    // console.log(error);
+    res.render('pages/marketerror', {
+      session: req.session,
+      NFTs: null,
+      nfts: null,
+      rarity: null,
+      pages: null,
+      current: null,
+      summary:null,
+      fp:null,
+      sumatt: null,
+      pageKey: null,
+      contract:null,
+      listings:null,
+      contractM:null,
+      pageKeysP:null,
+      bids:null,
+      listingsForBids:null,
+      myAuctionsToClose:null,
+    });
+  }
+});
+
 //////////////////////////////////////////////////////
 //                                                  //
 //        Zero Beings Marketplace - Goerli          //
@@ -1042,19 +1161,13 @@ party.app.post('/goerli-myListings/:page', party.protect('zerb', { redirect: "/l
       
       pageKeysP[page-1]=nfts.pageKey
 
-      const listings = await marketContract.getActiveListings({seller: wallet}); //get active listings for a specific wallet address
-      const allListings = await marketContract.getActiveListings(); //get active listings. This is used to find bids by logged in wallet address
-      const everyListing = await marketContract.getAllListings(); // get all active and inactive listing
-      
+      const listings = await marketContract.getActiveListings({seller: wallet}); //get active listings from an address
+      const allListings = await marketContract.getActiveListings(); //get all listings, this includes listings sold. This is used to find bids by logged in wallet address
       const bidsListings = [];
       const myBids = [];
       const bids = [];
       const listingsForBids = [];
   
-      const allAuctionListings = []; //all auction listings
-      const nonActiveAuctions = []; //all non-active listings
-      const myAuctionsToClose = []; //all my auctions to close
-
       if(allListings.length > 0) {
         allListings.forEach((alistings,i) => {
             if(alistings.type === 1){
@@ -1080,30 +1193,6 @@ party.app.post('/goerli-myListings/:page', party.protect('zerb', { redirect: "/l
         }
       }
 
-      if(everyListing.length > 0) {
-        everyListing.forEach((eListing,i) => {
-            if(eListing.type === 1){
-              allAuctionListings.push(eListing); //push auction based listings to an array
-            }
-          }
-        )};
-  
-      if(allAuctionListings.length > 0) { 
-        allAuctionListings.forEach(el1 => {      
-          el1IsPresentInArr2 = bidsListings.some(el2 => el2.id === el1.id); 
-            if (!el1IsPresentInArr2) { 
-              nonActiveAuctions.push(el1);    
-            }
-        }
-      )};
-  
-      for (i = 0; i < nonActiveAuctions.length; i++) {
-        const myWins = await marketContract.auction.getWinner(nonActiveAuctions[i].id); //get the listing connected to the specific offer
-        if(myWins.toLowerCase() === wallet.toLowerCase() || nonActiveAuctions[i].sellerAddress.toLowerCase() === wallet.toLowerCase()){
-          myAuctionsToClose.push(nonActiveAuctions[i]);
-        }      
-    };
-
       res.render('pages/goerli-myListings', {
         session: req.session,
         nfts,
@@ -1122,7 +1211,6 @@ party.app.post('/goerli-myListings/:page', party.protect('zerb', { redirect: "/l
         pageKeysP,
         bids,
         listingsForBids,
-        myAuctionsToClose,
       });
     } catch (error) {
       // console.log(error);
@@ -1143,7 +1231,6 @@ party.app.post('/goerli-myListings/:page', party.protect('zerb', { redirect: "/l
         pageKeysP:null,
         bids:null,
         listingsForBids:null,
-        myAuctionsToClose:null,
       });
     }
   }
@@ -1201,6 +1288,125 @@ party.app.get('/goerli-listingDetails/:contract/:IDToken', party.protect('zerb',
       wrapper:null,
       offers:null,
       royalties:null,
+    });
+  }
+});
+
+// goerli My Auctions to Close Page
+party.app.get('/goerli-auctions', party.protect('zerb',{ redirect: "/login" }), async (req, res, next) => {
+  const wallet = `${req.session.zerb.account}`;
+  const baseURL = `https://eth-goerli.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`;
+  const pageCount = 1;
+  var pageKey = '';
+  const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
+  const marketContract = await gsdk.getContract(gMarkectContract, "marketplace"); //get marketplace contract
+
+  try {
+    const nfts = await fetch(fetchURL, { method: 'GET' }).then((data) =>
+      data.json()
+    );
+    
+    const NFTs = nfts.ownedNfts;
+    const allListings = await marketContract.getActiveListings(); //get active listings. This is used to find bids by logged in wallet address
+    const everyListing = await marketContract.getAllListings(); // get all active and inactive listing
+    
+    const bidsListings = []; // all active auction listings
+    const myBids = [];
+    const bids = [];
+    const listingsForBids = [];
+
+    const allAuctionListings = []; //all auction listings
+    const nonActiveAuctions = []; //all non-active listings
+    const myAuctionsToClose = []; //all my auctions to close
+
+    if(allListings.length > 0) {
+      allListings.forEach((alistings,i) => {
+          if(alistings.type === 1){
+            bidsListings.push(alistings); //push auction based listings to an array
+          }
+        }
+      )};
+    
+    if(bidsListings != null){
+    for (i = 0; i < bidsListings.length; i++) {
+     const offers = await marketContract.getOffers(bidsListings[i].id); //get offers for the listing from thirdweb sdk
+      myBids.push(offers)  
+    };
+    }
+
+    for (i = 0; i < myBids.length; i++) {
+      for(p = 0; p < myBids[i].length; p++){
+        if((myBids[i][p].buyerAddress).toLowerCase() === wallet.toLowerCase()){
+          bids.push(myBids[i][p]);
+          const bidList = await marketContract.getListing(myBids[i][p].listingId); //get the listing connected to the specific offer
+          listingsForBids.push(bidList);
+        }
+      }
+    }
+
+    if(everyListing.length > 0) {
+      everyListing.forEach((eListing,i) => {
+          if(eListing.type === 1){
+            allAuctionListings.push(eListing); //push auction based listings to an array
+          }
+        }
+      )};
+
+    if(allAuctionListings.length > 0) { 
+      allAuctionListings.forEach(el1 => {      
+        el1IsPresentInArr2 = bidsListings.some(el2 => el2.id === el1.id); 
+          if (!el1IsPresentInArr2) { 
+            nonActiveAuctions.push(el1);    
+          }
+      }
+    )};
+
+    for (i = 0; i < nonActiveAuctions.length; i++) {
+        const myWins = await marketContract.auction.getWinner(nonActiveAuctions[i].id); //get the listing connected to the specific offer
+        if(myWins.toLowerCase() === wallet.toLowerCase() || nonActiveAuctions[i].sellerAddress.toLowerCase() === wallet.toLowerCase()){
+          myAuctionsToClose.push(nonActiveAuctions[i]);
+        }      
+    }
+
+    res.render('pages/goerli-auctions', {
+      session: req.session,
+      nfts,
+      NFTs,
+      rarity: null,
+      pages: null,
+      current: null,
+      summary: null,
+      fp: null,
+      sumatt: null,
+      pageKey:null,
+      contract:null,
+      listings:null,
+      contractM:null,
+      pageKeysP:null,
+      bids,
+      listingsForBids,
+      myAuctionsToClose,
+    });
+  } catch (error) {
+    // console.log(error);
+    res.render('pages/goerli-marketerror', {
+      session: req.session,
+      NFTs: null,
+      nfts: null,
+      rarity: null,
+      pages: null,
+      current: null,
+      summary:null,
+      fp:null,
+      sumatt: null,
+      pageKey: null,
+      contract:null,
+      listings:null,
+      contractM:null,
+      pageKeysP:null,
+      bids:null,
+      listingsForBids:null,
+      myAuctionsToClose:null,
     });
   }
 });

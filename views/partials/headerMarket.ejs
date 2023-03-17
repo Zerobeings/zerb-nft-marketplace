@@ -1,10 +1,12 @@
- <nav id="navbar">
+<nav id="navbar">
 
   <div id="mySidepanelM" class="sidepanelM" style="z-index:3">
     <a href="javascript:void(0)" class="closebtnM" onclick="closeNav()">×</a>
     <a href="/marketgm" onclick="return onLoading4()" style="white-space: nowrap;">Market gm ☕️</a>
+    <a href="https://open.factoria.app/" target="_blank">Factoria</a>
     <a href="https://learn.zerobeings.xyz/#/" target="_blank">Learn</a>
     <a href="/myListings" onclick="return onLoading4()" style="white-space: nowrap;">My Listings</a>
+    <a style="white-space: nowrap;" href="/auctions" onclick="return onLoading4()">Auctions</a>
     <% if (session.zerb) { %>
     <a href="/login" onclick="return onLoading4()">Logout</a>
     <% } else { %>
@@ -30,9 +32,10 @@
       <input type="submit" value="Submit" class="submit hidden" onclick="return onLoading4()" disabled>
     </form>
     
-    <a style="margin-left: 12px; margin-right: 12px;text-decoration: none;" class="imgDesktop navLinks" href="https://docs.factoria.app/#/" target="_blank">Factoria</a>
+    <a style="margin-left: 12px; margin-right: 12px;text-decoration: none;" class="imgDesktop navLinks" href="https://open.factoria.app/" target="_blank">Factoria</a>
     <a style="margin-left: 12px; margin-right: 12px;text-decoration: none;" class="imgDesktop navLinks" href="https://learn.zerobeings.xyz/#/" target="_blank">Learn</a>
-    <a style="margin-left: 12px; margin-right: 24px; text-decoration: none; white-space: nowrap;" class="imgDesktop navLinks" href="/myListings" onclick="return onLoading4()">My Listings</a>
+    <a style="margin-left: 12px; margin-right: 12px; text-decoration: none; white-space: nowrap;" class="imgDesktop navLinks" href="/myListings" onclick="return onLoading4()">My Listings</a>
+    <a style="margin-left: 12px; margin-right: 24px; text-decoration: none;" class="imgDesktop navLinks" href="/auctions" onclick="return onLoading4()">Auctions</a>
 
     <img id="profileImg" style="justify-self: end; margin-right: 0px;" class="imgProfile asyncImage imgDesktop" src="/images/loading.png" data-src="<%=NFTs[0].media[0].gateway%>" alt=""></img>
     <% if (session.zerb) { %>
