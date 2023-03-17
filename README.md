@@ -13,6 +13,10 @@ Market gm ☕️ is a new NFT marketplace that allows you to buy, directly sell,
 
 > 0.5% platform fee & [EIP-2981](https://eips.ethereum.org/EIPS/eip-2981) royalties honored, filetype flexibility, auto-generated IPFS site, and fully customizable.
 
+<p align="center" width="100%">
+    <img width="80%" src="https://learn.zerobeings.xyz/images/homescreen.png">
+</p>
+
 To take a deeper dive into market gm ☕️ , check out the [documents](https://learn.zerobeings.xyz)
 
 ## News & Community
