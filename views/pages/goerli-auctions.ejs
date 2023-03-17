@@ -18,6 +18,7 @@
     <div style="text-align: center;">0.5% Platform Fee & <a class="link" style="text-decoration: none;" href="https://eips.ethereum.org/EIPS/eip-2981">EIP-2981</a> Royalties Honored</div>
     <div style="text-align:center;color: rgb(65, 188, 225) ; font-size: 40px; margin: 20px; margin-bottom: 42px;">Auctions to Close Overview</div>
     <div id="overlay"></div>
+    <a class='error' style="overflow-wrap: break-word; font-size: 14px;"></a>
   </div>
 
 <br>
@@ -26,6 +27,7 @@
   <div style="max-width: 1355px; position: relative; margin: auto; max-height: 100%; border: 2px solid white; border-radius: 10px;">
     <h2 style="margin: 20px; text-align: left;" class="bluz titleM">Auctions to Close
       <a style="float: right;color: orange;" class="titleM">⚠️ You have 7 Days to Close, otherwise Auctions must be Closed Manually</a>
+      <button style="float: right;" id="createlistinginput" class="marketbtn">Connect</button>
     </h2>
     <%- include('../partials/goerli-myAuctionsToClose'); %>
   </div>
