@@ -53,8 +53,8 @@ If you still want to use Web3Modal v1.0 but just upgrade the WalletConnect ether
 3. Navigate to the project directory `cd zerb-nft-marketplace`.
 4. Install dependencies with `npm install`.
 5. Change `.env.example` to `.env` and add your environment variables.
-6. Change mbox.example.json and gbox.example.json to mbox.json and gbox.json
-7. Remove mbox.json and gbox.json from .gitignore for private repositories
+6. Change `mbox.example.json` and `gbox.example.json` to `mbox.json` and `gbox.json`.
+7. Remove `mbox.json` and `gbox.json` from `.gitignore` for private repositories
 8. Run `node server` (🚨 not recommended by Wallet Connect) or set up a [localtunnel](https://theboroer.github.io/localtunnel-www/) (recommended).
 
 ### Making it your Own
@@ -62,7 +62,7 @@ If you still want to use Web3Modal v1.0 but just upgrade the WalletConnect ether
 2. Deploy your own thirdweb goerli marketplace [contract](https://thirdweb.com/dashboard/contracts). 
 3. Deploy your own thirdweb mainnet marketplace [contract](https://thirdweb.com/dashboard/contracts).
 4. Update the marketplace contract address.
-5. Update the mbox.json and gbox.json files.
+5. Update the `mbox.json` and `gbox.json` files.
 6. Update `session.zerb.account` to new user reference throughout repository.
 7. Update the walletconnect parameter on the login page:
 
