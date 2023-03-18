@@ -43,6 +43,7 @@
                                 <%}%>
                         
                         <div style=" font-size: 18px; margin-top: 10px; margin-bottom: 5px;">
+                            <div style="margin-bottom: 5px;" ><a class="bluz"></a>Listing ID: </a>#<%=listings.id%></div>
                             <div style="margin-bottom: 5px;" ><a class="bluz">Time to Close: </a><%=timeLeft + 7%> days</div>
                             <button type="submit" id="closeAuction" class="closeauction" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.zerb.account%>')">Close Auction</button>
                         </div>
