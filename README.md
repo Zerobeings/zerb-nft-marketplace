@@ -8,9 +8,10 @@
   <img width="80%" src="https://learn.zerobeings.xyz/images/poweredby.png">
 </p>
 
-# 🚧 Market gm ☕️ is currently in testing phase 🚧
-# 🚧 Plese take appropraite actions to upgrade to production level 🚧
-# 🚧 Mainnet contract interactions have not been tested 🚧
+# 🚧 Market gm ☕️ is Currently Under Construction 🚧
+> * Market gm ☕️ is currently in testing phase 
+> * Plese take appropraite actions to upgrade to production level
+> * Mainnet contract interactions have not been tested
 
 # Market gm ☕️ - An NFT marketplace 
 
