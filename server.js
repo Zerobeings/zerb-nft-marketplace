@@ -689,11 +689,13 @@ party.app.get('/auctions', party.protect('zerb',{ redirect: "/login" }), async (
       }
     )};
 
-    for (i = 0; i < nonActiveAuctions.length; i++) {
-        const myWins = await marketContract.auction.getWinner(nonActiveAuctions[i].id); //get the listing connected to the specific offer
-        if(myWins.toLowerCase() === wallet.toLowerCase() || nonActiveAuctions[i].sellerAddress.toLowerCase() === wallet.toLowerCase()){
-          myAuctionsToClose.push(nonActiveAuctions[i]);
-        }      
+    if(nonActiveAuctions.length > 0) { 
+      for (i = 0; i < nonActiveAuctions.length; i++) {
+          const myWins = await marketContract.auction.getWinner(nonActiveAuctions[i].id); //get the listing connected to the specific offer
+          if(myWins.toLowerCase() === wallet.toLowerCase() || nonActiveAuctions[i].sellerAddress.toLowerCase() === wallet.toLowerCase()){
+            myAuctionsToClose.push(nonActiveAuctions[i]);
+          }      
+      }
     }
 
     res.render('pages/auctions', {
@@ -1361,11 +1363,13 @@ party.app.get('/goerli-auctions', party.protect('zerb',{ redirect: "/login" }), 
       }
     )};
 
-    for (i = 0; i < nonActiveAuctions.length; i++) {
-        const myWins = await marketContract.auction.getWinner(nonActiveAuctions[i].id); //get the listing connected to the specific offer
-        if(myWins.toLowerCase() === wallet.toLowerCase() || nonActiveAuctions[i].sellerAddress.toLowerCase() === wallet.toLowerCase()){
-          myAuctionsToClose.push(nonActiveAuctions[i]);
-        }      
+    if(nonActiveAuctions.length > 0) { 
+      for (i = 0; i < nonActiveAuctions.length; i++) {
+          const myWins = await marketContract.auction.getWinner(nonActiveAuctions[i].id); //get the listing connected to the specific offer
+          if(myWins.toLowerCase() === wallet.toLowerCase() || nonActiveAuctions[i].sellerAddress.toLowerCase() === wallet.toLowerCase()){
+            myAuctionsToClose.push(nonActiveAuctions[i]);
+          }      
+      }
     }
 
     res.render('pages/goerli-auctions', {
