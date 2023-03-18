@@ -2,6 +2,12 @@
     <img width="80%" src="https://github.com/Zerobeings/zerb-nft-marketplace/blob/d8efbd0ef60c217cea009f85d1dc30407ad8dc98/public/images/Zerb_README.png">
 </p>
 
+# Powered By
+
+<p align="center" width="100%">
+  <img width="80%" src="https://learn.zerobeings.xyz/images/poweredby.png">
+</p>
+
 # 🚧 Market gm ☕️ is currently in testing phase 🚧
 # 🚧 Plese take appropraite actions to upgrade to production level 🚧
 # 🚧 Mainnet contract interactions have not been tested 🚧
