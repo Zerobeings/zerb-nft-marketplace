@@ -7,7 +7,7 @@
     <a href="https://learn.zerobeings.xyz/#/" target="_blank">Learn</a>
     <a href="/goerli-myListings" onclick="return onLoading4()" style="white-space: nowrap;">My Listings</a>
     <a style="white-space: nowrap;" href="/goerli-auctions" onclick="return onLoading4()">Auctions</a>
-    <% if (session.zerb) { %>
+    <% if (session.zerb || session.guest) { %>
     <a href="/login" onclick="return onLoading4()">Logout</a>
     <% } else { %>
       <a href="/login" onclick="return onLoading4()">Login</a>
@@ -37,12 +37,13 @@
       <%} else {%>
         <img id="profileImg" style="justify-self: end; margin-right: 0px;" class="imgProfile asyncImage imgDesktop" src="/images/loading.png" data-src="/images/loading.png" alt=""></img>
         <%}%>
-      <% if (session.zerb) { %>
-      <button id="address" name="address" value="<%=session.zerb.account%>" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'"><%=session.zerb.account%></button>
-        
-      <% } else { %>
-        <button name="address" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'">Login</button>
-      <% }%>
+        <% if (session.zerb) { %>
+          <button id="address" name="address" value="<%=session.zerb.account%>" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'"><%=session.zerb.account%></button>
+          <%} else if (session.guest) {%>
+            <button id="address" name="address" value="<%=session.guest.account%>" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'"><%=session.guest.account%></button>
+          <% } else { %>
+            <button name="address" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'">Login</button>
+          <% }%>
     </a>
     <a class="openbtnM imgMobile" onclick="openNav()">☰</a> 
   </nav>

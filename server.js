@@ -54,6 +54,9 @@ party.add('zerb', {
   },
 });
 
+//guest login option
+party.add('guest');
+
 //To understand response error ---> .then(res => console.log(res))
 
 //////////////////////////////////////////////////////
@@ -74,8 +77,14 @@ party.app.get("/login", (req, res) => {
 //////////////////////////////////////////////////////
 
 //Market Home Page
-party.app.get('/marketgm', party.protect('zerb',{ redirect: "/login" }), async (req, res, next) => {
-  const wallet = `${req.session.zerb.account}`;
+party.app.get('/marketgm', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
   var contract = '0x8FbA3ebe77D3371406a77EEaf40c89C1Ed55364a'; //initialized with your prefferred collection contract
   const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTsForCollection`;
   const pageCount = 100;
@@ -150,8 +159,14 @@ party.app.get('/marketgm', party.protect('zerb',{ redirect: "/login" }), async (
 });
 
 //Collection view pagination
-party.app.post('/marketgm/:page', party.protect('zerb', { redirect: "/login" }), async (req, res, next) => {
-  const wallet = `${req.session.zerb.account}`;
+party.app.post('/marketgm/:page', party.protect(['zerb', 'guest'], { redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
   var contract = req.body.contractM; //'0x8FbA3ebe77D3371406a77EEaf40c89C1Ed55364a'; //
   var pageKeysM = JSON.parse(req.body.pageKeysM);
   const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTsForCollection`;
@@ -234,8 +249,14 @@ party.app.post('/marketgm/:page', party.protect('zerb', { redirect: "/login" }),
 });
 
 //Query Collection and Listings 
-party.app.post('/marketgm', party.protect('zerb', { redirect: "/login" }), async (req, res, next) => {
-  const wallet = `${req.session.zerb.account}`;
+party.app.post('/marketgm', party.protect(['zerb', 'guest'], { redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
   if(req.body.collection){
     var contract = req.body.collection ;
   } else {
@@ -325,8 +346,14 @@ party.app.post('/marketgm', party.protect('zerb', { redirect: "/login" }), async
 });
 
 //detail view of collection NFT
-party.app.get('/collectiondetails/:collection/:IDToken', party.protect('zerb',{ redirect: "/login" }), async (req, res, next) => {
-  const wallet = `${req.session.zerb.account}`;
+party.app.get('/collectiondetails/:collection/:IDToken', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
   var contract = req.params.collection;
   const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTMetadata`; //alchemy api - get NFT metadata
   var IDToken = req.params.IDToken;
@@ -367,8 +394,14 @@ party.app.get('/collectiondetails/:collection/:IDToken', party.protect('zerb',{ 
 });
 
 // My Listings page
-party.app.get('/myListings', party.protect('zerb',{ redirect: "/login" }), async (req, res, next) => {
-  const wallet = `${req.session.zerb.account}`;
+party.app.get('/myListings', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
   const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`;
   const pageCount = 100;
   var pageKey = ''; 
@@ -463,9 +496,15 @@ party.app.get('/myListings', party.protect('zerb',{ redirect: "/login" }), async
 });
 
 //My Listings pages
-party.app.post('/myListings/:page', party.protect('zerb', { redirect: "/login" }),
+party.app.post('/myListings/:page', party.protect(['zerb', 'guest'], { redirect: "/login" }),
   async (req, res, next) => {
-    const wallet = `${req.session.zerb.account}`;
+    if(req.session.zerb != undefined){
+      var wallet = `${req.session.zerb.account}`;
+    }
+  
+    if(req.session.guest != undefined){
+      var wallet = `${req.session.guest.account}`;
+    }
     const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`; //alchemy api get NFTs
     const pageCount = 100; //total number of results shown. maximum 100.
     var page = req.params.page;
@@ -565,9 +604,15 @@ party.app.post('/myListings/:page', party.protect('zerb', { redirect: "/login" }
 );
 
 //Page to view a listings details from marketgm page
-party.app.get('/listingDetails/:contract/:IDToken', party.protect('zerb',{ redirect: "/login" }), async (req, res, next) => {
+party.app.get('/listingDetails/:contract/:IDToken', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
   // console.log('fetching NFTs');
-  const wallet = `${req.session.zerb.account}`;
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
   var contract = req.params.contract;
   var IDToken = req.params.IDToken;
   const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTMetadata`; // alchemy api
@@ -621,8 +666,14 @@ party.app.get('/listingDetails/:contract/:IDToken', party.protect('zerb',{ redir
 });
 
 // My Auctions to Close Page
-party.app.get('/auctions', party.protect('zerb',{ redirect: "/login" }), async (req, res, next) => {
-  const wallet = `${req.session.zerb.account}`;
+party.app.get('/auctions', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
   const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`;
   const pageCount = 1;
   var pageKey = '';
@@ -747,9 +798,17 @@ party.app.get('/auctions', party.protect('zerb',{ redirect: "/login" }), async (
 //                                                  //
 //////////////////////////////////////////////////////
 
-// goerli Market Home Page.
-party.app.get('/', party.protect('zerb',{ redirect: "/login" }), async (req, res, next) => {
-  const wallet = `${req.session.zerb.account}`;
+// goerli Market Home Page
+party.app.get('/goerli-marketgm', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+  
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
+
   var contract = '0x9870Da00643AeA2BE9dF89d87efeD0A2fdb5479e'; //initialized with your prefferred collection contract
   const baseURL = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTsForCollection`;
   const pageCount = 100;
@@ -824,8 +883,14 @@ party.app.get('/', party.protect('zerb',{ redirect: "/login" }), async (req, res
 });
 
 // goerli Collection view pagination
-party.app.post('/goerli-marketgm/:page', party.protect('zerb', { redirect: "/login" }), async (req, res, next) => {
-  const wallet = `${req.session.zerb.account}`;
+party.app.post('/goerli-marketgm/:page', party.protect(['zerb', 'guest'], { redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
   var contract = req.body.contractM;
   var pageKeysM = JSON.parse(req.body.pageKeysM);
   const baseURL = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTsForCollection`;
@@ -908,8 +973,14 @@ party.app.post('/goerli-marketgm/:page', party.protect('zerb', { redirect: "/log
 });
 
 // goerli Query Collection and Listings 
-party.app.post('/goerli-marketgm', party.protect('zerb', { redirect: "/login" }), async (req, res, next) => {
-  const wallet = `${req.session.zerb.account}`;
+party.app.post('/goerli-marketgm', party.protect(['zerb', 'guest'], { redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
   if(req.body.collection){
     var contract = req.body.collection ;
   } else {
@@ -999,8 +1070,14 @@ party.app.post('/goerli-marketgm', party.protect('zerb', { redirect: "/login" })
 });
 
 // goerli detail view of collection NFT
-party.app.get('/goerli-collectiondetails/:collection/:IDToken', party.protect('zerb',{ redirect: "/login" }), async (req, res, next) => {
-  const wallet = `${req.session.zerb.account}`;
+party.app.get('/goerli-collectiondetails/:collection/:IDToken', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
   var contract = req.params.collection;
   const baseURL = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTMetadata`; //alchemy api - get NFT metadata
   var IDToken = req.params.IDToken;
@@ -1041,8 +1118,15 @@ party.app.get('/goerli-collectiondetails/:collection/:IDToken', party.protect('z
 });
 
 // goerli My Listings page
-party.app.get('/goerli-myListings', party.protect('zerb',{ redirect: "/login" }), async (req, res, next) => {
-  const wallet = `${req.session.zerb.account}`;
+party.app.get('/goerli-myListings', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
+
   const baseURL = `https://eth-goerli.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`;
   const pageCount = 100;
   var pageKey = ''; 
@@ -1137,9 +1221,15 @@ party.app.get('/goerli-myListings', party.protect('zerb',{ redirect: "/login" })
 });
 
 // goerli My Listings pages
-party.app.post('/goerli-myListings/:page', party.protect('zerb', { redirect: "/login" }),
+party.app.post('/goerli-myListings/:page', party.protect(['zerb', 'guest'], { redirect: "/login" }),
   async (req, res, next) => {
-    const wallet = `${req.session.zerb.account}`;
+    if(req.session.zerb != undefined){
+      var wallet = `${req.session.zerb.account}`;
+    }
+  
+    if(req.session.guest != undefined){
+      var wallet = `${req.session.guest.account}`;
+    }
     const baseURL = `https://eth-goerli.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`; //alchemy api get NFTs
     const pageCount = 100; //total number of results shown. maximum 100.
     var page = req.params.page;
@@ -1239,9 +1329,15 @@ party.app.post('/goerli-myListings/:page', party.protect('zerb', { redirect: "/l
 );
 
 // goerli Page to view a listings details from marketgm page
-party.app.get('/goerli-listingDetails/:contract/:IDToken', party.protect('zerb',{ redirect: "/login" }), async (req, res, next) => {
+party.app.get('/goerli-listingDetails/:contract/:IDToken', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
   // console.log('fetching NFTs');
-  const wallet = `${req.session.zerb.account}`;
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
   var contract = req.params.contract;
   var IDToken = req.params.IDToken;
   const baseURL = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTMetadata`; // alchemy api
@@ -1295,8 +1391,14 @@ party.app.get('/goerli-listingDetails/:contract/:IDToken', party.protect('zerb',
 });
 
 // goerli My Auctions to Close Page
-party.app.get('/goerli-auctions', party.protect('zerb',{ redirect: "/login" }), async (req, res, next) => {
-  const wallet = `${req.session.zerb.account}`;
+party.app.get('/goerli-auctions', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
   const baseURL = `https://eth-goerli.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`;
   const pageCount = 1;
   var pageKey = '';

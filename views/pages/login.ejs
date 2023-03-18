@@ -14,10 +14,16 @@
       
   <div class="centerLogin" style="margin-bottom:10px; justify-content: center;align-items: center; display:grid; ">
     <div style="font-size: 42px;">ACCOUNT</div>
-    <div id="btns" class="invisible">
-        <button id="login" class="buttonlogin" style="align-items: center; position: absolute;">login as zerb</button>
-        <button id="logout" class="buttonlogout" style="align-items: center; position: absolute;">logout of zerb</button>
-  </div>
+    <form id="userForm" action="">
+      <select name="user" id="user" class="loginoptions">
+        <option value="zerb">Zerb</option>
+        <option value="guest">Guest</option>
+      </select>
+      <div id="btns" class="invisible">
+        <input type="submit" value="login" id="login" class="buttonloginoptions" style="align-items: center; position: absolute;">          
+    </form>
+        <button id="logout" class="buttonlogoutoptions" style="align-items: center; position: absolute;">logout</button>
+      </div>
     <p class="footer" style="justify-content: center;align-items: center; display: flex; margin-top: 60px;">
         Powered by 
         <a style="text-decoration:none; margin-left: 5px;" class="link" target="_blank" href="https://privateparty.dev/">Privateparty</a>
@@ -33,20 +39,31 @@
 </main>
 
 <script>
+    const userSelect = document.getElementById('userForm');
     const params = new URLSearchParams(window.location.search)
     const party = new Privateparty({
-    walletconnect: "<infura api key>" //for mobile
+    walletconnect: "8043036ad7e74ff3a2fd273b4b78a231"
     })
     document.addEventListener("DOMContentLoaded", async () => {
-      let session = await party.session("zerb", { fresh: true })
+      let session = await party.session("zerb", { fresh: true }) || await party.session("guest", { fresh: true });
+      
       if (session && session.account) {
         // logged in => display logout button
         document.querySelector("#login").classList.add("hidden")
+        document.querySelector("#user").classList.add("hidden")
         document.querySelector("#logout").addEventListener("click", async (e) => {
+          
           try {
-            let session = await party.disconnect("zerb")
-            let callback = params.get("callback") ? params.get("callback") : location.href
-            location.href = '/login'
+            if(session.aud === "zerb"){
+              let session = await party.disconnect("zerb")
+              let callback = params.get("callback") ? params.get("callback") : location.href
+              location.href = '/login'
+            }
+            if(session.aud === "guest"){
+              let session = await party.disconnect("guest")
+              let callback = params.get("callback") ? params.get("callback") : location.href
+              location.href = '/login'
+            }
           } catch (e) {
             alert(e.message)
           }
@@ -54,11 +71,21 @@
       } else {
         // logged out => display login button
         document.querySelector("#logout").classList.add("hidden")
-        document.querySelector("#login").addEventListener("click", async (e) => {
+        userSelect.addEventListener("submit", async (e) => {
+          e.preventDefault(); //prevent default submission behavior
+          const data = new FormData(e.target);
+          const userselected = data.get("user");
           try {
-            let session = await party.connect("zerb", null, null)
-            let callback = params.get("callback") ? params.get("callback") : location.href
-            location.href = '/'
+            if(userselected === "zerb"){
+              let session = await party.connect(userselected, null, null)
+              let callback = params.get("callback") ? params.get("callback") : location.href
+              location.href = '/'
+            }
+            if(userselected === "guest"){
+              let session = await party.connect(userselected, null, null)
+              let callback = params.get("callback") ? params.get("callback") : location.href
+              location.href = '/goerli-marketgm'
+            }
           } catch (e) {
             alert(e.message)
           }

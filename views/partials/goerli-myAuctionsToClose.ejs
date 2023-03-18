@@ -45,7 +45,11 @@
                         <div style=" font-size: 18px; margin-top: 10px; margin-bottom: 5px;">
                             <div style="margin-bottom: 5px;" ><a class="bluz">Listing ID: </a>#<%=listings.id%></div>
                             <div style="margin-bottom: 5px;" ><a class="bluz">Time to Close: </a><%=timeLeft + 7%> days</div>
-                            <button type="submit" id="closeAuction" class="closeauction" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.zerb.account%>')">Close Auction</button>
+                            <% if (session.zerb) { %>
+                                <button type="submit" id="closeAuction" class="closeauction" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.zerb.account%>')">Close Auction</button>
+                            <%} else if (session.guest) {%>
+                                <button type="submit" id="closeAuction" class="closeauction" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.guest.account%>')">Close Auction</button>
+                            <% }%>
                         </div>
                     </div>
                   </div>

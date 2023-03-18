@@ -7,11 +7,11 @@
     <a href="https://learn.zerobeings.xyz/#/" target="_blank">Learn</a>
     <a style="white-space: nowrap;" href="/goerli-myListings" onclick="return onLoading4()">My Listings</a>
     <a style="white-space: nowrap;" href="/goerli-auctions" onclick="return onLoading4()">Auctions</a>
-    <% if (session.zerb) { %>
+    <% if (session.zerb || session.guest) { %>
     <a href="/login" onclick="return onLoading4()">Logout</a>
     <% } else { %>
       <a href="/login" onclick="return onLoading4()">Login</a>
-      <% }%>
+        <%}%>
     <div style="display: flex; position: absolute; bottom: 3px;">
       <a target="_blank" href="https://twitter.com/Zero_beings" onclick="return onLoading4()"><i class="fa-brands fa-twitter" style="color: #818181;text-decoration: none; padding-left: 5px;"></i></a>
       <a target="_blank" href="https://discord.gg/sjbVYr6ZXS" onclick="return onLoading4()"><i class="fa-brands fa-discord" style="color: #818181;text-decoration: none; padding-left: 5px;"></i></a>
@@ -39,11 +39,12 @@
       <img id="profileImg" style="justify-self: end; margin-right: 0px;" class="imgProfile asyncImage imgDesktop" src="/images/loading.png" data-src="<%=nft.media[0].gateway%>" alt=""></img>
       <%}%>
       <% if (session.zerb) { %>
-      <button id="address" name="address" value="<%=session.zerb.account%>" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'"><%=session.zerb.account%></button>
-        
-      <% } else { %>
-        <button name="address" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'">Login</button>
-      <% }%>
+        <button id="address" name="address" value="<%=session.zerb.account%>" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'"><%=session.zerb.account%></button>
+        <%} else if (session.guest) {%>
+          <button id="address" name="address" value="<%=session.guest.account%>" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'"><%=session.guest.account%></button>
+        <% } else { %>
+          <button name="address" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'">Login</button>
+        <% }%>
     </a>
 
     <a class="openbtnM imgMobile" onclick="openNav()">☰</a> 
