@@ -23,7 +23,9 @@
       </select>
       <div id="btns" class="invisible">
         <input type="submit" value="login" id="login" class="buttonloginoptions" style="align-items: center; position: absolute;">          
+      </div>
     </form>
+      <div id="btns2" class="invisible">
         <button id="logout" class="buttonlogoutoptions" style="align-items: center; position: absolute;">logout</button>
       </div>
     <p class="footer" style="justify-content: center;align-items: center; display: flex; margin-top: 60px;">
@@ -113,7 +115,8 @@
           }
         })
       }
-     document.querySelector("#btns").classList.remove("invisible")  
+     document.querySelector("#btns").classList.remove("invisible")
+     document.querySelector("#btns2").classList.remove("invisible")  
     })
     </script>
 </body>
