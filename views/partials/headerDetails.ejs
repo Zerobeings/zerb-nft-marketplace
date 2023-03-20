@@ -7,7 +7,7 @@
     <a href="https://learn.zerobeings.xyz/#/" target="_blank">Learn</a>
     <a style="white-space: nowrap;" href="/myListings" onclick="return onLoading4()">My Listings</a>
     <a style="white-space: nowrap;" href="/auctions" onclick="return onLoading4()">Auctions</a>
-    <% if (session.zerb || session.guest) { %>
+    <% if (session.zerb || session.guest || session.tinydinos || session.freshfrogsNFT) { %>
     <a href="/login" onclick="return onLoading4()">Logout</a>
     <% } else { %>
       <a href="/login" onclick="return onLoading4()">Login</a>
@@ -42,6 +42,10 @@
       <button id="address" name="address" value="<%=session.zerb.account%>" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'"><%=session.zerb.account%></button>
       <%} else if (session.guest) {%>
         <button id="address" name="address" value="<%=session.guest.account%>" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'"><%=session.guest.account%></button>
+        <%} else if (session.tinydinos) {%>
+          <button id="address" name="address" value="<%=session.tinydinos.account%>" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'"><%=session.tinydinos.account%></button>
+          <%} else if (session.freshfrogsNFT) {%>
+            <button id="address" name="address" value="<%=session.freshfrogsNFT.account%>" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'"><%=session.freshfrogsNFT.account%></button>
       <% } else { %>
         <button name="address" class="button imgDesktop" style="color: white;" target="_blank" onclick="location.href='/login'">Login</button>
       <% }%>

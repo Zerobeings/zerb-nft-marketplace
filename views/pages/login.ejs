@@ -16,8 +16,10 @@
     <div style="font-size: 42px;">ACCOUNT</div>
     <form id="userForm" action="">
       <select name="user" id="user" class="loginoptions">
-        <option value="zerb">Zerb</option>
-        <option value="guest">Guest</option>
+        <option value="zerb">Zerb 👾</option>
+        <option value="freshfrogsNFT">FreshFrogsNFT 🐸</option>
+        <option value="tinydinos">tiny dinos 🤏🏽🦖</option>
+        <option value="guest">Guest 🍀</option>
       </select>
       <div id="btns" class="invisible">
         <input type="submit" value="login" id="login" class="buttonloginoptions" style="align-items: center; position: absolute;">          
@@ -45,7 +47,7 @@
     walletconnect: "8043036ad7e74ff3a2fd273b4b78a231"
     })
     document.addEventListener("DOMContentLoaded", async () => {
-      let session = await party.session("zerb", { fresh: true }) || await party.session("guest", { fresh: true });
+      let session = await party.session("zerb", { fresh: true }) || await party.session("guest", { fresh: true }) || await party.session("tinydinos", { fresh: true }) || await party.session("freshfrogsNFT", { fresh: true });
       
       if (session && session.account) {
         // logged in => display logout button
@@ -64,6 +66,16 @@
               let callback = params.get("callback") ? params.get("callback") : location.href
               location.href = '/login'
             }
+            if(session.aud === "tinydinos"){
+              let session = await party.disconnect("tinydinos")
+              let callback = params.get("callback") ? params.get("callback") : location.href
+              location.href = '/login'
+            }
+            if(session.aud === "freshfrogsNFT"){
+              let session = await party.disconnect("freshfrogsNFT")
+              let callback = params.get("callback") ? params.get("callback") : location.href
+              location.href = '/login'
+            }
           } catch (e) {
             alert(e.message)
           }
@@ -79,9 +91,19 @@
             if(userselected === "zerb"){
               let session = await party.connect(userselected, null, null)
               let callback = params.get("callback") ? params.get("callback") : location.href
-              location.href = '/'
+              location.href = '/goerli-marketgm'
             }
             if(userselected === "guest"){
+              let session = await party.connect(userselected, null, null)
+              let callback = params.get("callback") ? params.get("callback") : location.href
+              location.href = '/goerli-marketgm'
+            }
+            if(userselected === "tinydinos"){
+              let session = await party.connect(userselected, null, null)
+              let callback = params.get("callback") ? params.get("callback") : location.href
+              location.href = '/goerli-marketgm'
+            }
+            if(userselected === "freshfrogsNFT"){
               let session = await party.connect(userselected, null, null)
               let callback = params.get("callback") ? params.get("callback") : location.href
               location.href = '/goerli-marketgm'

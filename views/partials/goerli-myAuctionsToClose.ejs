@@ -49,6 +49,10 @@
                                 <button type="submit" id="closeAuction" class="closeauction" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.zerb.account%>')">Close Auction</button>
                             <%} else if (session.guest) {%>
                                 <button type="submit" id="closeAuction" class="closeauction" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.guest.account%>')">Close Auction</button>
+                                <%} else if (session.tinydinos) {%>
+                                <button type="submit" id="closeAuction" class="closeauction" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.tinydinos.account%>')">Close Auction</button>
+                                <%} else if (session.freshfrogsNFT) {%>
+                                <button type="submit" id="closeAuction" class="closeauction" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.freshfrogsNFT.account%>')">Close Auction</button>
                             <% }%>
                         </div>
                     </div>

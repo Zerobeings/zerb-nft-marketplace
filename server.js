@@ -36,6 +36,12 @@ const gMarkectContract = '0xC65CE759f006928451343874538A328dFcbAD325'; //goerli 
 const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
 
 // Authorization. For more info and examples go to https://privateparty.dev/
+//contract addresses
+
+const zerbContract = '0x8FbA3ebe77D3371406a77EEaf40c89C1Ed55364a';
+const tinydinosContract = '0xd9b78a2f1dafc8bb9c60961790d2beefebee56f4';
+const freshfrogsNFTContract = '0xbe4bef8735107db540de269ff82c7de9ef68c51b';
+
 party.add('zerb', {
   contracts: {
     zerb: {
@@ -53,6 +59,43 @@ party.add('zerb', {
       );
   },
 });
+
+party.add('tinydinos', {
+  contracts: {
+    tinydinos: {
+      address: '0xd9b78a2f1dafc8bb9c60961790d2beefebee56f4', //for tiny dinos 
+      rpc: process.env.RPC,
+      abi: party.abi.erc721,
+    },
+  },
+  authorize: async (req, account, contracts) => {
+    let balance = await contracts.tinydinos.methods.balanceOf(account).call();
+    if (balance > 0) return { balance: balance };
+    else
+      throw new Error(
+        "You must own at least one 'tiny dinos'"
+      );
+  },
+});
+
+party.add('freshfrogsNFT', {
+  contracts: {
+    freshfrogsNFT: {
+      address: '0xbe4bef8735107db540de269ff82c7de9ef68c51b', //for freshfrogsNFT
+      rpc: process.env.RPC,
+      abi: party.abi.erc721,
+    },
+  },
+  authorize: async (req, account, contracts) => {
+    let balance = await contracts.freshfrogsNFT.methods.balanceOf(account).call();
+    if (balance > 0) return { balance: balance };
+    else
+      throw new Error(
+        "You must own at least one 'FreshFrogsNFT'"
+      );
+  },
+});
+
 
 //guest login option
 party.add('guest');
@@ -77,13 +120,20 @@ party.app.get("/login", (req, res) => {
 //////////////////////////////////////////////////////
 
 //Market Home Page
-party.app.get('/marketgm', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+party.app.get('/marketgm', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
   }
 
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
+  }
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
   }
   var contract = '0x8FbA3ebe77D3371406a77EEaf40c89C1Ed55364a'; //initialized with your prefferred collection contract
   const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTsForCollection`;
@@ -159,13 +209,21 @@ party.app.get('/marketgm', party.protect(['zerb', 'guest'],{ redirect: "/login" 
 });
 
 //Collection view pagination
-party.app.post('/marketgm/:page', party.protect(['zerb', 'guest'], { redirect: "/login" }), async (req, res, next) => {
+party.app.post('/marketgm/:page', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'], { redirect: "/login" }), async (req, res, next) => {
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
   }
 
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
+  }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
   }
   var contract = req.body.contractM; //'0x8FbA3ebe77D3371406a77EEaf40c89C1Ed55364a'; //
   var pageKeysM = JSON.parse(req.body.pageKeysM);
@@ -249,13 +307,21 @@ party.app.post('/marketgm/:page', party.protect(['zerb', 'guest'], { redirect: "
 });
 
 //Query Collection and Listings 
-party.app.post('/marketgm', party.protect(['zerb', 'guest'], { redirect: "/login" }), async (req, res, next) => {
+party.app.post('/marketgm', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'], { redirect: "/login" }), async (req, res, next) => {
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
   }
 
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
+  }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
   }
   if(req.body.collection){
     var contract = req.body.collection ;
@@ -346,13 +412,20 @@ party.app.post('/marketgm', party.protect(['zerb', 'guest'], { redirect: "/login
 });
 
 //detail view of collection NFT
-party.app.get('/collectiondetails/:collection/:IDToken', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+party.app.get('/collectiondetails/:collection/:IDToken', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
   }
 
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
+  }
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
   }
   var contract = req.params.collection;
   const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTMetadata`; //alchemy api - get NFT metadata
@@ -394,13 +467,20 @@ party.app.get('/collectiondetails/:collection/:IDToken', party.protect(['zerb', 
 });
 
 // My Listings page
-party.app.get('/myListings', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+party.app.get('/myListings', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
   }
 
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
+  }
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
   }
   const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`;
   const pageCount = 100;
@@ -496,7 +576,7 @@ party.app.get('/myListings', party.protect(['zerb', 'guest'],{ redirect: "/login
 });
 
 //My Listings pages
-party.app.post('/myListings/:page', party.protect(['zerb', 'guest'], { redirect: "/login" }),
+party.app.post('/myListings/:page', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'], { redirect: "/login" }),
   async (req, res, next) => {
     if(req.session.zerb != undefined){
       var wallet = `${req.session.zerb.account}`;
@@ -504,6 +584,13 @@ party.app.post('/myListings/:page', party.protect(['zerb', 'guest'], { redirect:
   
     if(req.session.guest != undefined){
       var wallet = `${req.session.guest.account}`;
+    }
+    if(req.session.tinydinos != undefined){
+      var wallet = `${req.session.tinydinos.account}`;
+    }
+  
+    if(req.session.freshfrogsNFT != undefined){
+      var wallet = `${req.session.freshfrogsNFT.account}`; 
     }
     const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`; //alchemy api get NFTs
     const pageCount = 100; //total number of results shown. maximum 100.
@@ -604,7 +691,7 @@ party.app.post('/myListings/:page', party.protect(['zerb', 'guest'], { redirect:
 );
 
 //Page to view a listings details from marketgm page
-party.app.get('/listingDetails/:contract/:IDToken', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+party.app.get('/listingDetails/:contract/:IDToken', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
   // console.log('fetching NFTs');
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
@@ -612,6 +699,13 @@ party.app.get('/listingDetails/:contract/:IDToken', party.protect(['zerb', 'gues
 
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
+  }
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
   }
   var contract = req.params.contract;
   var IDToken = req.params.IDToken;
@@ -666,13 +760,20 @@ party.app.get('/listingDetails/:contract/:IDToken', party.protect(['zerb', 'gues
 });
 
 // My Auctions to Close Page
-party.app.get('/auctions', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+party.app.get('/auctions', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
   }
 
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
+  }
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
   }
   const baseURL = `https://eth-mainnet.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`;
   const pageCount = 1;
@@ -799,7 +900,7 @@ party.app.get('/auctions', party.protect(['zerb', 'guest'],{ redirect: "/login" 
 //////////////////////////////////////////////////////
 
 // goerli Market Home Page
-party.app.get('/goerli-marketgm', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+party.app.get('/goerli-marketgm', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
   
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
@@ -807,6 +908,14 @@ party.app.get('/goerli-marketgm', party.protect(['zerb', 'guest'],{ redirect: "/
 
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
+  }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
   }
 
   var contract = '0x9870Da00643AeA2BE9dF89d87efeD0A2fdb5479e'; //initialized with your prefferred collection contract
@@ -883,7 +992,7 @@ party.app.get('/goerli-marketgm', party.protect(['zerb', 'guest'],{ redirect: "/
 });
 
 // goerli Collection view pagination
-party.app.post('/goerli-marketgm/:page', party.protect(['zerb', 'guest'], { redirect: "/login" }), async (req, res, next) => {
+party.app.post('/goerli-marketgm/:page', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'], { redirect: "/login" }), async (req, res, next) => {
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
   }
@@ -891,6 +1000,14 @@ party.app.post('/goerli-marketgm/:page', party.protect(['zerb', 'guest'], { redi
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
   }
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
+  }
+
   var contract = req.body.contractM;
   var pageKeysM = JSON.parse(req.body.pageKeysM);
   const baseURL = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTsForCollection`;
@@ -973,7 +1090,7 @@ party.app.post('/goerli-marketgm/:page', party.protect(['zerb', 'guest'], { redi
 });
 
 // goerli Query Collection and Listings 
-party.app.post('/goerli-marketgm', party.protect(['zerb', 'guest'], { redirect: "/login" }), async (req, res, next) => {
+party.app.post('/goerli-marketgm', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'], { redirect: "/login" }), async (req, res, next) => {
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
   }
@@ -981,6 +1098,15 @@ party.app.post('/goerli-marketgm', party.protect(['zerb', 'guest'], { redirect: 
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
   }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
+  }
+
   if(req.body.collection){
     var contract = req.body.collection ;
   } else {
@@ -1070,7 +1196,7 @@ party.app.post('/goerli-marketgm', party.protect(['zerb', 'guest'], { redirect: 
 });
 
 // goerli detail view of collection NFT
-party.app.get('/goerli-collectiondetails/:collection/:IDToken', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+party.app.get('/goerli-collectiondetails/:collection/:IDToken', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
   }
@@ -1078,6 +1204,15 @@ party.app.get('/goerli-collectiondetails/:collection/:IDToken', party.protect(['
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
   }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
+  }
+
   var contract = req.params.collection;
   const baseURL = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTMetadata`; //alchemy api - get NFT metadata
   var IDToken = req.params.IDToken;
@@ -1118,13 +1253,21 @@ party.app.get('/goerli-collectiondetails/:collection/:IDToken', party.protect(['
 });
 
 // goerli My Listings page
-party.app.get('/goerli-myListings', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+party.app.get('/goerli-myListings', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
   }
 
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
+  }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
   }
 
   const baseURL = `https://eth-goerli.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`;
@@ -1149,7 +1292,7 @@ party.app.get('/goerli-myListings', party.protect(['zerb', 'guest'],{ redirect: 
 
     const listings = await marketContract.getActiveListings({seller: wallet}); //get active listings for a specific wallet address
     const allListings = await marketContract.getActiveListings(); //get all listings, this includes listings sold. This is used to find bids by logged in wallet address
-    const bidsListings = [];
+    const bidsListings = []; // Active Listings
     const myBids = [];
     const bids = [];
     const listingsForBids = [];
@@ -1221,7 +1364,7 @@ party.app.get('/goerli-myListings', party.protect(['zerb', 'guest'],{ redirect: 
 });
 
 // goerli My Listings pages
-party.app.post('/goerli-myListings/:page', party.protect(['zerb', 'guest'], { redirect: "/login" }),
+party.app.post('/goerli-myListings/:page', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'], { redirect: "/login" }),
   async (req, res, next) => {
     if(req.session.zerb != undefined){
       var wallet = `${req.session.zerb.account}`;
@@ -1230,6 +1373,15 @@ party.app.post('/goerli-myListings/:page', party.protect(['zerb', 'guest'], { re
     if(req.session.guest != undefined){
       var wallet = `${req.session.guest.account}`;
     }
+
+    if(req.session.tinydinos != undefined){
+      var wallet = `${req.session.tinydinos.account}`;
+    }
+  
+    if(req.session.freshfrogsNFT != undefined){
+      var wallet = `${req.session.freshfrogsNFT.account}`; 
+    }
+
     const baseURL = `https://eth-goerli.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`; //alchemy api get NFTs
     const pageCount = 100; //total number of results shown. maximum 100.
     var page = req.params.page;
@@ -1329,7 +1481,7 @@ party.app.post('/goerli-myListings/:page', party.protect(['zerb', 'guest'], { re
 );
 
 // goerli Page to view a listings details from marketgm page
-party.app.get('/goerli-listingDetails/:contract/:IDToken', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+party.app.get('/goerli-listingDetails/:contract/:IDToken', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
   // console.log('fetching NFTs');
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
@@ -1338,6 +1490,15 @@ party.app.get('/goerli-listingDetails/:contract/:IDToken', party.protect(['zerb'
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
   }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
+  }
+
   var contract = req.params.contract;
   var IDToken = req.params.IDToken;
   const baseURL = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTMetadata`; // alchemy api
@@ -1391,7 +1552,7 @@ party.app.get('/goerli-listingDetails/:contract/:IDToken', party.protect(['zerb'
 });
 
 // goerli My Auctions to Close Page
-party.app.get('/goerli-auctions', party.protect(['zerb', 'guest'],{ redirect: "/login" }), async (req, res, next) => {
+party.app.get('/goerli-auctions', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
   if(req.session.zerb != undefined){
     var wallet = `${req.session.zerb.account}`;
   }
@@ -1399,6 +1560,15 @@ party.app.get('/goerli-auctions', party.protect(['zerb', 'guest'],{ redirect: "/
   if(req.session.guest != undefined){
     var wallet = `${req.session.guest.account}`;
   }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
+  }
+
   const baseURL = `https://eth-goerli.alchemyapi.io/v2/${process.env.API_KEY}/getNFTs/`;
   const pageCount = 1;
   var pageKey = '';
