@@ -32,6 +32,9 @@ createlistinginput.addEventListener("click", async () => {
             const marketplace = new web3.eth.Contract(abi, marketplaceContract);
             const createlistingform = document.getElementById('listingForm');
             
+            const gasprice = await web3.eth.getGasPrice();
+            var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+            
             createlistingform.addEventListener("submit", async (e) => {
                 e.preventDefault(); //prevent default submission behavior
                 const data = new FormData(e.target);
@@ -67,7 +70,11 @@ createlistinginput.addEventListener("click", async () => {
                             try {
                                 //for direct listings
                                 if (typeID === "0") {
-                                    const tx = await marketplace.methods.createListing(listingParams).send({from: `${selectedAccount}`});
+                                    //estimate gas for transaction
+                                    const etimateGas = await marketplace.methods.createListing(listingParams).estimateGas({from: `${selectedAccount}`});
+                                    var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+
+                                    const tx = await marketplace.methods.createListing(listingParams).send({from: `${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
                                     document.getElementById("chooseListing").classList.add('hidden')
                                     document.getElementById("marketInfo").classList.add('hidden')
                                     document.getElementById("listingForm").classList.add('hidden')
@@ -80,7 +87,11 @@ createlistinginput.addEventListener("click", async () => {
 
                                 // for auction listings  
                                 if(typeID === "1"){
-                                    const tx = await marketplace.methods.createListing(listingParams).send({from: `${selectedAccount}`});
+                                    //estimate gas for transaction
+                                    const etimateGas = await marketplace.methods.createListing(listingParams).estimateGas({from: `${selectedAccount}`});
+                                    var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+
+                                    const tx = await marketplace.methods.createListing(listingParams).send({from: `${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
                                     document.getElementById("chooseListing").classList.add('hidden')
                                     document.getElementById("marketInfo").classList.add('hidden')
                                     document.getElementById("listingForm").classList.add('hidden')
@@ -103,11 +114,19 @@ createlistinginput.addEventListener("click", async () => {
                             
                 } else { 
                     // approvese the marketplace to access the NFT collection in your wallet, and then creates the lisitng
-                    const txNftApprove = await NFTcontract.methods.setApprovalForAll(marketplaceContract, true).send({from: `${selectedAccount}`}); // approve the NFT for sale
+                     //estimate gas for approval
+                     const etimateGasApproval = await NFTcontract.methods.setApprovalForAll(marketplaceContract, true).estimateGas({from: `${selectedAccount}`});
+                     var etimate_GasApproval = Math.round(etimateGasApproval * 1.2); // estimatation based on transaction
+ 
+                     const txNftApprove = await NFTcontract.methods.setApprovalForAll(marketplaceContract, true).send({from: `${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)}); // approve the NFT for sale
                             try {
                                 //for direct listings
                                 if (typeID === "0") {
-                                    const tx = await marketplace.methods.createListing(listingParams).send({from: `${selectedAccount}`});
+                                    //estimate gas for transaction
+                                    const etimateGas = await marketplace.methods.createListing(listingParams).estimateGas({from: `${selectedAccount}`});
+                                    var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+
+                                    const tx = await marketplace.methods.createListing(listingParams).send({from: `${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
                                     document.getElementById("chooseListing").classList.add('hidden')
                                     document.getElementById("marketInfo").classList.add('hidden')
                                     document.getElementById("listingForm").classList.add('hidden')
@@ -120,7 +139,11 @@ createlistinginput.addEventListener("click", async () => {
 
                                 // for auction listings  
                                 if(typeID === "1"){
-                                    const tx = await marketplace.methods.createListing(listingParams).send({from: `${selectedAccount}`});
+                                    //estimate gas for transaction
+                                    const etimateGas = await marketplace.methods.createListing(listingParams).estimateGas({from: `${selectedAccount}`});
+                                    var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+
+                                    const tx = await marketplace.methods.createListing(listingParams).send({from: `${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
                                     document.getElementById("chooseListing").classList.add('hidden')
                                     document.getElementById("marketInfo").classList.add('hidden')
                                     document.getElementById("listingForm").classList.add('hidden')

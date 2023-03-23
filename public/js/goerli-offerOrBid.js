@@ -21,7 +21,7 @@ if(makeOffer != null){
             return r.json()
         })
 
-        //Need to add support both goerli weth
+        //goerli WETH
         let gWETH = await fetch("/json/goerli-weth.json").then((r) => {
             return r.json()
         })
@@ -46,6 +46,9 @@ if(makeOffer != null){
 
                 const marketplace = new web3.eth.Contract(abi, marketplaceContract);
 
+                const gasprice = await web3.eth.getGasPrice();
+                var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+
                 if(buyitnow != null && buyListing !=null && buyAtAmount !=null){
                     buyitnow.addEventListener("click", async (e) => { 
                         document.getElementById("overlay").style.display = "block";
@@ -62,7 +65,11 @@ if(makeOffer != null){
                         if (listingType === "0"){
                             try {
                                 document.querySelector(".error").innerHTML = "Initiating Direct Listing Buy Transaction";
-                                const buyTx = await marketplace.methods.buy(listingID,`${selectedAccount}`,_quantityWanted,NATIVE_TOKEN_ADDRESS,buyAmount).send({from:`${selectedAccount}`, value:finalPrice});
+                                //estimate gas for transaction
+                                const etimateGas = await marketplace.methods.buy(listingID,`${selectedAccount}`,_quantityWanted,NATIVE_TOKEN_ADDRESS,buyAmount).estimateGas({from: `${selectedAccount}`, value:finalPrice});
+                                var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+
+                                const buyTx = await marketplace.methods.buy(listingID,`${selectedAccount}`,_quantityWanted,NATIVE_TOKEN_ADDRESS,buyAmount).send({from:`${selectedAccount}`, value:finalPrice, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
                                 document.getElementById('offer').classList.add('hidden');
                                 document.getElementById('offer').style.display = 'none';
                                 document.getElementById('buyButton').classList.add('hidden')
@@ -81,7 +88,11 @@ if(makeOffer != null){
                         } else {
                             try {
                                 document.querySelector(".error").innerHTML = "Initiating Auction Buyout Transaction";
-                                const buyTx = await marketplace.methods.offer(listingID, _quantityWanted, NATIVE_TOKEN_ADDRESS, buyAmount, _expirationTimestamp).send({from:`${selectedAccount}`, value:finalPrice});
+                                //estimate gas for transaction
+                                const etimateGas = await marketplace.methods.offer(listingID, _quantityWanted, NATIVE_TOKEN_ADDRESS, buyAmount, _expirationTimestamp).estimateGas({from: `${selectedAccount}`, value:finalPrice});
+                                var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+
+                                const buyTx = await marketplace.methods.offer(listingID, _quantityWanted, NATIVE_TOKEN_ADDRESS, buyAmount, _expirationTimestamp).send({from:`${selectedAccount}`, value:finalPrice, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
                                 document.getElementById('offer').classList.add('hidden');
                                 document.getElementById('offer').style.display = 'none';
                                 document.getElementById('buyButton').classList.add('hidden')
@@ -124,11 +135,19 @@ if(makeOffer != null){
                         try {
                             const g_WETH_contract = new web3.eth.Contract(gWETH, WETH);
                             //check if wallet has laready approved the spend limit
-                            const checkSpendLimit = await g_WETH_contract.methods.allowance(`${selectedAccount}`, marketplaceContract).call({from:`${selectedAccount}`});
-                            
-                            if(checkSpendLimit >= pricePerToken){
+                            var checkSpendLimit = await g_WETH_contract.methods.allowance(`${selectedAccount}`, marketplaceContract).call({from:`${selectedAccount}`});
+                            const wethBalance = await g_WETH_contract.methods.balanceOf(`${selectedAccount}`).call({from:`${selectedAccount}`});
+                            console.log("Your WETH Balance",wethBalance)
+                            console.log("Your Spend Limit", checkSpendLimit)
+                            console.log("Your Offer", pricePerToken)
+
+                            if(checkSpendLimit >= pricePerToken && wethBalance >= pricePerToken){
                                 try {
-                                    const tx = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).send({from:`${selectedAccount}`});
+                                    //estimate gas for transaction
+                                    const etimateGas = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).estimateGas({from: `${selectedAccount}`});
+                                    var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+
+                                    const tx = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).send({from:`${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
                                     document.getElementById('offer').classList.add('hidden');
                                     document.getElementById('offer').style.display = 'none';
                                     document.getElementById('buyButton').classList.add('hidden')
@@ -148,10 +167,16 @@ if(makeOffer != null){
                                 }
 
                             } else {
-                            //first transaction approves the spend limit for the amount a WETH
-                            
-                                const txApprove = await g_WETH_contract.methods.approve(marketplaceContract, pricePerToken).send({from:`${selectedAccount}`});
-                                let spendApproved = true;
+                                //first transaction approves the spend limit for the amount a WETH
+                                //estimate gas for transaction
+                                    
+                                const etimateGasApprove = await g_WETH_contract.methods.approve(marketplaceContract, pricePerToken).estimateGas({from: `${selectedAccount}`});
+                                var etimate_GasApprove = Math.round(etimateGasApprove * 1.2); // estimatation based on transaction
+
+                                const txApprove = await g_WETH_contract.methods.approve(marketplaceContract, pricePerToken).send({from:`${selectedAccount}`, gas:web3.utils.toHex(etimate_GasApprove), gasPrice:web3.utils.toHex(gas_price)});
+                                let spendApproved = true; // set spend approval to true
+                                var checkSpendLimit = await g_WETH_contract.methods.allowance(`${selectedAccount}`, marketplaceContract).call({from:`${selectedAccount}`});
+                                console.log("Your New Spend Limit", checkSpendLimit)
                                 document.getElementById('offer').classList.add('hidden');
                                 document.getElementById('offer').style.display = 'none';
                                 document.getElementById('buyButton').classList.add('hidden')
@@ -161,7 +186,11 @@ if(makeOffer != null){
                                 if(spendApproved === true){
                                     // second transaction approves the offer to be made.
                                     try {
-                                        const tx = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).send({from:`${selectedAccount}`});
+                                        //estimate gas for transaction
+                                        const etimateGas = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).estimateGas({from: `${selectedAccount}`});
+                                        var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+
+                                        const tx = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).send({from:`${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
                                         document.getElementById('offer').classList.add('hidden');
                                         document.getElementById('offer').style.display = 'none';
                                         document.getElementById('buyButton').classList.add('hidden')
@@ -195,7 +224,11 @@ if(makeOffer != null){
 
                         try {
                             const NATIVE_TOKEN_ADDRESS = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
-                            const tx = await marketplace.methods.offer(listID, _quantityWanted, NATIVE_TOKEN_ADDRESS, pricePerToken, _expirationTimestamp).send({from:`${selectedAccount}`, value:valuetokenPrice});
+                            //estimate gas for transaction
+                            const etimateGas = await marketplace.methods.offer(listID, _quantityWanted, NATIVE_TOKEN_ADDRESS, pricePerToken, _expirationTimestamp).estimateGas({from: `${selectedAccount}`, value:valuetokenPrice});
+                            var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+
+                            const tx = await marketplace.methods.offer(listID, _quantityWanted, NATIVE_TOKEN_ADDRESS, pricePerToken, _expirationTimestamp).send({from:`${selectedAccount}`, value:valuetokenPrice, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
                             document.getElementById("overlay").style.display = "none";
                             document.getElementById('offer').classList.add('hidden');
                             document.getElementById('offer').style.display = 'none';
