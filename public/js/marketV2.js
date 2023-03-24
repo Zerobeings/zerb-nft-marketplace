@@ -26,7 +26,6 @@ const connect = async (config) => {
   const marketplaceContract = config.contract;
   
   console.log("Market gm initialized")
-  document.getElementById("chooseListing").classList.remove('hidden')
   document.getElementById("createlistinginput").innerHTML = selectedAccount
   document.getElementById("marketInfo").classList.add('hidden')
   return { web3, marketplaceContract, selectedAccount }

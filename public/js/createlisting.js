@@ -21,14 +21,8 @@ createlistinginput.addEventListener("click", async () => {
             let {web3, marketplaceContract, selectedAccount} = await connect(c)
             
             let net = await web3.eth.getChainId()
-            let n = {
-                1: "",
-                4: "rinkeby.",
-                5: "goerli."
-            }
-            let netPrefix = n[net]
-            let etherscan = `https://${netPrefix}etherscan.io/address/${c.contract}#code`
-
+            
+            document.getElementById("chooseListing").classList.remove('hidden');
             const marketplace = new web3.eth.Contract(abi, marketplaceContract);
             const createlistingform = document.getElementById('listingForm');
 

@@ -28,15 +28,17 @@ if(makeOffer != null){
 
         try {
                 let {web3, marketplaceContract, selectedAccount} = await connect(c)
-                
                 let net = await web3.eth.getChainId()
-                let n = {
-                    1: "",
-                    4: "rinkeby.",
-                    5: "goerli."
-                }
-                let netPrefix = n[net]
-                let etherscan = `https://${netPrefix}etherscan.io/address/${c.contract}#code`
+
+            if (net != 5) {
+                document.getElementById('offer').classList.add('hidden');
+                document.getElementById('offer').style.display = 'none';
+                document.getElementById('buyButton').classList.add('hidden')
+                document.getElementById('buyButton').style.display = 'none';
+                document.querySelector(".error").innerHTML = 'Please connect to Goerli network';
+                document.getElementById("overlay").style.display = "none";
+                location.reload();
+            } else {
                 let spendApproved = false;
 
                 document.getElementById('offer').classList.remove('hidden')
@@ -49,7 +51,7 @@ if(makeOffer != null){
                 const gasprice = await web3.eth.getGasPrice();
                 var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
 
-                if(buyitnow != null && buyListing !=null && buyAtAmount !=null){
+                if(buyitnow != null && buyListing !=null && buyAtAmount !=null && net === 5){
                     buyitnow.addEventListener("click", async (e) => { 
                         document.getElementById("overlay").style.display = "block";
                         document.querySelector(".error").innerHTML = "Awaiting Buy/Buyout Transaction"
@@ -62,7 +64,7 @@ if(makeOffer != null){
                         var _expirationTimestamp = Math.round(timeExpiry).toString();
 
                     
-                        if (listingType === "0"){
+                        if (listingType === "0" && net === 5){
                             try {
                                 document.querySelector(".error").innerHTML = "Initiating Direct Listing Buy Transaction";
                                 //estimate gas for transaction
@@ -85,7 +87,7 @@ if(makeOffer != null){
                                 document.querySelector(".error").innerHTML = `${e.message.toLowerCase()}`
                                 document.getElementById("overlay").style.display = "none";
                             }
-                        } else {
+                        } else if (listingType === "1" && net === 5) {
                             try {
                                 document.querySelector(".error").innerHTML = "Initiating Auction Buyout Transaction";
                                 //estimate gas for transaction
@@ -108,8 +110,24 @@ if(makeOffer != null){
                                 document.querySelector(".error").innerHTML = `${e.message.toLowerCase()}`
                                 document.getElementById("overlay").style.display = "none";
                             }
+                        } else {
+                            document.getElementById('offer').classList.add('hidden');
+                            document.getElementById('offer').style.display = 'none';
+                            document.getElementById('buyButton').classList.add('hidden')
+                            document.getElementById('buyButton').style.display = 'none';
+                            document.querySelector(".error").innerHTML = 'Please connect to Goerli network';
+                            document.getElementById("overlay").style.display = "none";
+                            location.reload();
                         }
                     });
+                } else {
+                    document.getElementById('offer').classList.add('hidden');
+                    document.getElementById('offer').style.display = 'none';
+                    document.getElementById('buyButton').classList.add('hidden')
+                    document.getElementById('buyButton').style.display = 'none';
+                    document.querySelector(".error").innerHTML = 'Please connect to Goerli network';
+                    document.getElementById("overlay").style.display = "none";
+                    location.reload();
                 }
             
                 makeOffer.addEventListener("submit", async (e) => { 
@@ -131,7 +149,7 @@ if(makeOffer != null){
                         var _expirationTimestamp = Math.round(timeExpiry).toString(); //All offers last to end of sale period
                         
 
-                    if(listingType === "0") {    
+                    if(listingType === "0" && net === 5) {    
                         try {
                             const g_WETH_contract = new web3.eth.Contract(gWETH, WETH);
                             //check if wallet has laready approved the spend limit
@@ -183,7 +201,7 @@ if(makeOffer != null){
                                 document.getElementById('buyButton').style.display = 'none';
                                 document.querySelector(".error").innerHTML = "Approved WETH Spend Limit";
 
-                                if(spendApproved === true){
+                                if(spendApproved === true && net === 5){
                                     // second transaction approves the offer to be made.
                                     try {
                                         //estimate gas for transaction
@@ -220,7 +238,7 @@ if(makeOffer != null){
                             document.getElementById("overlay").style.display = "none";
                             makeOffer.reset();
                         }
-                    } else {
+                    } else if (listingType === "1" && net === 5) {
 
                         try {
                             const NATIVE_TOKEN_ADDRESS = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
@@ -249,12 +267,13 @@ if(makeOffer != null){
                         }
                     }
                 });
-
-            } catch (e) {
-                document.querySelector(".error").innerHTML = `${e.message.toLowerCase()}`
-                document.getElementById("overlay").style.display = "none";
             }
-        });
+
+        } catch (e) {
+            document.querySelector(".error").innerHTML = `${e.message.toLowerCase()}`
+            document.getElementById("overlay").style.display = "none";
+        }
+    });
 }
 
         
