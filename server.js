@@ -31,16 +31,10 @@ var jsonParser = bodyParser.json();
 // Marketplace contracts
 // contracts are referenced in three locations in mbox.json for mainnet and gbox.json for goerli,
 // the listingsCard and mybids for mainnet and goerli-listingsCard & goerli-mybids in the IPFS site link,
-// in the const listed below, and finally the marketfooter files.
-const gMarkectContract = '0xC65CE759f006928451343874538A328dFcbAD325'; //goerli marketplace contract. Deploy from thirdweb dashboard.
-const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
+// in the routes for the marketplaces below, and finally the marketfooter files.
 
 // Authorization. For more info and examples go to https://privateparty.dev/
 //contract addresses
-
-const zerbContract = '0x8FbA3ebe77D3371406a77EEaf40c89C1Ed55364a';
-const tinydinosContract = '0xd9b78a2f1dafc8bb9c60961790d2beefebee56f4';
-const freshfrogsNFTContract = '0xbe4bef8735107db540de269ff82c7de9ef68c51b';
 
 party.add('zerb', {
   contracts: {
@@ -145,6 +139,7 @@ party.app.get('/marketgm', party.protect(['zerb', 'guest', 'tinydinos', 'freshfr
   const fetchURL = `${baseURL}?contractAddress=${contract}&withMetadata=${withMetadata}&startToken=${pageKey}&limit=${pageCount}`;
   const fetchfp = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getFloorPrice?contractAddress=${contract}`;
   const fetchSumAtt = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/summarizeNFTAttributes?contractAddress=${contract}`;
+  const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
   const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract
 
   try {
@@ -237,6 +232,7 @@ party.app.post('/marketgm/:page', party.protect(['zerb', 'guest', 'tinydinos', '
   const fetchSumAtt = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/summarizeNFTAttributes?contractAddress=${contract}`;
   const fetchfp = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getFloorPrice?contractAddress=${contract}`;
   const fetchRe = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/reingestContract?contractAddress=${contract}`;
+  const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
   const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract
 
   try {
@@ -344,6 +340,7 @@ party.app.post('/marketgm', party.protect(['zerb', 'guest', 'tinydinos', 'freshf
   const fetchSumAtt = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/summarizeNFTAttributes?contractAddress=${contract}`;
   const fetchfp = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getFloorPrice?contractAddress=${contract}`;
   const fetchRe = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/reingestContract?contractAddress=${contract}`;
+  const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
   const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract
   
 
@@ -488,6 +485,7 @@ party.app.get('/myListings', party.protect(['zerb', 'guest', 'tinydinos', 'fresh
   var pageKeysP = [];
   var page = req.params.page || 1;
   const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
+  const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
   const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract
 
   try {
@@ -602,6 +600,7 @@ party.app.post('/myListings/:page', party.protect(['zerb', 'guest', 'tinydinos',
     var pageKey = '';
     } 
     const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
+    const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
     const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract
 
     try {
@@ -711,6 +710,7 @@ party.app.get('/listingDetails/:contract/:IDToken', party.protect(['zerb', 'gues
   var IDToken = req.params.IDToken;
   const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTMetadata`; // alchemy api
   const fetchURL =`${baseURL}?contractAddress=${contract}&tokenId=${IDToken}&refreshCache=false`; //fetchURL for NFT alchemy api
+  const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
   const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract thirdweb sdk
   const wrapper = NATIVE_TOKENS; //from thirdweb sdk. fetchs all networks and associated wrapped tokens. This allow for offers to be made
   const royaltyURL = `https://api.rarible.org/v0.1/items/ETHEREUM:${contract}:${IDToken}/royalties` //rarible api to fetch royalties
@@ -779,6 +779,7 @@ party.app.get('/auctions', party.protect(['zerb', 'guest', 'tinydinos', 'freshfr
   const pageCount = 1;
   var pageKey = '';
   const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
+  const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
   const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract
 
   try {
@@ -928,6 +929,7 @@ party.app.get('/goerli-marketgm', party.protect(['zerb', 'guest', 'tinydinos', '
   const fetchURL = `${baseURL}?contractAddress=${contract}&withMetadata=${withMetadata}&startToken=${pageKey}&limit=${pageCount}`;
   //const fetchfp = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/getFloorPrice?contractAddress=${contract}`; //not currently supported for testnet
   //const fetchSumAtt = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/summarizeNFTAttributes?contractAddress=${contract}`; //not currently supported for testnet
+  const gMarkectContract = '0xC65CE759f006928451343874538A328dFcbAD325'; //goerli marketplace contract. Deploy from thirdweb dashboard.
   const marketContract = await gsdk.getContract(gMarkectContract, "marketplace"); //get marketplace contract
 
   try {
@@ -1020,6 +1022,7 @@ party.app.post('/goerli-marketgm/:page', party.protect(['zerb', 'guest', 'tinydi
   //const fetchSumAtt = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/summarizeNFTAttributes?contractAddress=${contract}`; //not currently supported for testnet
   //const fetchfp = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/getFloorPrice?contractAddress=${contract}`; //not currently supported for testnet
   //const fetchRe = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/reingestContract?contractAddress=${contract}`;
+  const gMarkectContract = '0xC65CE759f006928451343874538A328dFcbAD325'; //goerli marketplace contract. Deploy from thirdweb dashboard.
   const marketContract = await gsdk.getContract(gMarkectContract, "marketplace"); //get marketplace contract
 
   try {
@@ -1128,6 +1131,7 @@ party.app.post('/goerli-marketgm', party.protect(['zerb', 'guest', 'tinydinos', 
   //const fetchSumAtt = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/summarizeNFTAttributes?contractAddress=${contract}`; //not currently supported for testnet
   //const fetchfp = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/getFloorPrice?contractAddress=${contract}`; //not currently supported for testnet
   //const fetchRe = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/reingestContract?contractAddress=${contract}`;
+  const gMarkectContract = '0xC65CE759f006928451343874538A328dFcbAD325'; //goerli marketplace contract. Deploy from thirdweb dashboard.
   const marketContract = await gsdk.getContract(gMarkectContract, "marketplace"); //get marketplace contract
   
 
@@ -1276,6 +1280,7 @@ party.app.get('/goerli-myListings', party.protect(['zerb', 'guest', 'tinydinos',
   var pageKeysP = [];
   var page = req.params.page || 1;
   const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
+  const gMarkectContract = '0xC65CE759f006928451343874538A328dFcbAD325'; //goerli marketplace contract. Deploy from thirdweb dashboard.
   const marketContract = await gsdk.getContract(gMarkectContract, "marketplace"); //get marketplace contract
 
   try {
@@ -1392,6 +1397,7 @@ party.app.post('/goerli-myListings/:page', party.protect(['zerb', 'guest', 'tiny
     var pageKey = '';
     } 
     const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
+    const gMarkectContract = '0xC65CE759f006928451343874538A328dFcbAD325'; //goerli marketplace contract. Deploy from thirdweb dashboard.
     const marketContract = await gsdk.getContract(gMarkectContract, "marketplace"); //get marketplace contract
 
     try {
@@ -1503,6 +1509,7 @@ party.app.get('/goerli-listingDetails/:contract/:IDToken', party.protect(['zerb'
   var IDToken = req.params.IDToken;
   const baseURL = `https://eth-goerli.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTMetadata`; // alchemy api
   const fetchURL =`${baseURL}?contractAddress=${contract}&tokenId=${IDToken}&refreshCache=false`; //fetchURL for NFT alchemy api
+  const gMarkectContract = '0xC65CE759f006928451343874538A328dFcbAD325'; //goerli marketplace contract. Deploy from thirdweb dashboard.
   const marketContract = await gsdk.getContract(gMarkectContract, "marketplace"); //get marketplace contract thirdweb sdk
   const wrapper = NATIVE_TOKENS; //from thirdweb sdk. fetchs all networks and associated wrapped tokens. This allow for offers to be made
   const royaltyURL = `https://testnet-api.rarible.org/v0.1/items/ETHEREUM:${contract}:${IDToken}/royalties` //rarible api to fetch royalties
@@ -1573,7 +1580,9 @@ party.app.get('/goerli-auctions', party.protect(['zerb', 'guest', 'tinydinos', '
   const pageCount = 1;
   var pageKey = '';
   const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
-  const marketContract = await gsdk.getContract(gMarkectContract, "marketplace"); //get marketplace contract
+  const gMarkectContract = '0xC65CE759f006928451343874538A328dFcbAD325'; //goerli marketplace contract. Deploy from thirdweb dashboard.
+  const marketContractGoerli = await gsdk.getContract(gMarkectContract, "marketplace"); //get marketplace contract
+  
 
   try {
     const nfts = await fetch(fetchURL, { method: 'GET' }).then((data) =>
@@ -1581,65 +1590,66 @@ party.app.get('/goerli-auctions', party.protect(['zerb', 'guest', 'tinydinos', '
     );
     
     const NFTs = nfts.ownedNfts;
-    const allListings = await marketContract.getActiveListings(); //get active listings. This is used to find bids by logged in wallet address
-    const everyListing = await marketContract.getAllListings(); // get all active and inactive listing
+
+    const allListingsGoerli = await marketContractGoerli.getActiveListings(); //get active listings. This is used to find bids by logged in wallet address
+    const everyListingGoerli = await marketContractGoerli.getAllListings(); // get all active and inactive listing
+
+    const bidsListingsGoerli = []; // all active auction listings
+    const myBidsGoerli = [];
+    const allAuctionListingsGoerli = []; //all auction listings
+    const nonActiveAuctionsGoerli = []; //all non-active listings
     
-    const bidsListings = []; // all active auction listings
-    const myBids = [];
     const bids = [];
     const listingsForBids = [];
-
-    const allAuctionListings = []; //all auction listings
-    const nonActiveAuctions = []; //all non-active listings
     const myAuctionsToClose = []; //all my auctions to close
 
-    if(allListings.length > 0) {
-      allListings.forEach((alistings,i) => {
+    if(allListingsGoerli.length > 0) {
+      allListingsGoerli.forEach((alistings,i) => {
           if(alistings.type === 1){
-            bidsListings.push(alistings); //push auction based listings to an array
+            bidsListingsGoerli.push(alistings); //push auction based listings to an array
           }
         }
       )};
-    
-    if(bidsListings != null){
-    for (i = 0; i < bidsListings.length; i++) {
-     const offers = await marketContract.getOffers(bidsListings[i].id); //get offers for the listing from thirdweb sdk
-      myBids.push(offers)  
+          
+    if(bidsListingsGoerli != null){
+      for (i = 0; i < bidsListingsGoerli.length; i++) {
+      const offersGoerli = await marketContractGoerli.getOffers(bidsListingsGoerli[i].id); //get offers for the listing from thirdweb sdk
+        myBidsGoerli.push(offersGoerli)  
+      }
     };
-    }
+      
+    if(everyListingGoerli.length > 0) {
+      everyListingGoerli.forEach((eListing,i) => {
+          if(eListing.type === 1){
+            allAuctionListingsGoerli.push(eListing); //push auction based listings to an array
+          }
+        }
+      )};
 
-    for (i = 0; i < myBids.length; i++) {
-      for(p = 0; p < myBids[i].length; p++){
-        if((myBids[i][p].buyerAddress).toLowerCase() === wallet.toLowerCase()){
-          bids.push(myBids[i][p]);
-          const bidList = await marketContract.getListing(myBids[i][p].listingId); //get the listing connected to the specific offer
+    if(allAuctionListingsGoerli.length > 0) { 
+      allAuctionListingsGoerli.forEach(el1 => {      
+        el1IsPresentInArr2 = bidsListingsGoerli.some(el2 => el2.id === el1.id); 
+          if (!el1IsPresentInArr2) { 
+            nonActiveAuctionsGoerli.push(el1);    
+          }
+      }
+    )};
+
+    for (i = 0; i < myBidsGoerli.length; i++) {
+      for(p = 0; p < myBidsGoerli[i].length; p++){
+        if((myBidsGoerli[i][p].buyerAddress).toLowerCase() === wallet.toLowerCase()){
+          bids.push(myBidsGoerli[i][p]);
+          const bidList = await marketContractGoerli.getListing(myBidsGoerli[i][p].listingId); //get the listing connected to the specific offer
           listingsForBids.push(bidList);
         }
       }
     }
 
-    if(everyListing.length > 0) {
-      everyListing.forEach((eListing,i) => {
-          if(eListing.type === 1){
-            allAuctionListings.push(eListing); //push auction based listings to an array
-          }
-        }
-      )};
-
-    if(allAuctionListings.length > 0) { 
-      allAuctionListings.forEach(el1 => {      
-        el1IsPresentInArr2 = bidsListings.some(el2 => el2.id === el1.id); 
-          if (!el1IsPresentInArr2) { 
-            nonActiveAuctions.push(el1);    
-          }
-      }
-    )};
-
-    if(nonActiveAuctions.length > 0) { 
-      for (i = 0; i < nonActiveAuctions.length; i++) {
-          const myWins = await marketContract.auction.getWinner(nonActiveAuctions[i].id); //get the listing connected to the specific offer
-          if(myWins.toLowerCase() === wallet.toLowerCase() || nonActiveAuctions[i].sellerAddress.toLowerCase() === wallet.toLowerCase()){
-            myAuctionsToClose.push(nonActiveAuctions[i]);
+    if(nonActiveAuctionsGoerli.length > 0) { 
+      for (i = 0; i < nonActiveAuctionsGoerli.length; i++) {
+          const myWins = await marketContractGoerli.auction.getWinner(nonActiveAuctionsGoerli[i].id); //get the listing connected to the specific offer
+          if(myWins.toLowerCase() === wallet.toLowerCase() || nonActiveAuctionsGoerli[i].sellerAddress.toLowerCase() === wallet.toLowerCase()){
+            myAuctionsToClose.push(nonActiveAuctionsGoerli[i]);
           }      
       }
     }
