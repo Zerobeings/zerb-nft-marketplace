@@ -142,13 +142,13 @@ You will need to add your contract address and [projectId](https://cloud.walletc
 
 The mbox.json file supports the connection to the mainnet.
 ```json
-{"contract":"<MarketContract>","network":"main","projectId":"<projectID from WalletConnect Cloud>"}
+{"contract":"<MarketContract>","network":"main"}
 ```
 
 The gbox.json file supports the connection to the goerli-network.
 
 ```json
-{"contract":"<MarketContract>","network":"goerli","projectId":"<projectID from WalletConnect Cloud>"}
+{"contract":"<MarketContract>","network":"goerli"}
 ```
 
 #### Update the listingCard partials
