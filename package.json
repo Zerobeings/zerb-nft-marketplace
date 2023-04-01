@@ -2,9 +2,11 @@
   "name": "zerb-nft-marketplace",
   "version": "1.0.0",
   "description": "",
-  "main": "login.ejs",
+  "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "npm run prod",
+    "dev": "NODE_ENV=development node server",
+    "prod": "NODE_ENV=production node server"
   },
   "keywords": [],
   "author": "h0ward.eth",
@@ -19,6 +21,7 @@
     "express": "^4.17.1",
     "mixtapejs": "^0.1.9",
     "node-localstorage": "^2.2.1",
+    "nodemon": "^2.0.22",
     "privateparty": "^0.0.46",
     "serve-favicon": "^2.5.0",
     "web3": "^1.8.0"

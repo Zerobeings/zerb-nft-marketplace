@@ -7,6 +7,9 @@
     <a href="https://learn.zerobeings.xyz/#/" target="_blank">Learn</a>
     <a href="/myListings" onclick="return onLoading4()" style="white-space: nowrap;">My Listings</a>
     <a style="white-space: nowrap;" href="/auctions" onclick="return onLoading4()">Auctions</a>
+    <% if (session.zerb || session.tinydinos || session.freshfrogsNFT) { %>
+      <a style="white-space: nowrap;" href="/" onclick="return onLoading4()">Zerb gm ☕️</a>
+      <% } %>
     <% if (session.zerb || session.guest || session.tinydinos || session.freshfrogsNFT) { %>
     <a href="/login" onclick="return onLoading4()">Logout</a>
     <% } else { %>
@@ -28,6 +31,9 @@
     </a> 
         
     <a style="margin: auto;">
+      <% if (session.zerb || session.tinydinos || session.freshfrogsNFT) { %>
+        <a style="margin-left: 12px; margin-right: 12px;text-decoration: none;" class="imgDesktop navLinks" href="/" onclick="return onLoading4()">☕️</a>
+        <% } %>
       <a style="margin-left: 12px; margin-right: 12px;text-decoration: none;" class="imgDesktop navLinks" href="https://open.factoria.app/" target="_blank">Factoria</a>
       <a style="margin-left: 12px; margin-right: 12px;text-decoration: none;" class="imgDesktop navLinks" href="https://learn.zerobeings.xyz/#/" target="_blank">Learn</a>
       <a style="margin-left: 12px; margin-right: 12px; text-decoration: none; white-space: nowrap;" class="imgDesktop navLinks" href="/myListings" onclick="return onLoading4()">My Listings</a>

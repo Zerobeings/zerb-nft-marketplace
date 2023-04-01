@@ -45,9 +45,7 @@
 <script>
     const userSelect = document.getElementById('userForm');
     const params = new URLSearchParams(window.location.search)
-    const party = new Privateparty({
-    walletconnect: "8043036ad7e74ff3a2fd273b4b78a231"
-    })
+    const party = new Privateparty({ })
     document.addEventListener("DOMContentLoaded", async () => {
       let session = await party.session("zerb", { fresh: true }) || await party.session("guest", { fresh: true }) || await party.session("tinydinos", { fresh: true }) || await party.session("freshfrogsNFT", { fresh: true });
       
