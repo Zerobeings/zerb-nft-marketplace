@@ -44,16 +44,6 @@ Follow the guide below to get started on your own NFT marketplace today! Otherwi
 * Infura API Key
 
 ### Installation
-> 🚨 Wallet Connect recommends only running the modal on https. Tools like [localtunnel](https://theboroer.github.io/localtunnel-www/) can be used to accomplish this.
->
-> Recently Wallet Connect began the process of sunsetting the Web3Modal V1.0. However, you can still use this modal by upgrading the WalletConnect ethereum-provider to v2.0. This was done for Market gm.
-
-```
-For Web3Modal v1.0 integrations
-We recommend that you replace your existing integration with the latest version of Web3Modal, for which you can find more docs here.
-
-If you still want to use Web3Modal v1.0 but just upgrade the WalletConnect ethereum-provider to v2.0 then you can update to the latest version available on NPM which you can find here.
-```
 
 1. Fork the project.
 2. Clone the project.
@@ -61,8 +51,8 @@ If you still want to use Web3Modal v1.0 but just upgrade the WalletConnect ether
 4. Install dependencies with `npm install`.
 5. Change `.env.example` to `.env` and add your environment variables.
 6. Change `mbox.example.json` and `gbox.example.json` to `mbox.json` and `gbox.json`.
-7. Remove `mbox.json` and `gbox.json` from `.gitignore` for private repositories
-8. Run `node server` (🚨 not recommended by Wallet Connect) or set up a [localtunnel](https://theboroer.github.io/localtunnel-www/) (recommended).
+7. Remove `mbox.json` and `gbox.json` from `.gitignore`
+8. Run `nodemon`.
 
 ### Making it your Own
 1. Change the NFT gating contract and user name.
@@ -72,12 +62,6 @@ If you still want to use Web3Modal v1.0 but just upgrade the WalletConnect ether
 5. Update the `mbox.json` and `gbox.json` files.
 6. Update `session.zerb.account` to new user reference throughout repository.
 7. Update the walletconnect parameter on the login page:
-
-```javascript
-const party = new Privateparty({
-    walletconnect: "<infura api key>" //for mobile
-    })
-```
 
 8. Customize!
 
@@ -158,13 +142,13 @@ You will need to add your contract address and [projectId](https://cloud.walletc
 
 The mbox.json file supports the connection to the mainnet.
 ```json
-{"contract":"<MarketContract>","network":"main","projectId":"<projectID from WalletConnect Cloud>"}
+{"contract":"<MarketContract>","network":"main"}
 ```
 
 The gbox.json file supports the connection to the goerli-network.
 
 ```json
-{"contract":"<MarketContract>","network":"goerli","projectId":"<projectID from WalletConnect Cloud>"}
+{"contract":"<MarketContract>","network":"goerli"}
 ```
 
 #### Update the listingCard partials
