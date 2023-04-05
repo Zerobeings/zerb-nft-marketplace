@@ -21,7 +21,7 @@ createlistinginput.addEventListener("click", async () => {
             let {web3, marketplaceContract, selectedAccount} = await connect(c)
                 
             let net = await web3.eth.getChainId()
-            if(n != 1){
+            if(net != 1){
                 document.getElementById("marketInfo").classList.add('hidden');
                 document.querySelector(".error").innerHTML = 'Please connect to Ethereum mainnet';
                 location.reload();
@@ -30,11 +30,8 @@ createlistinginput.addEventListener("click", async () => {
                 const marketplace = new web3.eth.Contract(abi, marketplaceContract);
                 const createlistingform = document.getElementById('listingForm');
 
-                const gasprice = await web3.eth.getGasPrice();
-                var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
-                
                 createlistingform.addEventListener("submit", async (e) => {
-                    if (n === 1){    
+                    if (net === 1){    
                         e.preventDefault(); //prevent default submission behavior
                         const data = new FormData(e.target);
                         var date = new Date();
@@ -64,16 +61,32 @@ createlistinginput.addEventListener("click", async () => {
                         const NFTcontract = new web3.eth.Contract(nftjson, NFTContractAddress);
                         const checkApproval = await NFTcontract.methods.isApprovedForAll(`${selectedAccount}`, marketplaceContract).call({from:`${selectedAccount}`});
 
-                        if (checkApproval === true && n === 1){
+                        if (checkApproval === true && net === 1){
                             //if nft approval already given create listing
                                     try {
                                         //for direct listings
-                                        if (typeID === "0" && n === 1) {
-                                            //estimate gas for transaction
-                                            const etimateGas = await marketplace.methods.createListing(listingParams).estimateGas({from: `${selectedAccount}`});
-                                            var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+                                        if (typeID === "0" && net === 1) {
+                                           
+                                            //Get the current gas price
+                                            const gasprice = await web3.eth.getGasPrice();
+                                            var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+                                            console.log(`Current Gas Price x 1.2: ${gas_price}`)
 
-                                            const tx = await marketplace.methods.createListing(listingParams).send({from: `${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
+                                            //Estimate gas for the transaction
+                                            const estimatedGas = await marketplace.methods.createListing(listingParams).estimateGas({from: `${selectedAccount}`});
+                                            var estimated_Gas = Math.round(estimatedGas * 1.2);
+                                            console.log(`Estimated Gas Required x 1.2: ${estimated_Gas}`)
+                                            
+                                            //Build Transaction
+                                            const rawTransaction = {
+                                                from: `${selectedAccount}`,
+                                                gasPrice: web3.utils.toHex(gas_price),
+                                                gas: web3.utils.toHex(estimated_Gas),
+                                                nonce: web3.utils.toHex(web3.eth.getTransactionCount(`${selectedAccount}`))
+                                            };
+                                        
+
+                                            const tx = await marketplace.methods.createListing(listingParams).send(rawTransaction);
                                             document.getElementById("chooseListing").classList.add('hidden')
                                             document.getElementById("marketInfo").classList.add('hidden')
                                             document.getElementById("listingForm").classList.add('hidden')
@@ -85,12 +98,27 @@ createlistinginput.addEventListener("click", async () => {
                                         }
 
                                         // for auction listings  
-                                        if(typeID === "1" && n === 1){
-                                            //estimate gas for transaction
-                                            const etimateGas = await marketplace.methods.createListing(listingParams).estimateGas({from: `${selectedAccount}`});
-                                            var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+                                        if(typeID === "1" && net === 1){
+                                            //Get the current gas price
+                                            const gasprice = await web3.eth.getGasPrice();
+                                            var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+                                            console.log(`Current Gas Price x 1.2: ${gas_price}`);
 
-                                            const tx = await marketplace.methods.createListing(listingParams).send({from: `${selectedAccount}`, gas: web3.utils.toHex(etimate_Gas), gasPrice:  web3.utils.toHex(gas_price)});
+                                            //Estimate gas for the transaction
+                                            const estimatedGas = await marketplace.methods.createListing(listingParams).estimateGas({from: `${selectedAccount}`});
+                                            var estimated_Gas = Math.round(estimatedGas * 1.2);
+                                            console.log(`Estimated Gas Required x 1.2: ${estimated_Gas}`)
+                                            
+                                            //Build Transaction
+                                            const rawTransaction = {
+                                                from: `${selectedAccount}`,
+                                                gasPrice: web3.utils.toHex(gas_price),
+                                                gas: web3.utils.toHex(estimated_Gas),
+                                                nonce: web3.utils.toHex(web3.eth.getTransactionCount(`${selectedAccount}`))
+                                            };
+                                       
+
+                                            const tx = await marketplace.methods.createListing(listingParams).send(rawTransaction);
                                             document.getElementById("chooseListing").classList.add('hidden')
                                             document.getElementById("marketInfo").classList.add('hidden')
                                             document.getElementById("listingForm").classList.add('hidden')
@@ -112,20 +140,49 @@ createlistinginput.addEventListener("click", async () => {
                                     }
                                 
                         } else { 
-                            // approvese the marketplace to access the NFT collection in your wallet, and then creates the lisitng
-                            //estimate gas for approval
-                            const etimateGasApproval = await NFTcontract.methods.setApprovalForAll(marketplaceContract, true).estimateGas({from: `${selectedAccount}`});
-                            var etimate_GasApproval = Math.round(etimateGasApproval * 1.2); // estimatation based on transaction
+                             // approvese the marketplace to access the NFT collection in your wallet, and then creates the lisitng
+                            const gasprice = await web3.eth.getGasPrice();
+                            var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+                            console.log(`Current Gas Price x 1.2: ${gas_price}`);
 
-                            const txNftApprove = await NFTcontract.methods.setApprovalForAll(marketplaceContract, true).send({from: `${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)}); // approve the NFT for sale
+                            //estimate gas for approval
+                            const estimateGasApproval = await NFTcontract.methods.setApprovalForAll(marketplaceContract, true).estimateGas({from: `${selectedAccount}`});
+                            var estimate_GasApproval = Math.round(estimateGasApproval * 1.2); // estimatation based on transaction
+                            console.log(`Estimated Gas Required x 1.2: ${estimate_GasApproval}`)
+
+                            //Build Transaction
+                            const approveTxn = {
+                                from: `${selectedAccount}`,
+                                gas:web3.utils.toHex(estimate_GasApproval),
+                                gasPrice:web3.utils.toHex(gas_price),
+                                nonce: web3.utils.toHex(web3.eth.getTransactionCount(`${selectedAccount}`))
+                            };
+
+                            // approve the NFT for sale
+                            const txNftApprove = await NFTcontract.methods.setApprovalForAll(marketplaceContract, true).send(approveTxn);
                                     try {
                                         //for direct listings
-                                        if (typeID === "0") {
-                                            //estimate gas for transaction
-                                            const etimateGas = await marketplace.methods.createListing(listingParams).estimateGas({from: `${selectedAccount}`});
-                                            var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+                                        if (typeID === "0" && net === 1) {
+                                            //Get the current gas price
+                                            const gasprice = await web3.eth.getGasPrice();
+                                            var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+                                            console.log(`Current Gas Price x 1.2: ${gas_price}`)
 
-                                            const tx = await marketplace.methods.createListing(listingParams).send({from: `${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
+                                            //Estimate gas for the transaction
+                                            const estimatedGas = await marketplace.methods.createListing(listingParams).estimateGas({from: `${selectedAccount}`});
+                                            var estimated_Gas = Math.round(estimatedGas * 1.2);
+                                            console.log(`Estimated Gas Required x 1.2: ${estimated_Gas}`)
+                                            
+                                            //Build Transaction
+                                            const rawTransaction = {
+                                                from: `${selectedAccount}`,
+                                                gasPrice: web3.utils.toHex(gas_price),
+                                                gas: web3.utils.toHex(estimated_Gas),
+                                                nonce: web3.utils.toHex(web3.eth.getTransactionCount(`${selectedAccount}`))
+                                            };
+                                            
+
+                                            const tx = await marketplace.methods.createListing(listingParams).send(rawTransaction);
                                             document.getElementById("chooseListing").classList.add('hidden')
                                             document.getElementById("marketInfo").classList.add('hidden')
                                             document.getElementById("listingForm").classList.add('hidden')
@@ -137,12 +194,27 @@ createlistinginput.addEventListener("click", async () => {
                                         }
 
                                         // for auction listings  
-                                        if(typeID === "1" && n === 1){
-                                            //estimate gas for transaction
-                                            const etimateGas = await marketplace.methods.createListing(listingParams).estimateGas({from: `${selectedAccount}`});
-                                            var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+                                        if(typeID === "1" && net === 1){
+                                            //Get the current gas price
+                                            const gasprice = await web3.eth.getGasPrice();
+                                            var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+                                            console.log(`Current Gas Price x 1.2: ${gas_price}`)
 
-                                            const tx = await marketplace.methods.createListing(listingParams).send({from: `${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
+                                            //Estimate gas for the transaction
+                                            const estimatedGas = await marketplace.methods.createListing(listingParams).estimateGas({from: `${selectedAccount}`});
+                                            var estimated_Gas = Math.round(estimatedGas * 1.2);
+                                            console.log(`Estimated Gas Required x 1.2: ${estimated_Gas}`)
+                                            
+                                            //Build Transaction
+                                            const rawTransaction = {
+                                                from: `${selectedAccount}`,
+                                                gasPrice: web3.utils.toHex(gas_price),
+                                                gas: web3.utils.toHex(estimated_Gas),
+                                                nonce: web3.utils.toHex(web3.eth.getTransactionCount(`${selectedAccount}`))
+                                            };
+                                        
+
+                                            const tx = await marketplace.methods.createListing(listingParams).send(rawTransaction);
                                             document.getElementById("chooseListing").classList.add('hidden')
                                             document.getElementById("marketInfo").classList.add('hidden')
                                             document.getElementById("listingForm").classList.add('hidden')

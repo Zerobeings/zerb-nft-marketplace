@@ -64,20 +64,33 @@ if(acceptAnOffer != null){
                             var offeror = data.get('offerBuyerAddress');
                             var currency = data.get('offerCurrencyContractAddress');
                             var pricePerToken = data.get('offerPriceperToken');
-
-                            const gasprice = await web3.eth.getGasPrice();
-                            var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
                         
                             try {
                                 //secondary check if the offer has expired
                                 const readOffers = await marketplace.methods.offers(listingId, offeror).call({from:`${selectedAccount}`});
 
                                 if (readOffers.expirationTimestamp > todayInSeconds) {    
+                                    
+                                    //Get the current gas price
+                                    const gasprice = await web3.eth.getGasPrice();
+                                    var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+                                    console.log(`Current Gas Price x 1.2: ${gas_price}`);
+
                                     //estimate gas for transaction
-                                    const etimateGas = await marketplace.methods.acceptOffer(listingId, offeror, currency, pricePerToken).estimateGas({from: `${selectedAccount}`});
-                                    var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+                                    const estimatedGas = await marketplace.methods.acceptOffer(listingId, offeror, currency, pricePerToken).estimateGas({from: `${selectedAccount}`});
+                                    var estimated_Gas = Math.round(estimatedGas * 1.2); // estimatation based on transaction
+                                    console.log(`Estimated Gas Required x 1.2: ${estimated_Gas}`)
+
+                                    //build the transaciton
+                                    const rawTransaction = {
+                                        from: `${selectedAccount}`,
+                                        gasPrice: web3.utils.toHex(gas_price),
+                                        gas: web3.utils.toHex(estimated_Gas),
+                                        nonce: web3.utils.toHex(web3.eth.getTransactionCount(`${selectedAccount}`))
+                                    };
+
                                     //transaction to accept
-                                    const txAccept = await marketplace.methods.acceptOffer(listingId, offeror, currency, pricePerToken).send({from: `${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
+                                    const txAccept = await marketplace.methods.acceptOffer(listingId, offeror, currency, pricePerToken).send(rawTransaction);
                                     document.querySelector(".error").innerHTML = "Offer Accepted!"
                                     document.getElementById('acceptOffersList').classList.add('hidden')
                                     document.getElementById("overlay").style.display = "none";

@@ -48,9 +48,6 @@ if(makeOffer != null){
 
                 const marketplace = new web3.eth.Contract(abi, marketplaceContract);
 
-                const gasprice = await web3.eth.getGasPrice();
-                var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
-
                 if(buyitnow != null && buyListing !=null && buyAtAmount !=null && net === 5){
                     buyitnow.addEventListener("click", async (e) => { 
                         document.getElementById("overlay").style.display = "block";
@@ -67,11 +64,26 @@ if(makeOffer != null){
                         if (listingType === "0" && net === 5){
                             try {
                                 document.querySelector(".error").innerHTML = "Initiating Direct Listing Buy Transaction";
-                                //estimate gas for transaction
-                                const etimateGas = await marketplace.methods.buy(listingID,`${selectedAccount}`,_quantityWanted,NATIVE_TOKEN_ADDRESS,buyAmount).estimateGas({from: `${selectedAccount}`, value:finalPrice});
-                                var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+                                 //Get the current gas price
+                                 const gasprice = await web3.eth.getGasPrice();
+                                 var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+                                 console.log(`Current Gas Price x 1.2: ${gas_price}`);
 
-                                const buyTx = await marketplace.methods.buy(listingID,`${selectedAccount}`,_quantityWanted,NATIVE_TOKEN_ADDRESS,buyAmount).send({from:`${selectedAccount}`, value:finalPrice, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
+                                //estimate gas for transaction
+                                const estimatedGas = await marketplace.methods.buy(listingID,`${selectedAccount}`,_quantityWanted,NATIVE_TOKEN_ADDRESS,buyAmount).estimateGas({from: `${selectedAccount}`, value:finalPrice});
+                                var estimated_Gas = Math.round(estimatedGas * 1.2); // estimatation based on transaction
+                                console.log(`Estimated Gas Required x 1.2: ${estimated_Gas}`)
+
+                                //build the transaciton
+                                const rawTransaction = {
+                                    from: `${selectedAccount}`,
+                                    gasPrice: web3.utils.toHex(gas_price),
+                                    gas: web3.utils.toHex(estimated_Gas),
+                                    value: finalPrice,
+                                    nonce: web3.utils.toHex(web3.eth.getTransactionCount(`${selectedAccount}`))
+                                };
+
+                                const buyTx = await marketplace.methods.buy(listingID,`${selectedAccount}`,_quantityWanted,NATIVE_TOKEN_ADDRESS,buyAmount).send(rawTransaction);
                                 document.getElementById('offer').classList.add('hidden');
                                 document.getElementById('offer').style.display = 'none';
                                 document.getElementById('buyButton').classList.add('hidden')
@@ -90,11 +102,27 @@ if(makeOffer != null){
                         } else if (listingType === "1" && net === 5) {
                             try {
                                 document.querySelector(".error").innerHTML = "Initiating Auction Buyout Transaction";
-                                //estimate gas for transaction
-                                const etimateGas = await marketplace.methods.offer(listingID, _quantityWanted, NATIVE_TOKEN_ADDRESS, buyAmount, _expirationTimestamp).estimateGas({from: `${selectedAccount}`, value:finalPrice});
-                                var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
 
-                                const buyTx = await marketplace.methods.offer(listingID, _quantityWanted, NATIVE_TOKEN_ADDRESS, buyAmount, _expirationTimestamp).send({from:`${selectedAccount}`, value:finalPrice, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
+                                //Get the current gas price
+                                const gasprice = await web3.eth.getGasPrice();
+                                var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+                                console.log(`Current Gas Price x 1.2: ${gas_price}`);
+
+                                //estimate gas for transaction
+                                const estimatedGas = await marketplace.methods.offer(listingID, _quantityWanted, NATIVE_TOKEN_ADDRESS, buyAmount, _expirationTimestamp).estimateGas({from: `${selectedAccount}`, value:finalPrice});
+                                var estimated_Gas = Math.round(estimatedGas * 1.2); // estimatation based on transaction
+                                console.log(`Estimated Gas Required x 1.2: ${estimated_Gas}`)
+
+                                //build the transaciton
+                                const rawTransaction = {
+                                    from: `${selectedAccount}`,
+                                    gasPrice: web3.utils.toHex(gas_price),
+                                    gas: web3.utils.toHex(estimated_Gas),
+                                    value: finalPrice,
+                                    nonce: web3.utils.toHex(web3.eth.getTransactionCount(`${selectedAccount}`))
+                                };
+
+                                const buyTx = await marketplace.methods.offer(listingID, _quantityWanted, NATIVE_TOKEN_ADDRESS, buyAmount, _expirationTimestamp).send(rawTransaction);
                                 document.getElementById('offer').classList.add('hidden');
                                 document.getElementById('offer').style.display = 'none';
                                 document.getElementById('buyButton').classList.add('hidden')
@@ -161,11 +189,25 @@ if(makeOffer != null){
 
                             if(checkSpendLimit >= pricePerToken && wethBalance >= pricePerToken){
                                 try {
-                                    //estimate gas for transaction
-                                    const etimateGas = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).estimateGas({from: `${selectedAccount}`});
-                                    var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+                                    //Get the current gas price
+                                    const gasprice = await web3.eth.getGasPrice();
+                                    var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+                                    console.log(`Current Gas Price x 1.2: ${gas_price}`);
 
-                                    const tx = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).send({from:`${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
+                                    //estimate gas for transaction
+                                    const estimatedGas = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).estimateGas({from: `${selectedAccount}`});
+                                    var estimated_Gas = Math.round(estimatedGas * 1.2); // estimatation based on transaction
+                                    console.log(`Estimated Gas Required x 1.2: ${estimated_Gas}`)
+
+                                    //build the transaciton
+                                    const rawTransaction = {
+                                        from: `${selectedAccount}`,
+                                        gasPrice: web3.utils.toHex(gas_price),
+                                        gas: web3.utils.toHex(estimated_Gas),
+                                        nonce: web3.utils.toHex(web3.eth.getTransactionCount(`${selectedAccount}`))
+                                    };
+
+                                    const tx = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).send(rawTransaction);
                                     document.getElementById('offer').classList.add('hidden');
                                     document.getElementById('offer').style.display = 'none';
                                     document.getElementById('buyButton').classList.add('hidden')
@@ -186,12 +228,26 @@ if(makeOffer != null){
 
                             } else {
                                 //first transaction approves the spend limit for the amount a WETH
-                                //estimate gas for transaction
-                                    
-                                const etimateGasApprove = await g_WETH_contract.methods.approve(marketplaceContract, pricePerToken).estimateGas({from: `${selectedAccount}`});
-                                var etimate_GasApprove = Math.round(etimateGasApprove * 1.2); // estimatation based on transaction
+                                //Get the current gas price
+                                const gasprice = await web3.eth.getGasPrice();
+                                var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+                                console.log(`Current Gas Price x 1.2: ${gas_price}`);
 
-                                const txApprove = await g_WETH_contract.methods.approve(marketplaceContract, pricePerToken).send({from:`${selectedAccount}`, gas:web3.utils.toHex(etimate_GasApprove), gasPrice:web3.utils.toHex(gas_price)});
+                                //estimate gas for transaction
+                                const estimatedGasApprove = await g_WETH_contract.methods.approve(marketplaceContract, pricePerToken).estimateGas({from: `${selectedAccount}`});
+                                var estimated_GasApprove = Math.round(estimatedGasApprove * 1.2); // estimatation based on transaction
+                                console.log(`Estimated Gas Required x 1.2: ${estimated_GasApprove}`)
+
+                                //build the transaciton
+                                const approveTxn = {
+                                    from: `${selectedAccount}`,
+                                    gasPrice: web3.utils.toHex(gas_price),
+                                    gas: web3.utils.toHex(estimated_GasApprove),
+                                    nonce: web3.utils.toHex(web3.eth.getTransactionCount(`${selectedAccount}`))
+                                };
+
+                                const txApprove = await g_WETH_contract.methods.approve(marketplaceContract, pricePerToken).send(approveTxn);
+
                                 let spendApproved = true; // set spend approval to true
                                 var checkSpendLimit = await g_WETH_contract.methods.allowance(`${selectedAccount}`, marketplaceContract).call({from:`${selectedAccount}`});
                                 console.log("Your New Spend Limit", checkSpendLimit)
@@ -204,11 +260,25 @@ if(makeOffer != null){
                                 if(spendApproved === true && net === 5){
                                     // second transaction approves the offer to be made.
                                     try {
-                                        //estimate gas for transaction
-                                        const etimateGas = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).estimateGas({from: `${selectedAccount}`});
-                                        var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
+                                        //Get the current gas price
+                                        const gasprice = await web3.eth.getGasPrice();
+                                        var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+                                        console.log(`Current Gas Price x 1.2: ${gas_price}`);
 
-                                        const tx = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).send({from:`${selectedAccount}`, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
+                                        //estimate gas for transaction
+                                        const estimatedGas = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).estimateGas({from: `${selectedAccount}`});
+                                        var estimated_Gas = Math.round(estimatedGas * 1.2); // estimatation based on transaction
+                                        console.log(`Estimated Gas Required x 1.2: ${estimated_Gas}`)
+
+                                        //build the transaction
+                                        const rawTransaction = {
+                                            from: `${selectedAccount}`,
+                                            gasPrice: web3.utils.toHex(gas_price),
+                                            gas: web3.utils.toHex(estimated_Gas),
+                                            nonce: web3.utils.toHex(web3.eth.getTransactionCount(`${selectedAccount}`))
+                                        };
+
+                                        const tx = await marketplace.methods.offer(listID, _quantityWanted, WETH, pricePerToken, _expirationTimestamp).send(rawTransaction);
                                         document.getElementById('offer').classList.add('hidden');
                                         document.getElementById('offer').style.display = 'none';
                                         document.getElementById('buyButton').classList.add('hidden')
@@ -242,11 +312,27 @@ if(makeOffer != null){
 
                         try {
                             const NATIVE_TOKEN_ADDRESS = "0xeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee";
-                            //estimate gas for transaction
-                            const etimateGas = await marketplace.methods.offer(listID, _quantityWanted, NATIVE_TOKEN_ADDRESS, pricePerToken, _expirationTimestamp).estimateGas({from: `${selectedAccount}`, value:valuetokenPrice});
-                            var etimate_Gas = Math.round(etimateGas * 1.2); // estimatation based on transaction
 
-                            const tx = await marketplace.methods.offer(listID, _quantityWanted, NATIVE_TOKEN_ADDRESS, pricePerToken, _expirationTimestamp).send({from:`${selectedAccount}`, value:valuetokenPrice, gas:web3.utils.toHex(etimate_Gas), gasPrice:web3.utils.toHex(gas_price)});
+                            //Get the current gas price
+                            const gasprice = await web3.eth.getGasPrice();
+                            var gas_price = Math.round(gasprice * 1.2); // speed up by 1.2 times
+                            console.log(`Current Gas Price x 1.2: ${gas_price}`);
+
+                            //estimate gas for transaction
+                            const estimatedGas = await marketplace.methods.offer(listID, _quantityWanted, NATIVE_TOKEN_ADDRESS, pricePerToken, _expirationTimestamp).estimateGas({from: `${selectedAccount}`, value:valuetokenPrice});
+                            var estimated_Gas = Math.round(estimatedGas * 1.2); // estimatation based on transaction
+                            console.log(`Estimated Gas Required x 1.2: ${estimated_Gas}`)
+
+                            //build transaction
+                            const rawTransaction = {
+                                from: `${selectedAccount}`,
+                                value:valuetokenPrice,
+                                gasPrice: web3.utils.toHex(gas_price),
+                                gas: web3.utils.toHex(estimated_Gas),
+                                nonce: web3.utils.toHex(web3.eth.getTransactionCount(`${selectedAccount}`))
+                            };
+
+                            const tx = await marketplace.methods.offer(listID, _quantityWanted, NATIVE_TOKEN_ADDRESS, pricePerToken, _expirationTimestamp).send(rawTransaction);
                             document.getElementById("overlay").style.display = "none";
                             document.getElementById('offer').classList.add('hidden');
                             document.getElementById('offer').style.display = 'none';
