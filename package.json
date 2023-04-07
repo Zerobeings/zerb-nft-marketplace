@@ -19,6 +19,7 @@
     "ejs-lint": "^1.2.2",
     "ethers": "^5.7.2",
     "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.0",
     "node-localstorage": "^2.2.1",
     "nodemon": "^2.0.22",
     "privateparty": "^0.0.46",
