@@ -18,10 +18,10 @@
         <a target="_blank" href="https://twitter.com/<%=NFTs[0].contractMetadata.openSea.twitterUsername%>"><i class="fa-brands fa-twitter" style="color: white;text-decoration: none; padding-left: 5px;"></i></a>
         <%}%>
         <% if (NFTs[0].contractMetadata.openSea.discordUrl != null){%>
-        <a target="_blank" href="<%=NFTs[0].contractMetadata.openSea.discordUrl%>"><i class="fa-brands fa-discord" style="color: white;text-decoration: none; padding-left: 5px;"></i></a>
+        <a target="_blank" href="<%=NFTs[0].contractMetadata.openSea.discordUrl%>" rel="noopener noreferrer"><i class="fa-brands fa-discord" style="color: white;text-decoration: none; padding-left: 5px;"></i></a>
         <%}%>
         <% if (NFTs[0].contractMetadata.openSea.externalUrl != null){%>
-        <a target="_blank" href="<%=NFTs[0].contractMetadata.openSea.externalUrl%>"><i class="fa-solid fa-globe" style="color: white;text-decoration: none; padding-left: 5px;"></i></a>
+        <a target="_blank" href="<%=NFTs[0].contractMetadata.openSea.externalUrl%>" rel="noopener noreferrer"><i class="fa-solid fa-globe" style="color: white;text-decoration: none; padding-left: 5px;"></i></a>
         <%}%>
      </div>  
  
@@ -46,7 +46,7 @@
                   <a>
                   <%= JSON.stringify(fp['openSea']['floorPrice'])%>
                   <%= fp['openSea']['priceCurrency']%>
-                  <a class="link" style="text-decoration: none; margin-left: auto;" target="_blank" href="<%=fp['openSea']['collectionUrl']%>">Opensea</a>
+                  <a class="link" style="text-decoration: none; margin-left: auto;" target="_blank" href="<%=fp['openSea']['collectionUrl']%>" rel="noopener noreferrer">Opensea</a>
                   <%} else {%>
                     <a style="background-color: #333;">NA for Opensea</a>
                   <%}%>
@@ -55,7 +55,7 @@
                   <% if(fp['looksRare']['floorPrice'] != null){%>  
                   <%= JSON.stringify(fp['looksRare']['floorPrice'])%>
                   <%= fp['looksRare']['priceCurrency']%>
-                  <a class="link" style="text-decoration: none; margin-left: auto;" target="_blank" href="<%=fp['looksRare']['collectionUrl']%>">Looksrare</a>
+                  <a class="link" style="text-decoration: none; margin-left: auto;" target="_blank" href="<%=fp['looksRare']['collectionUrl']%>" rel="noopener noreferrer">Looksrare</a>
                   <%}else {%>
                     <a style="background-color: #333;">NA for Looksrare</a>
                   <%}%>
