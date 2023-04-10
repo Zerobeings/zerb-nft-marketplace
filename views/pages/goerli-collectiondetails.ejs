@@ -27,7 +27,7 @@
   <div class="grid-NFTdetails">
     <div class="NFTdetailsImage" style="text-align: center; margin-bottom: auto;">
       <h1><%=nft.title%></h1>
-            <a href="https://testnets.opensea.io/assets/ethereum/<%=nft.contract.address%>/<%=IDtoken%>/" target="_blank">
+            <a href="https://testnets.opensea.io/assets/goerli/<%=nft.contract.address%>/<%=IDtoken%>/" target="_blank">
               <%if (nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".png"
                 || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".svg"
                 || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".jpeg"
