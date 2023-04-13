@@ -1,8 +1,10 @@
 
     <% if (NFTs[0].contractMetadata.openSea.imageUrl){%>
     <img style="width: 200px; border-radius: 10px; margin-bottom: 10px;" src="<%=NFTs[0].contractMetadata.openSea.imageUrl%>"/>
-    <%} else {%>
-        <img style="width: 200px; border-radius: 10px; margin-bottom: 10px;" src="<%=NFTs[0].media[0].gateway%>"/>
+    <%} else if (NFTs[0].metadata.filetype != "mp4" || NFTs[0].metadata.filetype === null) {%>
+      <img style="width: 200px; border-radius: 10px; margin-bottom: 10px;" src="<%=NFTs[0].media[0].gateway%>"/>
+    <%} else if (NFTs[0].metadata.filetype === "mp4" || NFTs[0].metadata.filetype === "webm" || NFTs[0].metadata.filetype === "ogg"){%>
+      <video style="width: 200px; border-radius: 10px; margin-bottom: 10px;" controls><source src="<%=NFTs[0].media[0].gateway%>"></video>
     <%}%>
     <div style="display: flex; margin: 10px; justify-content: space-evenly;">
         <%if (NFTs[0].contract.address === '0x8fba3ebe77d3371406a77eeaf40c89c1ed55364a' 
