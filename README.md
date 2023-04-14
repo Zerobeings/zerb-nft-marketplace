@@ -39,7 +39,7 @@ Follow the guide below to get started on your own NFT marketplace today! Otherwi
 
 ### Prerequisites
 * [NodeJs](https://nodejs.org/en/download/)
-* Alchemy API Key & RPC
+* [Alchemy API Key & RPC](https://dashboard.alchemy.com/)
 
 ### Installation
 
