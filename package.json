@@ -12,7 +12,7 @@
   "author": "h0ward.eth",
   "license": "CC0 1.0 Universal",
   "dependencies": {
-    "@thirdweb-dev/sdk": "^3.6.8",
+    "@thirdweb-dev/sdk": "^3.10.10",
     "body-parser": "^1.20.1",
     "dotenv": "^16.0.3",
     "ejs": "^3.1.6",
