@@ -15,7 +15,7 @@
     "@thirdweb-dev/sdk": "^3.10.10",
     "body-parser": "^1.20.1",
     "dotenv": "^16.0.3",
-    "ejs": "^3.1.6",
+    "ejs": "^3.1.9",
     "ejs-lint": "^2.0.0",
     "ethers": "^5.7.2",
     "express": "^4.18.2",
