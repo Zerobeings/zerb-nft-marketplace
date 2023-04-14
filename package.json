@@ -24,6 +24,6 @@
     "nodemon": "^2.0.22",
     "privateparty": "^0.0.46",
     "serve-favicon": "^2.5.0",
-    "web3": "^1.8.0"
+    "web3": "^1.9.0"
   }
 }
