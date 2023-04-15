@@ -101,6 +101,10 @@ party.add('guest');
 //////////////////////////////////////////////////////
 
 //login
+party.app.get("/", (req, res) => {
+  res.render('pages/login')
+})
+
 party.app.get("/login", (req, res) => {
   res.render('pages/login')
 })
