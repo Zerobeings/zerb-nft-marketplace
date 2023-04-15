@@ -29,6 +29,6 @@
     "nodemon": "^2.0.22"
   },
   "publishConfig": {
-    "@calculatingzero:registry": "https://npm.pkg.github.com"
+    "@CalculatingZero:registry": "https://npm.pkg.github.com"
   }
 }
