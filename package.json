@@ -27,8 +27,5 @@
   "devDependencies": {
     "ejs-lint": "^2.0.0",
     "nodemon": "^2.0.22"
-  },
-  "publishConfig": {
-    "@CalculatingZero:registry": "https://npm.pkg.github.com"
   }
 }
