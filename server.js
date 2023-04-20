@@ -141,7 +141,7 @@ party.app.get('/marketgm', party.protect(['zerb', 'guest', 'tinydinos', 'freshfr
   const fetchURL = `${baseURL}?contractAddress=${contract}&withMetadata=${withMetadata}&startToken=${pageKey}&limit=${pageCount}`;
   const fetchfp = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getFloorPrice?contractAddress=${contract}`;
   const fetchSumAtt = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/summarizeNFTAttributes?contractAddress=${contract}`;
-  const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
+  const mainnetMarketContract = '0xd89EFD429668036580844701F2A50eF7B48FE493'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
   const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract
 
   try {
@@ -234,7 +234,7 @@ party.app.post('/marketgm/:page', party.protect(['zerb', 'guest', 'tinydinos', '
   const fetchSumAtt = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/summarizeNFTAttributes?contractAddress=${contract}`;
   const fetchfp = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getFloorPrice?contractAddress=${contract}`;
   const fetchRe = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/reingestContract?contractAddress=${contract}`;
-  const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
+  const mainnetMarketContract = '0xd89EFD429668036580844701F2A50eF7B48FE493'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
   const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract
 
   try {
@@ -260,7 +260,7 @@ party.app.post('/marketgm/:page', party.protect(['zerb', 'guest', 'tinydinos', '
     IDToken = NFTs[0].id.tokenId;
    
     const royaltyURL = `https://api.rarible.org/v0.1/items/ETHEREUM:${contractM}:${IDToken}/royalties` //rarible api to fetch royalties
-    const listings = await marketContract.getActiveListings({tokenContract: "0x9870Da00643AeA2BE9dF89d87efeD0A2fdb5479e"}); //get active listings from contract
+    const listings = await marketContract.getActiveListings({tokenContract: contractM}); //get active listings from contract
     const royalties = await fetch(royaltyURL, {method: 'GET'}).then((data) => data.json()); //get creator royalties for specific listing
   
     res.render('pages/marketgm', {
@@ -342,7 +342,7 @@ party.app.post('/marketgm', party.protect(['zerb', 'guest', 'tinydinos', 'freshf
   const fetchSumAtt = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/summarizeNFTAttributes?contractAddress=${contract}`;
   const fetchfp = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getFloorPrice?contractAddress=${contract}`;
   const fetchRe = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/reingestContract?contractAddress=${contract}`;
-  const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
+  const mainnetMarketContract = '0xd89EFD429668036580844701F2A50eF7B48FE493'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
   const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract
   
 
@@ -366,7 +366,7 @@ party.app.post('/marketgm', party.protect(['zerb', 'guest', 'tinydinos', 'freshf
     contractM = NFTs[0].contract.address;
     IDToken = NFTs[0].id.tokenId;
     const royaltyURL = `https://api.rarible.org/v0.1/items/ETHEREUM:${contractM}:${IDToken}/royalties` //rarible api to fetch royalties
-    const listings = await marketContract.getActiveListings({tokenContract: "0x9870Da00643AeA2BE9dF89d87efeD0A2fdb5479e"}); //get active listings from contract
+    const listings = await marketContract.getActiveListings({tokenContract: contractM}); //get active listings from contract
     const royalties = await fetch(royaltyURL, {method: 'GET'}).then((data) => data.json()); //get creator royalties for specific listing
     
     res.render('pages/marketgm', {
@@ -487,7 +487,7 @@ party.app.get('/myListings', party.protect(['zerb', 'guest', 'tinydinos', 'fresh
   var pageKeysP = [];
   var page = req.params.page || 1;
   const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
-  const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
+  const mainnetMarketContract = '0xd89EFD429668036580844701F2A50eF7B48FE493'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
   const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract
 
   try {
@@ -602,7 +602,7 @@ party.app.post('/myListings/:page', party.protect(['zerb', 'guest', 'tinydinos',
     var pageKey = '';
     } 
     const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
-    const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
+    const mainnetMarketContract = '0xd89EFD429668036580844701F2A50eF7B48FE493'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
     const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract
 
     try {
@@ -712,7 +712,7 @@ party.app.get('/listingDetails/:contract/:IDToken', party.protect(['zerb', 'gues
   var IDToken = req.params.IDToken;
   const baseURL = `https://eth-mainnet.g.alchemy.com/nft/v2/${process.env.API_KEY}/getNFTMetadata`; // alchemy api
   const fetchURL =`${baseURL}?contractAddress=${contract}&tokenId=${IDToken}&refreshCache=false`; //fetchURL for NFT alchemy api
-  const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
+  const mainnetMarketContract = '0xd89EFD429668036580844701F2A50eF7B48FE493'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
   const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract thirdweb sdk
   const wrapper = NATIVE_TOKENS; //from thirdweb sdk. fetchs all networks and associated wrapped tokens. This allow for offers to be made
   const royaltyURL = `https://api.rarible.org/v0.1/items/ETHEREUM:${contract}:${IDToken}/royalties` //rarible api to fetch royalties
@@ -781,7 +781,7 @@ party.app.get('/auctions', party.protect(['zerb', 'guest', 'tinydinos', 'freshfr
   const pageCount = 1;
   var pageKey = '';
   const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
-  const mainnetMarketContract = '0x8F6502Aeae32D3B708236F8cB1eB2aa45429cE34'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
+  const mainnetMarketContract = '0xd89EFD429668036580844701F2A50eF7B48FE493'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard  
   const marketContract = await sdk.getContract(mainnetMarketContract, "marketplace"); //get marketplace contract
 
   try {
