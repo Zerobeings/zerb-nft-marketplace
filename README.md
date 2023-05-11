@@ -8,10 +8,10 @@
   <img width="80%" src="https://learn.zerobeings.xyz/images/poweredby.png">
 </p>
 
-# 🚧 Market gm ☕️ is Currently Under Construction 🚧
-> * Market gm ☕️ is currently in testing phase 
+# 🚧 Market gm ☕️ Marketplace Template 🚧 
 > * Plese take appropraite actions to upgrade to production level
-> * Mainnet contract interactions have not been tested
+> * Mainnet contract interactions have not been tested. I will update this note once mainnet testing is completed
+> * A production level example of this template is provided at gm.zerobeings.xyz 
 
 # Market gm ☕️ - An NFT marketplace 
 
@@ -121,8 +121,13 @@ There are total seven locations in which the goerli & mainnet contract addresses
 1. server.js
 2. mbox.json
 3. gbox.json
-4. listingsCard.ejs (IPFS Link)
-5. goerli-listingsCard.ejs (IPFS Link)
+4. sbox.json
+5. mylistingsCard.ejs (IPFS Link)
+6. sepolia-myListingsCard.ejs (IPFS Link)
+7. goerli-mylistingsCard.ejs (IPFS Link)
+8. footerMarket.ejs
+9. goerli-footerMarket.ejs
+10. sepolia-footerMarket.ejs
 
 #### Update server.js
 
@@ -131,12 +136,13 @@ There are total seven locations in which the goerli & mainnet contract addresses
 // contracts are referenced in three locations in mbox.json for mainnet and gbox.json for goerli,
 // the listingsCard and mybids for mainnet and goerli-listingsCard & goerli-mybids in the IPFS site link,
 // in the const listed below, and finally the marketfooter files.
-const gMarkectContract = '<your goerli contract address>'; //goerli marketplace contract. Deploy from thirdweb dashboard.
+const gMarketContract = '<your goerli contract address>'; //goerli marketplace contract. Deploy from thirdweb dashboard.
+const sepMarketContract = '<your sepolia contract address>'; //goerli marketplace contract. Deploy from thirdweb dashboard.
 const mainnetMarketContract = '<your mainnet contract address>'; //ETH mainnet marketplace contract. Deploy from thirdweb dashboard
 ```
 
 #### Updating mbox.json and gbox.json files
-You will need to add your contract address to the mbox.json and gbox.json.
+You will need to add your contract address to the mbox.json and gbox.json files.
 
 The mbox.json file supports the connection to the mainnet.
 ```json
@@ -148,7 +154,11 @@ The gbox.json file supports the connection to the goerli-network.
 ```json
 {"contract":"<MarketContract>","network":"goerli"}
 ```
+The sbox.json file supports the connection to the sepolia-network.
 
+```json
+{"contract":"<MarketContract>","network":"sepolia"}
+```
 #### Update the listingCard partials
 The listingCard partials contain a copy iframe button. Navigate to your thirdbed dashboard and copy the iframe code and paste it into this section. The default configuration is with written with a listing ID of `0`. This must be updated to `<%=listings.id%>` to autolink the correct IPFS website.
 
