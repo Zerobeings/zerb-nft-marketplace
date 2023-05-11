@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+</head>
+<body class="container">
+
+<header>
+  <%- include('../partials/sepolia-headerMarket'); %>
+</header>
+
+<main>
+  <div>
+    <h1 class ="color-serpolia">sepolia - Market gm ☕</h1>
+    <div class="text-center">0.5% Platform Fee & <a class="link no-decorations" href="https://eips.ethereum.org/EIPS/eip-2981">EIP-2981</a> Royalties Honored</div>
+    <div class="nft-details">Search, Collect, and Sell NFTs</div>
+    <div id="overlay"></div>
+  </div>
+  
+  <h2 class="bluz editorChoice">Preview Test</h2>
+  <%- include('../partials/sepolia-slideShow'); %>
+
+<br>
+
+<div class="market-container">
+
+  <div class="grid-market">
+    <div class="market1">
+      <h2 class="bluz titleM margin-20px text-left">Collection Info</h2>
+      <%- include('../partials/sepolia-collectionInfo'); %>
+    </div>
+    <div class="market2">
+      <h2 class="bluz titleM margin-20px text-left">Available Listings
+        <a class="bluz titleM float-right">Listings <%=listings.length%></a>
+      </h2>
+      <%- include('../partials/sepolia-listingsCard'); %>
+    </div>  
+    <div class="market3">
+      <h2 class="bluz titleM margin-20px text-left">View Collection
+        <a class="bluz titleM float-right">Items 
+          <%if(NFTs.length < 100){%>
+            <%=NFTs.length%>
+          <%} else if(nfts.nextToken != null){%>
+            100+
+            <%} else {%>
+              Cannot be Retrieved
+              <%}%>
+        </a>
+      </h2>
+      <%- include('../partials/sepolia-collectionView'); %>
+    </div>
+  </div>
+</div>
+
+</main>
+
+
+<footer id="footer">
+    <%- include('../partials/sepolia-footerMarket'); %>
+</footer>
+
+<script src="/js/featuredNFTs.js"></script>
+<script src="/js/imgLoader.js"></script>
+<script src="/js/imLoading.js"></script>
+<script src="/js/date.js"></script>
+<script src="/js/navSidepanel.js"></script>
+<script src="/js/enableSubmit.js"></script>
+<script src="/js/copypaste.js"></script>
+<script src="/js/iframepauser.js"></script>
+</body>
+</html>

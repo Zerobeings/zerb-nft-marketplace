@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+ 
+
+</head>
+<body class="container">
+
+
+<header>
+  <%- include('../partials/sepolia-headerlistings'); %>
+</header>
+
+<main>
+  <div>
+    <h1 class ="color-serpolia">sepolia - Market gm ☕</h1>
+    <div class="text-center">0.5% Platform Fee & <a class="link no-decorations" href="https://eips.ethereum.org/EIPS/eip-2981">EIP-2981</a> Royalties Honored</div>
+    <div class="nft-details">Listings Overview</div>
+    <div id="overlay"></div>
+  </div>
+  
+<br>
+
+<%if (listingsForBids != null && listingsForBids.length !=0) {%>
+<div class="auction-cards">
+  <h2 class="bluz titleM auction-align">My Bids
+    <a class="bluz titleM float-right">Total Bids <%=listingsForBids.length%></a>
+  </h2>
+  <%- include('../partials/sepolia-mybids'); %>
+</div>
+<%}%>
+
+<div class="listing-details-frame">
+
+  <div class="grid-market">
+    <div class="market1" id="market1">
+      <h2 class="bluz titleM auction-align justify-items-center">Create Listing <button id="createlistinginput" class="marketbtn float-right">Connect</button></h2>
+      <a class="error listings-error"></a>
+      <br>
+      <a id="marketInfo" class="marketInfo">Connect to marketplace contract to create a listing</a>
+      <br>
+      <br>
+      <%- include('../partials/createListing'); %>
+    </div>
+    <div class="market2">
+      <h2 class="bluz titleM auction-align">My Listings
+        <a class="bluz titleM float-right">Listings <%=listings.length%></a>
+      </h2>
+      <%- include('../partials/sepolia-mylistingsCard'); %>
+    </div>  
+    <div class="market3">
+      <h2 class="bluz titleM auction-align">My Portfolio
+        <a class="bluz titleM float-right">Items <%=nfts.totalCount%> </a>
+      </h2>
+      <%- include('../partials/sepolia-myPortfolio'); %>
+    </div>
+  </div>
+</div>
+</main>
+
+
+<footer id="footer">
+    <%- include('../partials/sepolia-footerMarket'); %>
+</footer>
+
+  <script src="/js/embeder.js"></script>
+  <script src="/js/imgLoader.js"></script>
+  <script src="/js/imLoading.js"></script>
+  <script src="/js/smoothscroll.js"></script>
+  <script src="/js/marketV2.js"></script>
+  <script src="/js/sepolia-createlisting.js"></script>
+  <script src="/js/sepolia-cancellisting.js"></script>
+  <script src="/js/date.js"></script>
+  <script src="https://unpkg.com/web3@1.9.0/dist/web3.min.js"></script>
+  <script src="/js/navSidepanel.js"></script>
+  <script src="/js/copypaste.js"></script>
+  <script src="/js/selectlistingtype.js"></script>
+  <script src="/js/enableSubmit.js"></script>
+  <script src="/js/populateListing.js"></script>
+</body>
+</html>

@@ -1,0 +1,697 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <%- include('../partials/head'); %>
+ 
+
+</head>
+<body class="container">
+
+
+<header>
+  <%- include('../partials/sepolia-headerDetails'); %>
+</header>
+
+<main>
+  <div>
+    <h1 class="color-serpolia">sepolia - Market gm ☕</h1>
+    <div class="text-center">0.5% Platform Fee & <a class="link no-decorations" href="https://eips.ethereum.org/EIPS/eip-2981">EIP-2981</a> Royalties Honored</div>
+    <div class="nft-details">Market Listing Details</div>
+    <div id="overlay"></div>
+  </div>
+
+<div class="listing-details-frame">
+  <div class="grid-NFTdetails">
+    <div class="NFTdetailsImage position-nft-details">
+     
+
+      <%if (listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".png" 
+        || listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".svg"
+        || listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".jpeg"
+        || listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".jpg"
+        || listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".gif"
+        || listings[0].asset.image.indexOf(".", listings[0].asset.image.length-5) === -1){%>
+          <img class="items-center asyncImage details-image-nft" src="/images/loading.png" data-src="<%=listings[0].asset.image%>"  alt="...">
+          <%} %>
+        
+          <%if (listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".wav" 
+          || listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".mp3" 
+          || listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".ogg"){%>
+            <audio class="details-audio-nft" controls><source src="<%=listings[0].asset.image%>"></audio>
+            <%}%>
+        
+        <%if (listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".mp4"
+        || listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".webm"
+        || listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".ogg"){%>
+            <video class="details-video-nft" controls><source src="<%=listings[0].asset.image%>"></video>
+            <%}%>
+        <%if (listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".doc"
+        || listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".docx"
+        || listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".pdf"
+        || listings[0].asset.image.substr(listings[0].asset.image.length-4).toLowerCase() === ".txt"){%>
+            <iframe src="https://docs.google.com/gview?url=<%=listings[0].asset.image%>&embedded=true" width="75%" height="75%" frameborder="0"></iframe>
+            <%}%>
+
+
+    </div>
+    <div class="NFTdetailsInfo">
+      <h1 class="details-info"><%=nfts.contractMetadata.name%> #<%=listings[0].asset.id%></h1>
+      <a id="theListingID" class="hidden"><%=listings[0].id%></a>
+      <div class="grid-NFTdetails2">
+        <div class="bluz">Contract:</div>
+        <div>
+          <a target="_blank" class="link no-decorations" href="https://sepolia.etherscan.io/address/<%=listings[0].assetContractAddress%>">
+            <%=listings[0].assetContractAddress.substr(0,4)%>...<%=listings[0].assetContractAddress.substr(listings[0].assetContractAddress.length-4)%>
+          </a>
+        </div>
+        <div class="bluz">Seller:</div>
+        <div>
+          <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=listings[0].sellerAddress%>">
+            <%=listings[0].sellerAddress.substr(0,4)%>...<%=listings[0].sellerAddress.substr(listings[0].sellerAddress.length-4)%>
+          </a>
+        </div>
+        <div class="bluz">Sale Type:</div>
+        <a class="hidden" id="listingType"><%=listings[0].type%></a>
+        <div>
+          <%if(listings[0].type === 0) {%>
+            Direct Sale
+           <%} else {%>
+             Auction
+           <%}%>  
+        </div>
+        <div class="bluz">Buyout Price:</div>
+        <a class="hidden" id="buybuybuy"><%=listings[0].buyoutPrice%></a>
+        <div><%=listings[0].buyoutCurrencyValuePerToken.displayValue%> <%=listings[0].buyoutCurrencyValuePerToken.symbol%></div>
+        <%if(listings[0].type === 0) {%>
+              <div class="bluz">Sale Duration:</div>
+              <a id="referenceTime" class="hidden"><%=parseInt(listings[0].secondsUntilEnd)%></a>
+              <div><%=Math.round((parseInt(listings[0].secondsUntilEnd)-parseInt(listings[0].startTimeInSeconds))/86400)%> days</div>
+              <div class="bluz">Sale Ends:</div> 
+              <div>
+                <% let timeLeft = Math.round(parseInt(listings[0].secondsUntilEnd - (Math.floor(Date.now()/1000)))/86400)%>
+                <% if (timeLeft < 0){%>
+                  Expired
+                  <%var isExperied = true%>
+                  <%} else {%>
+                    <%var isExperied = false%>
+                    <%= timeLeft %> days
+                    <%}%>
+                </div>
+            <%} else {%>
+              <div class="bluz">Reserve Price:</div>
+              <div><%=listings[0].reservePriceCurrencyValuePerToken.displayValue%> <%=listings[0].reservePriceCurrencyValuePerToken.symbol%></div>
+              <div class="bluz">Sale Duration:</div> 
+              <a id="referenceTime" class="hidden"><%=parseInt(listings[0].endTimeInEpochSeconds)%></a>
+              <div><%=Math.round((parseInt(listings[0].endTimeInEpochSeconds)-parseInt(listings[0].startTimeInEpochSeconds))/86400)%> days</div>
+              <div class="bluz">Sale Ends:</div> 
+              <div>
+                <% let timeLeft = Math.round(parseInt(listings[0].endTimeInEpochSeconds - (Math.floor(Date.now()/1000)))/86400)%>
+                <% if (timeLeft < 0){%>
+                  Expired
+                  <%var isExperied = true%>
+                  <%} else {%>
+                    <%var isExperied = false%>
+                    <%= timeLeft %>
+                    <%}%>
+                days</div>
+              <%}%>
+              <%if (royalties.royalties[0] != null || royalties.royalties[0] != undefined){%>
+              <div class="bluz">Royalties:</div>
+              <div><%=((royalties.royalties[0].value/10000) * 100)%> %</div>
+              <%}%>
+      </div>
+      <% if(nfts.metadata.attributes != null) { %>
+        <h1>NFT Attributes</h1>
+        <div class="file-license">
+              <%if (nfts.metadata.file != null) {%>
+                  <a href="<%=nfts.metadata.file%>" target="_blank" class="no-decorations" rel="noopener noreferrer">
+                    <img class="img-file-license" src="/images/filelocation.png">
+                  </a>
+                <%}%>
+                <%if (nfts.metadata.file != null) {%>
+                  <a href="<%=nfts.metadata.license_url%>" target="_blank" class="no-decorations" rel="noopener noreferrer">
+                    <img class="img-file-license" src="/images/NFTlicense.png">
+                  </a>
+                <%}%>
+            </div>
+        
+          <%if (BigInt(nfts.id.tokenId) === BigInt(listings[0].tokenId)) {%>
+
+          <% const attributes = Object.keys(nfts.metadata.attributes);%>
+              <%for (p=0; p<attributes.length; p++){%>
+              <div class="grid-MetaData">
+                <div class="bluz padding-10px"><%= nfts.metadata.attributes[p].trait_type%>:</div>
+                <div class="padding-10px"><%= nfts.metadata.attributes[p].value%></div>
+              </div>
+              <%}%>
+              <%}%>
+            
+            <%} else {%>
+              <h1>NFT Info</h1>
+              <div class="file-license">
+              <%if (nfts.metadata.file != null) {%>
+                  <a href="<%=nfts.metadata.file%>" target="_blank" class="no-decorations" rel="noopener noreferrer">
+                    <img class="img-file-license" src="/images/filelocation.png">
+                  </a>
+                <%}%>
+                <%if (nfts.metadata.file != null) {%>
+                  <a href="<%=nfts.metadata.license_url%>" target="_blank" class="no-decorations" rel="noopener noreferrer">
+                    <img class="img-file-license" src="/images/NFTlicense.png">
+                  </a>
+                <%}%>
+            </div>
+              <div class="grid-MetaData">
+                        <div class="bluz padding-10px">About:</div>
+                        <div class="padding-10px"><%= nfts.metadata.description%></div>
+              </div>
+              <%}%>
+      <%if(session.zerb && (listings[0].sellerAddress).toLowerCase() === (session.zerb.account).toLowerCase() && isExperied != true){%>
+        <%if(listings[0].type === 0) {%>
+          <div class="offers-container">
+            <h1>Offers</h1>
+            <div class="text-center">
+            <button id="getit" class="marketbtn margin-bottom-20px">Connect</button><br>
+            <div class="margin-bottom-20px">
+              <a class="error offers-error text-center"></a>
+            </div>
+            </div>
+            <div id="readOnlyList" class="margin-bottom-20px">
+              <% if(offers.length > 0) {%>
+                <div class="grid-MetaData">
+                  <div class="bluz padding-10px">Buyers</div>
+                  <div class="bluz padding-10px">Offers</div>
+                </div>
+              <% offers.forEach((offer,i) => {%>
+                <div class="grid-MetaData">
+                  <div class="padding-10px">
+                    <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                      <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                    </a>
+                  </div>
+                  <div class="padding-10px"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></div>
+                </div> 
+                  <%})%>
+                <%}%> 
+            </div>
+              <div id="acceptOffersList" class="hidden margin-bottom-20px">
+                <% if(offers.length > 0) {%>
+                  <div class="grid-MetaData">
+                    <div class="bluz padding-10px">Buyers</div>
+                    <div class="bluz padding-10px">Offers</div>
+                  </div>
+                <% offers.forEach((offer,i) => {%>
+                  <div class="grid-MetaData">
+                    <div class="padding-10px">
+                      <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                        <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                      </a>
+                      <a id="buyerAddress" class="hidden"><%=offer.buyerAddress%></a>
+                    </div>
+                    <div class="padding-10px">
+                      <a id="<%=offer.buyerAddress%>" class="offers-buy-address"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></a>
+                      <form id="accpetForm" class="display-inline">
+                        <input id="offerListingID" name="offerListingID" type="number" value="<%=parseInt(offer.listingId)%>" class="hidden required" readonly>
+                        <input id="offerBuyerAddress" name="offerBuyerAddress" type="text" value="<%=offer.buyerAddress%>" class="hidden required" readonly>
+                        <input id="offerCurrencyContractAddress" name="offerCurrencyContractAddress" type="text" value="<%=offer.currencyContractAddress%>" class="hidden required" readonly>
+                        <input id="offerPriceperToken" name="offerPriceperToken" type="number" value="<%=parseInt(offer.pricePerToken)%>" class="hidden required" readonly>
+                        <input class="margin-left-20px" value="Accept" id="acceptButton" class="marketbtn margin-left-20px" type="submit">
+                      </form>
+                    </div> 
+                  </div> 
+                    <%})%>
+                  <%}%> 
+              </div>
+          </div>
+          <%} else {%>
+            <div class="offers-container">
+              <h1>Bids</h1>
+              
+              <div class="margin-bottom-20px">
+                <a class="error bids-error text-center"></a>
+              </div>
+              <div id="readOnlyList" class="margin-bottom-20px">
+                <% if(offers.length > 0) {%>
+                  <div class="grid-MetaData">
+                    <div class="bluz padding-10px">Buyers</div>
+                    <div class="bluz padding-10px">Bids</div>
+                  </div>
+                <% offers.forEach((offer,i) => {%>
+                  <div class="grid-MetaData">
+                    <div class="padding-10px">
+                      <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                        <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                      </a>
+                    </div>
+                    <div class="padding-10px"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></div>
+                  </div> 
+                    <%})%>
+                  <%}%> 
+              </div>
+                <div id="acceptOffersList" class="hidden margin-bottom-20px">
+                  <% if(offers.length > 0) {%>
+                    <div class="grid-MetaData">
+                      <div class="bluz padding-10px">Buyers</div>
+                      <div class="bluz padding-10px">Bids</div>
+                    </div>
+                  <% offers.forEach((offer,i) => {%>
+                    <div class="grid-MetaData">
+                      <div class="padding-10px">
+                        <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                          <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                        </a>
+                        <a id="buyerAddress" class="hidden"><%=offer.buyerAddress%></a>
+                      </div>
+                      <div class="padding-10px">
+                        <a id="<%=offer.buyerAddress%>" class="offers-buy-address"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></a>
+                      </div> 
+                    </div> 
+                      <%})%>
+                    <%}%> 
+                </div>
+            </div>
+            <%}%>
+      <%} else if(session.guest && (listings[0].sellerAddress).toLowerCase() === (session.guest.account).toLowerCase() && isExperied != true) {%>
+        <%if(listings[0].type === 0) {%>
+          <div class="offers-container">
+            <h1>Offers</h1>
+            <div class="text-center">
+            <button id="getit" class="marketbtn margin-bottom-20px">Connect</button><br>
+            <div class="margin-bottom-20px">
+              <a class="error offers-error text-center"></a>
+            </div>
+            </div>
+            <div id="readOnlyList"  class="margin-bottom-20px">
+              <% if(offers.length > 0) {%>
+                <div class="grid-MetaData">
+                  <div class="bluz padding-10px">Buyers</div>
+                  <div class="bluz padding-10px">Offers</div>
+                </div>
+              <% offers.forEach((offer,i) => {%>
+                <div class="grid-MetaData">
+                  <div class="padding-10px">
+                    <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                      <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                    </a>
+                  </div>
+                  <div class="padding-10px"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></div>
+                </div> 
+                  <%})%>
+                <%}%> 
+            </div>
+              <div id="acceptOffersList" class="hidden margin-bottom-20px">
+                <% if(offers.length > 0) {%>
+                  <div class="grid-MetaData">
+                    <div class="bluz padding-10px">Buyers</div>
+                    <div class="bluz padding-10px">Offers</div>
+                  </div>
+                <% offers.forEach((offer,i) => {%>
+                  <div class="grid-MetaData">
+                    <div class="padding-10px">
+                      <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                        <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                      </a>
+                      <a id="buyerAddress" class="hidden"><%=offer.buyerAddress%></a>
+                    </div>
+                    <div class="padding-10px">
+                      <a id="<%=offer.buyerAddress%>" class="offers-buy-address"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></a>
+                      <form id="accpetForm" class="display-inline">
+                        <input id="offerListingID" name="offerListingID" type="number" value="<%=parseInt(offer.listingId)%>" class="hidden required" readonly>
+                        <input id="offerBuyerAddress" name="offerBuyerAddress" type="text" value="<%=offer.buyerAddress%>" class="hidden required" readonly>
+                        <input id="offerCurrencyContractAddress" name="offerCurrencyContractAddress" type="text" value="<%=offer.currencyContractAddress%>" class="hidden required" readonly>
+                        <input id="offerPriceperToken" name="offerPriceperToken" type="number" value="<%=parseInt(offer.pricePerToken)%>" class="hidden required" readonly>
+                        <input value="Accept" id="acceptButton" class="marketbtn margin-left-20px" type="submit">
+                      </form>
+                    </div> 
+                  </div> 
+                    <%})%>
+                  <%}%> 
+              </div>
+          </div>
+          <%} else {%>
+            <div class="offers-container">
+              <h1>Bids</h1>
+              
+              <div class="margin-bottom-20px">
+                <a class="error bids-error"></a>
+              </div>
+              <div id="readOnlyList"  class="margin-bottom-20px">
+                <% if(offers.length > 0) {%>
+                  <div class="grid-MetaData">
+                    <div class="bluz padding-10px">Buyers</div>
+                    <div class="bluz padding-10px">Bids</div>
+                  </div>
+                <% offers.forEach((offer,i) => {%>
+                  <div class="grid-MetaData">
+                    <div class="padding-10px">
+                      <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                        <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                      </a>
+                    </div>
+                    <div class="padding-10px"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></div>
+                  </div> 
+                    <%})%>
+                  <%}%> 
+              </div>
+                <div id="acceptOffersList" class="hidden margin-bottom-20px">
+                  <% if(offers.length > 0) {%>
+                    <div class="grid-MetaData">
+                      <div class="bluz padding-10px">Buyers</div>
+                      <div class="bluz padding-10px">Bids</div>
+                    </div>
+                  <% offers.forEach((offer,i) => {%>
+                    <div class="grid-MetaData">
+                      <div class="padding-10px">
+                        <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                          <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                        </a>
+                        <a id="buyerAddress" class="hidden"><%=offer.buyerAddress%></a>
+                      </div>
+                      <div class="padding-10px">
+                        <a id="<%=offer.buyerAddress%>" class="offers-buy-address"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></a>
+                      </div> 
+                    </div> 
+                      <%})%>
+                    <%}%> 
+                </div>
+            </div>
+            <%}%>
+        <%} else if(session.tinydinos && (listings[0].sellerAddress).toLowerCase() === (session.tinydinos.account).toLowerCase() && isExperied != true) {%>
+        <%if(listings[0].type === 0) {%>
+          <div class="offers-container">
+            <h1>Offers</h1>
+            <div class="text-center">
+            <button id="getit" class="marketbtn margin-bottom-20px">Connect</button><br>
+            <div class="margin-bottom-20px">
+              <a class="error offers-error text-center"></a>
+            </div>
+            </div>
+            <div id="readOnlyList"  class="margin-bottom-20px">
+              <% if(offers.length > 0) {%>
+                <div class="grid-MetaData">
+                  <div class="bluz padding-10px">Buyers</div>
+                  <div class="bluz padding-10px">Offers</div>
+                </div>
+              <% offers.forEach((offer,i) => {%>
+                <div class="grid-MetaData">
+                  <div class="padding-10px">
+                    <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                      <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                    </a>
+                  </div>
+                  <div class="padding-10px"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></div>
+                </div> 
+                  <%})%>
+                <%}%> 
+            </div>
+              <div id="acceptOffersList" class="hidden margin-bottom-20px">
+                <% if(offers.length > 0) {%>
+                  <div class="grid-MetaData">
+                    <div class="bluz padding-10px">Buyers</div>
+                    <div class="bluz padding-10px">Offers</div>
+                  </div>
+                <% offers.forEach((offer,i) => {%>
+                  <div class="grid-MetaData">
+                    <div class="padding-10px">
+                      <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                        <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                      </a>
+                      <a id="buyerAddress" class="hidden"><%=offer.buyerAddress%></a>
+                    </div>
+                    <div class="padding-10px">
+                      <a id="<%=offer.buyerAddress%>" class="offers-buy-address"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></a>
+                      <form id="accpetForm" class="display-inline">
+                        <input id="offerListingID" name="offerListingID" type="number" value="<%=parseInt(offer.listingId)%>" class="hidden required" readonly>
+                        <input id="offerBuyerAddress" name="offerBuyerAddress" type="text" value="<%=offer.buyerAddress%>" class="hidden required" readonly>
+                        <input id="offerCurrencyContractAddress" name="offerCurrencyContractAddress" type="text" value="<%=offer.currencyContractAddress%>" class="hidden required" readonly>
+                        <input id="offerPriceperToken" name="offerPriceperToken" type="number" value="<%=parseInt(offer.pricePerToken)%>" class="hidden required" readonly>
+                        <input value="Accept" id="acceptButton" class="marketbtn margin-left-20px" type="submit">
+                      </form>
+                    </div> 
+                  </div> 
+                    <%})%>
+                  <%}%> 
+              </div>
+          </div>
+          <%} else {%>
+            <div class="offers-container">
+              <h1>Bids</h1>
+              
+              <div class="margin-bottom-20px">
+                <a class="error bids-error"></a>
+              </div>
+              <div id="readOnlyList"  class="margin-bottom-20px">
+                <% if(offers.length > 0) {%>
+                  <div class="grid-MetaData">
+                    <div class="bluz padding-10px">Buyers</div>
+                    <div class="bluz padding-10px">Bids</div>
+                  </div>
+                <% offers.forEach((offer,i) => {%>
+                  <div class="grid-MetaData">
+                    <div class="padding-10px">
+                      <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                        <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                      </a>
+                    </div>
+                    <div class="padding-10px"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></div>
+                  </div> 
+                    <%})%>
+                  <%}%> 
+              </div>
+                <div id="acceptOffersList" class="hidden margin-bottom-20px">
+                  <% if(offers.length > 0) {%>
+                    <div class="grid-MetaData">
+                      <div class="bluz padding-10px">Buyers</div>
+                      <div class="bluz padding-10px">Bids</div>
+                    </div>
+                  <% offers.forEach((offer,i) => {%>
+                    <div class="grid-MetaData">
+                      <div class="padding-10px">
+                        <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                          <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                        </a>
+                        <a id="buyerAddress" class="hidden"><%=offer.buyerAddress%></a>
+                      </div>
+                      <div class="padding-10px">
+                        <a id="<%=offer.buyerAddress%>" class="offers-buy-address"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></a>
+                      </div> 
+                    </div> 
+                      <%})%>
+                    <%}%> 
+                </div>
+            </div>
+            <%}%>
+        <%} else if(session.freshfrogsNFT && (listings[0].sellerAddress).toLowerCase() === (session.freshfrogsNFT.account).toLowerCase() && isExperied != true) {%>
+        <%if(listings[0].type === 0) {%>
+          <div class="offers-container">
+            <h1>Offers</h1>
+            <div class="text-center">
+            <button id="getit" class="marketbtn margin-bottom-20px">Connect</button><br>
+            <div class="margin-bottom-20px">
+              <a class="error offers-error text-center"></a>
+            </div>
+            </div>
+            <div id="readOnlyList"  class="margin-bottom-20px">
+              <% if(offers.length > 0) {%>
+                <div class="grid-MetaData">
+                  <div class="bluz padding-10px">Buyers</div>
+                  <div class="bluz padding-10px">Offers</div>
+                </div>
+              <% offers.forEach((offer,i) => {%>
+                <div class="grid-MetaData">
+                  <div class="padding-10px">
+                    <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                      <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                    </a>
+                  </div>
+                  <div class="padding-10px"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></div>
+                </div> 
+                  <%})%>
+                <%}%> 
+            </div>
+              <div id="acceptOffersList" class="hidden margin-bottom-20px">
+                <% if(offers.length > 0) {%>
+                  <div class="grid-MetaData">
+                    <div class="bluz padding-10px">Buyers</div>
+                    <div class="bluz padding-10px">Offers</div>
+                  </div>
+                <% offers.forEach((offer,i) => {%>
+                  <div class="grid-MetaData">
+                    <div class="padding-10px">
+                      <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                        <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                      </a>
+                      <a id="buyerAddress" class="hidden"><%=offer.buyerAddress%></a>
+                    </div>
+                    <div class="padding-10px">
+                      <a id="<%=offer.buyerAddress%>" class="offers-buy-address"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></a>
+                      <form id="accpetForm" class="display-inline">
+                        <input id="offerListingID" name="offerListingID" type="number" value="<%=parseInt(offer.listingId)%>" class="hidden required" readonly>
+                        <input id="offerBuyerAddress" name="offerBuyerAddress" type="text" value="<%=offer.buyerAddress%>" class="hidden required" readonly>
+                        <input id="offerCurrencyContractAddress" name="offerCurrencyContractAddress" type="text" value="<%=offer.currencyContractAddress%>" class="hidden required" readonly>
+                        <input id="offerPriceperToken" name="offerPriceperToken" type="number" value="<%=parseInt(offer.pricePerToken)%>" class="hidden required" readonly>
+                        <input value="Accept" id="acceptButton" class="marketbtn margin-left-20px" type="submit">
+                      </form>
+                    </div> 
+                  </div> 
+                    <%})%>
+                  <%}%> 
+              </div>
+          </div>
+          <%} else {%>
+            <div class="offers-container">
+              <h1>Bids</h1>
+              
+              <div class="margin-bottom-20px">
+                <a class="error bids-error"></a>
+              </div>
+              <div id="readOnlyList"  class="margin-bottom-20px">
+                <% if(offers.length > 0) {%>
+                  <div class="grid-MetaData">
+                    <div class="bluz padding-10px">Buyers</div>
+                    <div class="bluz padding-10px">Bids</div>
+                  </div>
+                <% offers.forEach((offer,i) => {%>
+                  <div class="grid-MetaData">
+                    <div class="padding-10px">
+                      <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                        <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                      </a>
+                    </div>
+                    <div class="padding-10px"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></div>
+                  </div> 
+                    <%})%>
+                  <%}%> 
+              </div>
+                <div id="acceptOffersList" class="hidden margin-bottom-20px">
+                  <% if(offers.length > 0) {%>
+                    <div class="grid-MetaData">
+                      <div class="bluz padding-10px">Buyers</div>
+                      <div class="bluz padding-10px">Bids</div>
+                    </div>
+                  <% offers.forEach((offer,i) => {%>
+                    <div class="grid-MetaData">
+                      <div class="padding-10px">
+                        <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                          <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                        </a>
+                        <a id="buyerAddress" class="hidden"><%=offer.buyerAddress%></a>
+                      </div>
+                      <div class="padding-10px">
+                        <a id="<%=offer.buyerAddress%>" class="offers-buy-address"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></a>
+                      </div> 
+                    </div> 
+                      <%})%>
+                    <%}%> 
+                </div>
+            </div>
+            <%}%>
+        <%} else if (isExperied != true) {%>
+      <div class="buyBuy">
+        <h1 class="margin-top-30px">i want that!</h1>
+        <div class="text-center">
+          <button id="getit" class="marketbtn margin-bottom-20px">Connect</button><br>
+        </div>
+        <div class="margin-bottom-20px text-center">
+          <a class="error offers-error text-center"></a>
+        </div>
+        <% if (listings[0].type === 0) { %>
+          <div class="text-center">
+            <button id="buyButton" class="button hidden">Buy</button>
+            <form id="offer" action="" class="hidden">
+              <a class="font30 makeBuy">|</a>
+              <input id="listingsId" name="listingsId" type="number" value="<%=listings[0].id%>" class="hidden required" readonly>
+              <input type="number" id="offerForm" name="offerForm" placeholder="Amount" class="offer-form" step=".001">
+              <input id="placeBid" type="submit" value="Make Offer" class="submit-offer navLinks"> 
+            </form>
+          </div>
+            <%} else {%>
+          <div class="text-center">
+            <button id="buyButton" class="button hidden">Buyout</button>
+            <form id="offer" action="" class="hidden">
+              <a class="font30 makeBuy">|</a>
+              <input id="listingsId" name="listingsId" type="number" value="<%=listings[0].id%>" class="hidden required" readonly>
+              <input id="offerForm" name="offerForm" type="number" placeholder="Amount" class="offer-form" step=".001">
+              <input id="placeBid" type="submit" value="Place Bid" class="submit-offer navLinks">
+            </form><br>
+            <a>Bid must be 5% higher than the highest bid</a>
+            </div>
+              <%}%>
+      </div>
+      <%if(listings[0].type === 0) {%>
+      <div id="readOnlyList" class="margin-bottom-20px">
+        <% if(offers.length > 0) {%>
+          <div class="grid-MetaData">
+            <div class="bluz padding-10px">Buyers</div>
+            <div class="bluz padding-10px">Offers</div>
+          </div>
+        <% offers.forEach((offer,i) => {%>
+          <div class="grid-MetaData">
+            <div class="padding-10px">
+              <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+              </a>
+              <a id="buyerAddress" class="hidden"><%=offer.buyerAddress%></a>
+            </div>
+            <div id="<%=offer.buyerAddress%> padding-10px"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></div>
+          </div> 
+            <%})%>
+          <%}%>
+          <%if (offers.length = 0) {%>
+            <a>No Offers</a>
+            <%}%> 
+      </div>
+      <%} else {%>
+        <div id="readOnlyList" class="margin-bottom-20px">
+          <% if(offers.length > 0) {%>
+            <div class="grid-MetaData">
+              <div class="bluz padding-10px">Buyers</div>
+              <div class="bluz padding-10px">Bids</div>
+            </div>
+          <% offers.forEach((offer,i) => {%>
+            <div class="grid-MetaData">
+              <div class="padding-10px">
+                <a target="_blank" class="link no-decorations" href="https://etherscan.io/address/<%=offer.buyerAddress%>">
+                  <%=offer.buyerAddress.substr(0,4)%>...<%=offer.buyerAddress.substr(offer.buyerAddress.length-4)%>
+                </a>
+                <a id="buyerAddress" class="hidden"><%=offer.buyerAddress%></a>
+              </div>
+              <div id="<%=offer.buyerAddress%> padding-10px"><%=offer.currencyValue.displayValue%> <%=offer.currencyValue.symbol%></div>
+            </div> 
+              <%})%>
+            <%}%>
+            <%if (offers.length = 0) {%>
+              <a>No Bids</a>
+              <%}%> 
+        </div>
+        <%}%>
+      <%}%>
+    </div>
+  </div>
+</div>
+
+<br>
+
+
+
+ 
+<a id="wrapper" class="hidden"><%=JSON.stringify(wrapper)%></a>
+<a id="offersAll" class="hidden"><%=JSON.stringify(offers)%></a>
+
+</main>
+
+
+<footer id="footer">
+    <%- include('../partials/sepolia-footerMarket'); %>
+</footer>
+
+<script src="/js/imgLoader.js"></script>
+<script src="/js/imLoading.js"></script>
+<script src="/js/sepolia-offerOrBid.js"></script>
+<script src="/js/sepolia-acceptOffer.js"></script>
+<script src="/js/purchaseV2.js"></script>
+<script src="https://unpkg.com/web3@1.9.0/dist/web3.min.js"></script>
+<script src="/js/date.js"></script>
+<script src="/js/enableSubmit.js"></script>
+<script src="/js/navSidepanel.js"></script>
+</body>
+</html>

@@ -10,8 +10,11 @@ const path = require('path');
 const favicon = require('serve-favicon');
 const { ThirdwebSDK, NATIVE_TOKEN_ADDRESS, ChainId, NATIVE_TOKENS } = require ("@thirdweb-dev/sdk"); //adding thirdweb marketplace contract functions
 const gsdk = new ThirdwebSDK("goerli"); //goerli marketplace network
+const sepsdk = new ThirdwebSDK("sepolia"); //sepolia marketplace network
 const sdk = new ThirdwebSDK("ethereum"); //mainnet marketplace contract
 const party = new Privateparty({});
+const helmet = require('helmet');
+const crypto = require('crypto');
 
 // set the view engine to ejs
 party.app.set('view engine', 'ejs');
@@ -22,6 +25,33 @@ party.app.use(favicon(path.join('public/images', 'favicon.ico')));
 party.app.use(express.json()); // for parsing application/json
 party.app.use(express.urlencoded({ extended: true }));
 party.app.use(bodyParser.urlencoded({ extended: true }));
+
+const alchHash = crypto.createHash('sha256').update('https://nft-cdn.alchemy.com').digest('base64');
+const alchWeb3 = crypto.createHash('sha256').update('/alchemy-web3@latest/dist/alchemyWeb3.min.js').digest('base64');
+const imgLoaderHash = crypto.createHash('sha256').update('/js/imgLoader.js').digest('base64');
+const indexHash = crypto.createHash('sha256').update('/js/indexFunctions.js').digest('base64');
+let nonce = crypto.randomBytes(16).toString('base64');
+
+//Current CSP
+party.app.use(
+  helmet.contentSecurityPolicy({
+    reportOnly: true,
+    directives: {
+      "default-src": ["'self'"],
+      "font-src": ["'self'", "https://fonts.gstatic.com"],
+      "img-src": ["'self'",`'sha256-${alchHash}'`, `'sha256-${imgLoaderHash}'`,"data:","https://ipfs.thirdwebcdn.com","https://i.seadn.io","https://ipfs.io","https://raw.githubusercontent.com", "https://*.googleusercontent.com" ,"https://nft-cdn.alchemy.com","https://ipfs.io/","https://ipfs.thirdwebcdn.com","https://*.google.com","https://*.gstatic.com", "https://*.googleapis.com"],
+      "script-src": ["'self'",`'nonce-${nonce}'`,"'strict-dynamic'","https:","blob:",`'sha256-${alchWeb3}'`,`'sha256-${indexHash}'`,`'sha256-${imgLoaderHash}'`, "'unsafe-eval'", "https://cdnjs.cloudflare.com/ajax/libs/openlocationcode/1.0.3"],
+      "style-src": ["'self'",`'nonce-${nonce}'`,"https:","https://gateway.ipfscdn.io/", "https://fonts.googleapis.com","'sha256-kZKudrAh+XlCa0a4dTPUZWGPVnKsj1cvy0EKbZFpUJQ='","'sha256-smPEIq/9XO6d+XpSE2MRtjeSqGhxeY0WpD6Yd2IG8qo='","'sha256-8nydPb94/lH8Le3jDXJlvLs8vp8tHbsx241DZui1vtc='","'sha256-OclZVZXG/tkJor0dFMFdcnIX8mkduBstKnZsvB2OvLk='","'sha256-9zaSSezfo4Thfa9o2PjohRh0BtoC/CjdFuXJJni6iv8='","'sha256-/9kNdRLN43kK8wsgOhXM0vU2dvyReqgWcZINnLoNRsQ='","'sha256-+HaCdMPnGjS636L24J2xRR+N/ehV+3p2TVFv09C/1pE='","'sha256-Up7xWcJDsJxkGY6W7IModlPyMhG70dMY6z6u9xlBT/c='","'sha256-kYptgV/uyQTsyz99OEU9rLh0AGYV4LdGRaXgPyqiT6I='","'sha256-v+vkaO+t1i+y0hqcsLaJGzlTx5dMrWF8P+DZNGB8fCo='","'sha256-ov108O3hWyD0MrRr5vFP/1iPyaZRt+npX7jf8tOU2Eo='","'sha256-qaXp1VTvKDyfnAUoIgAc4F+rNt9hqDIZFF24P26E7fQ='","'sha256-Drr50SI97wgcfbK0JNkIPSpIMbZHzBMmf5L89x6RVa0='","'sha256-qjCBYOEhlT8fQGOry9d9ozQF68hDn6M7NK/Ekz2OTbQ='","'sha256-zPDPbVc1SIqqAI3Ta4d/ga5qbmfjT98uX0XJObv0CZU='","'sha256-Rf3Lbh+kRfDn1oOwjr3L6hqoAhl8wQknO1D2JXZS934='","'sha256-pyq4KB44EaAA16ILFjuCjZBTgoxjlkEpCJOaCSVxylQ='","'sha256-+sQyP2jKdRJxhF0WrdRxQkDCcFTjBExx591CZE6U4Tg='","'sha256-b5G9+WKMFj6ena6E7w2e7a6qHtACxij0rlZOQzNA+8g='","'sha256-mT65ndVDJNvKksqN7a5wPzfwzZ0UsBLzcOGpHmYZNm0='","'sha256-/dfcppxwh+niWyYQ2vqiei1pX6NrVYwC7Pav9xchybo='","'sha256-jmKt5CdtobObRKZ+QATBKDzki13nsRp0UDKfG6T+2Vg='","'sha256-3thzritixf3E7ujI4R+fEjE63V+ipuky9a0/ISAoUtk='","'sha256-NNWuyFuwabUxQKgH6PNLDdxZF4qdyPT5NPkLvQzKnOQ='","'sha256-Wg0kz6QAsi2gSbkNReKiE83MBTAw7YYnXOGpHUfPu50='","'sha256-OAo1sE0XaDiKMfMEzPi3KXV4wkoInASg5rNx5CPXT1k='","'sha256-PNsPul0zQFUiYu9XLVKzTdD5Cz5ghp1MT4H5/zAeI3Q='","'sha256-Zw1VGffbffMnOY2qIZ55MfMDqBWPR9FTGAlOqx9FpEw='","'sha256-Ew+ac64tx/Fslcpkd+9dcL+TCbfjaI7sQvlMq2DO3IA='","'sha256-APrOy8nIZ3XLBwL5bKYrDEJVnCMh2E4zPqfsUGaCOjg='","'sha256-QzbuspFx3XWfDfPzTlfR0J2UlRJ1iYhfJ1wQgds/IA0='","'sha256-D1M7T0Ub2B2hjk0pBXnzYhEBYbLkzdUhGqi9uiYHmSw='","'sha256-/VVOq+Ws/EiUxf2CU6tsqsHdOWqBgHSgwBPqCTjYD3U='","'sha256-vxDh7VAxCA/bCtu0YnWl3bRZqaW9GY9Ms8kSC13F2M0='", "'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU='", "'sha256-mmA4m52ZWPKWAzDvKQbF7Qhx9VHCZ2pcEdC0f9Xn/Po='"],
+      "frame-src": ["'self'", `'sha256-${alchHash}'`, "https://gateway.ipfscdn.io/"],
+      "connect-src":[ "'self'", "data:", "blob:"],
+      "manifest-src": ["'self'"],
+      "media-src": ["'self'", `'sha256-${alchHash}'`, "blob:","https://ipfs.thirdwebcdn.com","https://nft-cdn.alchemy.com", "https://gateway.ipfscdn.io/", "https://ipfs.io"],
+      "worker-src": ["blob:"],
+      "script-src-elem":["'self'",`'sha256-${alchWeb3}'`,"https:",`'sha256-${imgLoaderHash}'`,"'sha256-pkqe+cl3dQOQlmdM2Akc8sXxiLTqVgEZUFf6F25Zlq8='","'sha256-hejIqxU9XkuwxUOiiV+94RWcEllrZkiEiNx5HoWcW68='","'sha256-8I8sT6nC3lBCGw3uYK9MUmHEYGT2YXao2S1c7I3h6Ek='", "'sha256-jaRPGeMu+g7ovpcPX9oDzF5+SgmOFxqcJ1AC985hnYc='", "'sha256-RmpPE0Cl8IKPNO6FWYlQyp63b8OluUQ3ckn2K3GEB/A='", "'sha256-ZdGZk6ALN0QNV7noUAFoENPMqz4slEpOxEFh8vLpZaU='"],
+      "upgradeInsecureRequests": [],
+    },
+  })
+);
 
 //variables
 var jsonParser = bodyParser.json();
@@ -1678,6 +1708,810 @@ party.app.get('/goerli-auctions', party.protect(['zerb', 'guest', 'tinydinos', '
   } catch (error) {
     // console.log(error);
     res.render('pages/goerli-marketerror', {
+      session: req.session,
+      NFTs: null,
+      nfts: null,
+      rarity: null,
+      pages: null,
+      current: null,
+      summary:null,
+      fp:null,
+      sumatt: null,
+      pageKey: null,
+      contract:null,
+      listings:null,
+      contractM:null,
+      pageKeysP:null,
+      bids:null,
+      listingsForBids:null,
+      myAuctionsToClose:null,
+    });
+  }
+});
+
+
+//////////////////////////////////////////////////////
+//                                                  //
+//        Zero Beings Marketplace - Sepolia         //
+//                                                  //
+//////////////////////////////////////////////////////
+
+// sepolia Market Home Page
+party.app.get('/sepolia-marketgm', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
+  
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
+  }
+
+  var contract = '0x3DFA5D25497427cB115364bd38618231378D0423'; //initialized with your prefferred collection contract
+  const baseURL = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/getNFTsForCollection`;
+  const pageCount = 100;
+  const withMetadata = true;
+  var pageKey = '';
+  var pageKeysM = []; 
+  var page = req.params.page || 1;
+  const fetchURL = `${baseURL}?contractAddress=${contract}&withMetadata=${withMetadata}&startToken=${pageKey}&limit=${pageCount}`;
+  //const fetchfp = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/getFloorPrice?contractAddress=${contract}`; //not currently supported for testnet
+  //const fetchSumAtt = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/summarizeNFTAttributes?contractAddress=${contract}`; //not currently supported for testnet
+  const sepMarketContract = '0xaCB0092c452bA6d7720498a4A3EaDc66EfCC2277'; //sepolia marketplace contract. Deploy from thirdweb dashboard.
+  const marketContract = await sepsdk.getContract(sepMarketContract, "marketplace"); //get marketplace contract
+
+  try {
+    const nfts = await fetch(fetchURL, { method: 'GET' }).then((data) => data.json());
+    const NFTs = nfts.nfts;
+    //const fp = await fetch(fetchfp, { method: 'GET' }).then((data) => data.json()); //not currently supported for testnet
+
+    //const sumatt = await fetch(fetchSumAtt, { method: 'GET' }).then((data) => data.json()); //not currently supported for testnet
+    //const summary = (sumatt.summary || {});
+
+    const totalNFTs = 10000 // sumatt.totalSupply; //not currently supported for testnet 10000 assigned as typical qty for a collection
+    const pages = Math.ceil(totalNFTs / pageCount);
+    pageKeysM = new Array(pages); // GS: creates a new array with length pages
+    pageKeysM.fill(0, ''); // GS: fills the array with empty string at the beginning, 0s after that
+    pageKeysM[0] = nfts.nextToken;
+
+    contractM = NFTs[0].contract.address;
+    IDToken = NFTs[0].id.tokenId;
+    const royaltyURL = `https://testnet-api.rarible.org/v0.1/items/ETHEREUM:${contractM}:${IDToken}/royalties` //rarible api to fetch royalties
+    
+    //update listings contract to contractM once released to mainnet
+    const listings = await marketContract.getActiveListings({tokenContract: contractM}); //get active listings for contract
+    const royalties = await fetch(royaltyURL, {method: 'GET'}).then((data) => data.json()); //get creator royalties for specific listing
+
+    res.render('pages/sepolia-marketgm', {
+      session: req.session,
+      nfts,
+      NFTs,
+      rarity: null,
+      pages,
+      current: page,
+      summary:null,
+      fp:null,
+      sumatt:null,
+      pageKey,
+      contract,
+      listings,
+      contractM,
+      pageKeysM,
+      royalties,
+    });
+  } catch (error) {
+    //console.log(error);
+    res.render('pages/sepolia-marketerror', {
+      session: req.session,
+      NFTs: null,
+      nfts: null,
+      rarity: null,
+      pages: null,
+      current: null,
+      summary:null,
+      fp:null,
+      sumatt: null,
+      pageKey: null,
+      contract:null,
+      listings:null,
+      contractM:null,
+      pageKeysM:null,
+      royalties:null,
+    });
+  }
+});
+
+// sepolia Collection view pagination
+party.app.post('/sepolia-marketgm/:page', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'], { redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
+  }
+
+  var contract = req.body.contractM;
+  var pageKeysM = JSON.parse(req.body.pageKeysM);
+  const baseURL = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/getNFTsForCollection`;
+  const pageCount = 100;
+  const withMetadata = true;
+  var page = req.params.page || 1;
+  var pageKey = pageKeysM[page - 2];
+    
+  const fetchURL = `${baseURL}?contractAddress=${contract}&withMetadata=${withMetadata}&startToken=${pageKey}&limit=${pageCount}`;
+  //const fetchSumAtt = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/summarizeNFTAttributes?contractAddress=${contract}`; //not currently supported for testnet
+  //const fetchfp = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/getFloorPrice?contractAddress=${contract}`; //not currently supported for testnet
+  //const fetchRe = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/reingestContract?contractAddress=${contract}`;
+  const sepMarketContract = '0xaCB0092c452bA6d7720498a4A3EaDc66EfCC2277'; //sepolia marketplace contract. Deploy from thirdweb dashboard.
+  const marketContract = await sepsdk.getContract(sepMarketContract, "marketplace"); //get marketplace contract
+
+  try {
+    const nfts = await fetch(fetchURL, { method: 'GET' }).then((data) => data.json());
+    //const sumatt = await fetch(fetchSumAtt, { method: 'GET' }).then((data) => data.json());
+    //const summary = (sumatt.summary || {});
+    //const fp = await fetch(fetchfp, { method: 'GET' }).then((data) => data.json());
+    //const refresh = await fetch(fetchRe, { method: 'GET' }).then((data) => data.json());
+
+    const NFTs = nfts.nfts;
+    const totalNFTs = 10000; //sumatt.totalSupply; //not currently supported for testnet 10000 assigned as typical qty for a collection
+    const pages = Math.ceil(totalNFTs / pageCount);
+
+    if(req.body.collection != null){
+      pageKeysM = new Array(pages); // GS: creates a new array with length pages
+      pageKeysM.fill(0, ''); // GS: fills the array with empty string at the beginning, 0s after that
+      pageKeysM[0] = nfts.nextToken;
+    } else {
+      pageKeysM[page-1] = nfts.nextToken;
+    }
+
+    contractM = NFTs[0].contract.address;
+    IDToken = NFTs[0].id.tokenId;
+   
+    const royaltyURL = `https://testnet-api.rarible.org/v0.1/items/ETHEREUM:${contractM}:${IDToken}/royalties` //rarible api to fetch royalties
+    const listings = await marketContract.getActiveListings({tokenContract: contractM}); //get active listings from contract
+    const royalties = await fetch(royaltyURL, {method: 'GET'}).then((data) => data.json()); //get creator royalties for specific listing
+  
+    res.render('pages/sepolia-marketgm', {
+      session: req.session,
+      nfts,
+      NFTs,
+      rarity: null,
+      pageKey,
+      pages,
+      current: page,
+      sumatt:null,
+      summary:null,
+      fp:null,
+      refresh:null,
+      contract,
+      listings,
+      contractM,
+      pageKeysM,
+      royalties,
+    });
+  } catch (error) {
+    // console.log(error);
+    res.render('pages/sepolia-marketerror', {
+      session: req.session,
+      NFTs: null,
+      nfts: null,
+      rarity: null,
+      pageKey: null,
+      pages: null,
+      current: null,
+      sumatt:null,
+      summary:null,
+      fp:null,
+      refresh:null,
+      contract:null,
+      listings:null,
+      contractM:null,
+      pageKeys:null,
+      royalties:null,
+    });
+  }
+});
+
+// sepolia Query Collection and Listings 
+party.app.post('/sepolia-marketgm', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'], { redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
+  }
+
+  if(req.body.collection){
+    var contract = req.body.collection ;
+  } else {
+    var contract = req.body.contractM;
+  }
+  var page = req.params.page || 1;
+  if(req.body.collection || page == 1){ 
+    var pageKey = '';
+  } else {
+    var pageKey = pageKeysM[page - 2];
+  }
+  if(pageKeysM){
+  var pageKeysM = JSON.parse(req.body.pageKeysM);
+  }
+  const baseURL = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/getNFTsForCollection`;
+  const pageCount = 100;
+  const withMetadata = true;
+  const fetchURL = `${baseURL}?contractAddress=${contract}&withMetadata=${withMetadata}&startToken=${pageKey}&limit=${pageCount}`;
+  //const fetchSumAtt = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/summarizeNFTAttributes?contractAddress=${contract}`; //not currently supported for testnet
+  //const fetchfp = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/getFloorPrice?contractAddress=${contract}`; //not currently supported for testnet
+  //const fetchRe = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/reingestContract?contractAddress=${contract}`;
+  const sepMarketContract = '0xaCB0092c452bA6d7720498a4A3EaDc66EfCC2277'; //sepolia marketplace contract. Deploy from thirdweb dashboard.
+  const marketContract = await sepsdk.getContract(sepMarketContract, "marketplace"); //get marketplace contract
+  
+
+  try {
+    const nfts = await fetch(fetchURL, { method: 'GET' }).then((data) =>
+      data.json()
+    );
+    
+    // const sumatt = await fetch(fetchSumAtt, { method: 'GET' }).then((data) => data.json());
+    // const summary = (sumatt.summary || {});
+    // const fp = await fetch(fetchfp, { method: 'GET' }).then((data) => data.json());
+    //const refresh = await fetch(fetchRe, { method: 'GET' }).then((data) => data.json());
+    
+    const NFTs = nfts.nfts;
+    const totalNFTs = 10000;//sumatt.totalSupply; //not currently supported for testnet 10000 assigned as typical qty for a collection
+    const pages = Math.ceil(totalNFTs / pageCount); //results per page
+    pageKeysM = new Array(pages); // GS: creates a new array with length pages
+    pageKeysM.fill(0, ''); // GS: fills the array with empty string at the beginning, 0s after that
+    pageKeysM[0] = nfts.nextToken;
+
+    contractM = NFTs[0].contract.address;
+    IDToken = NFTs[0].id.tokenId;
+    const royaltyURL = `https://testnet-api.rarible.org/v0.1/items/ETHEREUM:${contractM}:${IDToken}/royalties` //rarible api to fetch royalties
+    const listings = await marketContract.getActiveListings({tokenContract: contractM}); //get active listings from contract
+    const royalties = await fetch(royaltyURL, {method: 'GET'}).then((data) => data.json()); //get creator royalties for specific listing
+    
+    res.render('pages/sepolia-marketgm', {
+      session: req.session,
+      nfts,
+      NFTs,
+      rarity: null,
+      pageKey,
+      pages,
+      current: page,
+      sumatt:null,
+      summary:null,
+      fp:null,
+      refresh:null,
+      contract,
+      listings,
+      contractM,
+      pageKeysM,
+      royalties,
+    });
+  } catch (error) {
+    //console.log(error);
+    res.render('pages/sepolia-marketerror', {
+      session: req.session,
+      NFTs: null,
+      nfts: null,
+      rarity: null,
+      pageKey: null,
+      pages: null,
+      current: null,
+      sumatt:null,
+      summary:null,
+      fp:null,
+      refresh:null,
+      contract:null,
+      listings:null,
+      contractM:null,
+      pageKeys:null,
+      royalties:null,
+    });
+  }
+});
+
+// sepolia detail view of collection NFT
+party.app.get('/sepolia-collectiondetails/:collection/:IDToken', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
+  }
+
+  var contract = req.params.collection;
+  const baseURL = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/getNFTMetadata`; //alchemy api - get NFT metadata
+  var IDToken = req.params.IDToken;
+  const fetchURL =`${baseURL}?contractAddress=${contract}&tokenId=${IDToken}&refreshCache=false`;
+
+  try {
+    const nft = await fetch(fetchURL, { method: 'GET' }).then((data) => data.json());
+    
+
+    res.render('pages/sepolia-collectiondetails', {
+      session: req.session,
+      nfts:null,
+      contract,
+      IDToken,
+      nft,
+    });
+  } catch (error) {
+    //console.log(error);
+    res.render('pages/sepolia-marketerror', {
+      session: req.session,
+      NFTs: null,
+      nfts: null,
+      rarity: null,
+      pages: null,
+      current: null,
+      summary:null,
+      fp:null,
+      sumatt: null,
+      pageKey: null,
+      contract:null,
+      listings:null,
+      contractM:null,
+      IDToken:null,
+      pageKeysM:null,
+      nft:null,
+    });
+  }
+});
+
+// sepolia My Listings page
+party.app.get('/sepolia-myListings', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
+  }
+
+  const baseURL = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/getNFTs/`;
+  const pageCount = 100;
+  var pageKey = ''; 
+  var pageKeysP = [];
+  var page = req.params.page || 1;
+  const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
+  const sepMarketContract = '0xaCB0092c452bA6d7720498a4A3EaDc66EfCC2277'; //sepolia marketplace contract. Deploy from thirdweb dashboard.
+  const marketContract = await sepsdk.getContract(sepMarketContract, "marketplace"); //get marketplace contract
+
+  try {
+    const nfts = await fetch(fetchURL, { method: 'GET' }).then((data) =>
+      data.json()
+    );
+    
+    const NFTs = nfts.ownedNfts;
+    const totalNFTs = nfts.totalCount;
+    const pages = Math.ceil(totalNFTs / pageCount); //results per page
+    pageKeysP = new Array(pages); // GS: creates a new array with length pages
+    pageKeysP.fill(0, ''); // GS: fills the array with empty string at the beginning, 0s after that
+    pageKeysP[0] = nfts.pageKey;
+
+    const listings = await marketContract.getActiveListings({seller: wallet}); //get active listings for a specific wallet address
+    const allListings = await marketContract.getActiveListings(); //get all listings, this includes listings sold. This is used to find bids by logged in wallet address
+    const bidsListings = []; // Active Listings
+    const myBids = [];
+    const bids = [];
+    const listingsForBids = [];
+
+    if(allListings.length > 0) {
+      allListings.forEach((alistings,i) => {
+          if(alistings.type === 1){
+            bidsListings.push(alistings); //push auction based listings to an array
+          }
+        }
+      )};
+    
+    if(bidsListings != null){
+    for (i = 0; i < bidsListings.length; i++) {
+     const offers = await marketContract.getOffers(bidsListings[i].id); //get offers for the listing from thirdweb sdk
+      myBids.push(offers)  
+    };
+    }
+
+    for (i = 0; i < myBids.length; i++) {
+      for(p = 0; p < myBids[i].length; p++){
+        if((myBids[i][p].buyerAddress).toLowerCase() === wallet.toLowerCase()){
+          bids.push(myBids[i][p]);
+          const bidList = await marketContract.getListing(myBids[i][p].listingId); //get the listing connected to the specific offer
+          listingsForBids.push(bidList);
+        }
+      }
+    }
+
+    res.render('pages/sepolia-myListings', {
+      session: req.session,
+      nfts,
+      NFTs,
+      rarity: null,
+      pages,
+      current: page,
+      summary: null,
+      fp: null,
+      sumatt: null,
+      pageKey,
+      contract:null,
+      listings,
+      contractM:null,
+      pageKeysP,
+      bids,
+      listingsForBids,
+    });
+  } catch (error) {
+    //console.log(error);
+    res.render('pages/sepolia-marketerror', {
+      session: req.session,
+      NFTs: null,
+      nfts: null,
+      rarity: null,
+      pages: null,
+      current: null,
+      summary:null,
+      fp:null,
+      sumatt: null,
+      pageKey: null,
+      contract:null,
+      listings:null,
+      contractM:null,
+      pageKeysP:null,
+      bids:null,
+      listingsForBids:null,
+    });
+  }
+});
+
+// sepolia My Listings pages
+party.app.post('/sepolia-myListings/:page', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'], { redirect: "/login" }),
+  async (req, res, next) => {
+    if(req.session.zerb != undefined){
+      var wallet = `${req.session.zerb.account}`;
+    }
+  
+    if(req.session.guest != undefined){
+      var wallet = `${req.session.guest.account}`;
+    }
+
+    if(req.session.tinydinos != undefined){
+      var wallet = `${req.session.tinydinos.account}`;
+    }
+  
+    if(req.session.freshfrogsNFT != undefined){
+      var wallet = `${req.session.freshfrogsNFT.account}`; 
+    }
+
+    const baseURL = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/getNFTs/`; //alchemy api get NFTs
+    const pageCount = 100; //total number of results shown. maximum 100.
+    var page = req.params.page;
+    var pageKeysP = JSON.parse(req.body.pageKeysP);
+    if(page != 1){
+    var pageKey = pageKeysP[page - 2];
+    } else {
+    var pageKey = '';
+    } 
+    const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
+    const sepMarketContract = '0xaCB0092c452bA6d7720498a4A3EaDc66EfCC2277'; //sepolia marketplace contract. Deploy from thirdweb dashboard.
+    const marketContract = await sepsdk.getContract(sepMarketContract, "marketplace"); //get marketplace contract
+
+    try {
+      const nfts = await fetch(fetchURL, { method: 'GET' }).then((data) =>
+        data.json()
+      );
+       
+      const NFTs = nfts.ownedNfts; //fetch all ownedNfts
+      const totalNFTs = nfts.totalCount;
+      const pages = Math.ceil(totalNFTs / pageCount); //100 results per page
+      
+      pageKeysP[page-1]=nfts.pageKey
+
+      const listings = await marketContract.getActiveListings({seller: wallet}); //get active listings from an address
+      const allListings = await marketContract.getActiveListings(); //get all listings, this includes listings sold. This is used to find bids by logged in wallet address
+      const bidsListings = [];
+      const myBids = [];
+      const bids = [];
+      const listingsForBids = [];
+  
+      if(allListings.length > 0) {
+        allListings.forEach((alistings,i) => {
+            if(alistings.type === 1){
+              bidsListings.push(alistings); //push auction based listings to an array
+            }
+          }
+        )};
+   
+        if(bidsListings != null){
+          for (i = 0; i < bidsListings.length; i++) {
+           const offers = await marketContract.getOffers(bidsListings[i].id); //get offers for the listing from thirdweb sdk
+            myBids.push(offers)  
+          };
+        }
+  
+      for (i = 0; i < myBids.length; i++) {
+        for(p = 0; p < myBids[i].length; p++){
+          if((myBids[i][p].buyerAddress).toLowerCase() === wallet.toLowerCase()){
+            bids.push(myBids[i][p]);
+            const bidList = await marketContract.getListing(myBids[i][p].listingId); //get the listing connected to the specific offer
+            listingsForBids.push(bidList);
+          }
+        }
+      }
+
+      res.render('pages/sepolia-myListings', {
+        session: req.session,
+        nfts,
+        NFTs,
+        rarity: null,
+        pageKey,
+        pages,
+        current: page,
+        sumatt: null,
+        summary: null,
+        fp: null,
+        refresh:null,
+        contract:null,
+        listings,
+        contractM,
+        pageKeysP,
+        bids,
+        listingsForBids,
+      });
+    } catch (error) {
+      // console.log(error);
+      res.render('pages/sepolia-marketerror', {
+        session: req.session,
+        NFTs: null,
+        nfts: null,
+        pageKey: null,
+        pages: null,
+        current: null,
+        sumatt:null,
+        summary:null,
+        fp:null,
+        refresh:null,
+        contract:null,
+        listings:null,
+        contractM:null,
+        pageKeysP:null,
+        bids:null,
+        listingsForBids:null,
+      });
+    }
+  }
+);
+
+// sepolia Page to view a listings details from marketgm page
+party.app.get('/sepolia-listingDetails/:contract/:IDToken', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
+  // console.log('fetching NFTs');
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
+  }
+
+  var contract = req.params.contract;
+  var IDToken = req.params.IDToken;
+  const baseURL = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/getNFTMetadata`; // alchemy api
+  const fetchURL =`${baseURL}?contractAddress=${contract}&tokenId=${IDToken}&refreshCache=false`; //fetchURL for NFT alchemy api
+  const sepMarketContract = '0xaCB0092c452bA6d7720498a4A3EaDc66EfCC2277'; //sepolia marketplace contract. Deploy from thirdweb dashboard.
+  const marketContract = await sepsdk.getContract(sepMarketContract, "marketplace"); //get marketplace contract thirdweb sdk
+  const wrapper = NATIVE_TOKENS; //from thirdweb sdk. fetchs all networks and associated wrapped tokens. This allow for offers to be made
+  const royaltyURL = `https://testnet-api.rarible.org/v0.1/items/ETHEREUM:${contract}:${IDToken}/royalties` //rarible api to fetch royalties
+
+  try {
+    const nfts = await fetch(fetchURL, { method: 'GET' }).then((data) => data.json()); //get listings with alchemy api
+    const listings = await marketContract.getActiveListings({tokenContract: contract, tokenId: IDToken}); //get listing from the contract thirdweb sdk
+    const offers = await marketContract.getOffers(listings[0].id); //get offers for the listing from thirdweb sdk
+    const royalties = await fetch(royaltyURL, {method: 'GET'}).then((data) => data.json()); //get creator royalties for specific listing
+
+    res.render('pages/sepolia-listingDetails', {
+      session: req.session,
+      nfts,
+      NFTs:null,
+      contract,
+      listings,
+      IDToken,
+      nft:null,
+      wrapper,
+      offers,
+      royalties,
+    });
+  } catch (error) {
+    //console.log(error);
+    res.render('pages/sepolia-marketerror', {
+      session: req.session,
+      NFTs: null,
+      nfts: null,
+      rarity: null,
+      pages: null,
+      current: null,
+      summary:null,
+      fp:null,
+      sumatt: null,
+      pageKey: null,
+      contract:null,
+      listings:null,
+      contractM:null,
+      IDToken:null,
+      pageKeysM:null,
+      nft:null,
+      wrapper:null,
+      offers:null,
+      royalties:null,
+    });
+  }
+});
+
+// sepolia My Auctions to Close Page
+party.app.get('/sepolia-auctions', party.protect(['zerb', 'guest', 'tinydinos', 'freshfrogsNFT'],{ redirect: "/login" }), async (req, res, next) => {
+  if(req.session.zerb != undefined){
+    var wallet = `${req.session.zerb.account}`;
+  }
+
+  if(req.session.guest != undefined){
+    var wallet = `${req.session.guest.account}`;
+  }
+
+  if(req.session.tinydinos != undefined){
+    var wallet = `${req.session.tinydinos.account}`;
+  }
+
+  if(req.session.freshfrogsNFT != undefined){
+    var wallet = `${req.session.freshfrogsNFT.account}`; 
+  }
+
+  const baseURL = `https://eth-sepolia.g.alchemy.com/nft/v2/${process.env.SEPOLIA_API_KEY}/getNFTs/`;
+  const pageCount = 1;
+  var pageKey = '';
+  const fetchURL = `${baseURL}?owner=${wallet}&pageKey=${pageKey}&pageSize=${pageCount}`;
+  const sepMarketContract = '0xaCB0092c452bA6d7720498a4A3EaDc66EfCC2277'; //sepolia marketplace contract. Deploy from thirdweb dashboard.
+  const marketContractsepolia = await sepsdk.getContract(sepMarketContract, "marketplace"); //get marketplace contract
+  
+
+  try {
+    const nfts = await fetch(fetchURL, { method: 'GET' }).then((data) =>
+      data.json()
+    );
+    
+    const NFTs = nfts.ownedNfts;
+
+    const allListingssepolia = await marketContractsepolia.getActiveListings(); //get active listings. This is used to find bids by logged in wallet address
+    const everyListingsepolia = await marketContractsepolia.getAllListings(); // get all active and inactive listing
+
+    const bidsListingssepolia = []; // all active auction listings
+    const myBidssepolia = [];
+    const allAuctionListingssepolia = []; //all auction listings
+    const nonActiveAuctionssepolia = []; //all non-active listings
+    
+    const bids = [];
+    const listingsForBids = [];
+    const myAuctionsToClose = []; //all my auctions to close
+
+    if(allListingssepolia.length > 0) {
+      allListingssepolia.forEach((alistings,i) => {
+          if(alistings.type === 1){
+            bidsListingssepolia.push(alistings); //push auction based listings to an array
+          }
+        }
+      )};
+          
+    if(bidsListingssepolia != null){
+      for (i = 0; i < bidsListingssepolia.length; i++) {
+      const offerssepolia = await marketContractsepolia.getOffers(bidsListingssepolia[i].id); //get offers for the listing from thirdweb sdk
+        myBidssepolia.push(offerssepolia)  
+      }
+    };
+      
+    if(everyListingsepolia.length > 0) {
+      everyListingsepolia.forEach((eListing,i) => {
+          if(eListing.type === 1){
+            allAuctionListingssepolia.push(eListing); //push auction based listings to an array
+          }
+        }
+      )};
+
+    if(allAuctionListingssepolia.length > 0) { 
+      allAuctionListingssepolia.forEach(el1 => {      
+        el1IsPresentInArr2 = bidsListingssepolia.some(el2 => el2.id === el1.id); 
+          if (!el1IsPresentInArr2) { 
+            nonActiveAuctionssepolia.push(el1);    
+          }
+      }
+    )};
+
+    for (i = 0; i < myBidssepolia.length; i++) {
+      for(p = 0; p < myBidssepolia[i].length; p++){
+        if((myBidssepolia[i][p].buyerAddress).toLowerCase() === wallet.toLowerCase()){
+          bids.push(myBidssepolia[i][p]);
+          const bidList = await marketContractsepolia.getListing(myBidssepolia[i][p].listingId); //get the listing connected to the specific offer
+          listingsForBids.push(bidList);
+        }
+      }
+    }
+
+    if(nonActiveAuctionssepolia.length > 0) { 
+      for (i = 0; i < nonActiveAuctionssepolia.length; i++) {
+          const myWins = await marketContractsepolia.auction.getWinner(nonActiveAuctionssepolia[i].id); //get the listing connected to the specific offer
+          if(myWins.toLowerCase() === wallet.toLowerCase() || nonActiveAuctionssepolia[i].sellerAddress.toLowerCase() === wallet.toLowerCase()){
+            myAuctionsToClose.push(nonActiveAuctionssepolia[i]);
+          }      
+      }
+    }
+
+    res.render('pages/sepolia-auctions', {
+      session: req.session,
+      nfts,
+      NFTs,
+      rarity: null,
+      pages: null,
+      current: null,
+      summary: null,
+      fp: null,
+      sumatt: null,
+      pageKey:null,
+      contract:null,
+      listings:null,
+      contractM:null,
+      pageKeysP:null,
+      bids,
+      listingsForBids,
+      myAuctionsToClose,
+    });
+  } catch (error) {
+    // console.log(error);
+    res.render('pages/sepolia-marketerror', {
       session: req.session,
       NFTs: null,
       nfts: null,

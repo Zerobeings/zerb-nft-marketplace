@@ -1,0 +1,54 @@
+<nav id="navbar">
+
+  <div id="mySidepanelM" class="sidepanelM">
+      <a id="closebtnM" class="closebtnM">×</a>
+      <% if (session.zerb || session.tinydinos || session.freshfrogsNFT) { %>
+        <a class="nowrap" href="/" id="genericLoaderM">Zerb gm ☕️</a>
+        <% } %>
+      <a href="/goerli-marketgm" id="genericLoaderM" class="nowrap orange-color">goerli-Market</a>
+      <a href="/sepolia-marketgm" id="genericLoaderM" class="nowrap color-serpolia">sepolia-Market</a>
+      <a href="/sepolia-myListings" id="genericLoaderM" class="nowrap">My Listings</a>
+      <a class="nowrap" href="/sepolia-auctions" id="genericLoaderM">Auctions</a>
+      <a href="https://learn.zerobeings.xyz/#/" target="_blank">Learn</a>
+      <% if (session.zerb || session.guest || session.tinydinos || session.freshfrogsNFT) { %>
+      <a id="genericLoaderM" href="/login">Logout</a>
+      <% } else { %>
+        <a id="genericLoaderM" href="/login">Login</a>
+        <% }%>
+      <div class="socialLinks">
+        <a target="_blank" href="https://twitter.com/Zero_beings"><i class="fa-brands fa-twitter socialIcons"></i></a>
+        <a target="_blank" href="https://discord.gg/sjbVYr6ZXS"><i class="fa-brands fa-discord socialIcons"></i></a>
+        <a target="_blank" href="https://github.com/Zerobeings"><i class="fa-brands fa-github socialIcons"></i></a>
+      </div>  
+  </div>
+  
+   
+      
+      
+      <a href="/sepolia-marketgm" id="genericLoaderM">
+        <img class="logoZerb width-150px" src="/images/zerobeings_logo_m_sepolia.png"/>
+        <img class="logoZerb2 width-40px" src="/images/zerobeings_logo_sepolia.png"/>
+      </a>  
+          
+    
+      
+        <%if(nfts != null){%>
+          <img id="profileImg" class="imgProfile asyncImage imgDesktop self-end margin-right-0px margin-left-auto" src="/images/loading.png" data-src="<%=nfts.media[0].gateway%>" alt=""></img>
+          <%} else {%>
+        <img id="profileImg" class="imgProfile asyncImage imgDesktop self-end margin-right-0px margin-left-auto" src="/images/loading.png" data-src="<%=nft.media[0].gateway%>" alt=""></img>
+        <%}%>
+        <% if (session.zerb) { %>
+          <button id="address" name="address" value="<%=session.zerb.account%>" class="button imgDesktop white-color"><%=session.zerb.account%></button>
+          <%} else if (session.guest) {%>
+            <button id="address" name="address" value="<%=session.guest.account%>" class="button imgDesktop white-color"><%=session.guest.account%></button>
+            <%} else if (session.tinydinos) {%>
+              <button id="address" name="address" value="<%=session.tinydinos.account%>" class="button imgDesktop white-color"><%=session.tinydinos.account%></button>
+              <%} else if (session.freshfrogsNFT) {%>
+                <button id="address" name="address" value="<%=session.freshfrogsNFT.account%>" class="button imgDesktop white-color"><%=session.freshfrogsNFT.account%></button>
+          <% } else { %>
+            <button name="address" class="button imgDesktop white-color">Login</button>
+          <% }%>
+      
+
+      <a class="openbtnM" id="openbtnM">☰</a> 
+    </nav>

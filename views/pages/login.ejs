@@ -12,30 +12,33 @@
 
 <main>
       
-  <div class="centerLogin" style="margin-bottom:10px; justify-content: center;align-items: center; display:grid; ">
-    <div style="font-size: 42px;">ACCOUNT</div>
+  <div class="centerLogin">
+    <div class="accountFont">ACCOUNT</div>
     <form id="userForm" action="">
       <select name="user" id="user" class="loginoptions">
         <option value="zerb">Zerb 👾</option>
-        <option value="freshfrogsNFT">FreshFrogsNFT 🐸</option>
+        <!-- <option value="freshfrogsNFT">FreshFrogsNFT 🐸</option> -->
         <option value="tinydinos">tiny dinos 🤏🏽🦖</option>
         <option value="guest">Guest 🍀</option>
       </select>
       <div id="btns" class="invisible">
-        <input type="submit" value="login" id="login" class="buttonloginoptions" style="align-items: center; position: absolute;">          
-      </div>
+        <input type="submit" value="login" id="login" class="buttonloginoptions">
+      </div>          
     </form>
       <div id="btns2" class="invisible">
-        <button id="logout" class="buttonlogoutoptions" style="align-items: center; position: absolute;">logout</button>
+        <button id="logout" class="buttonlogoutoptions">logout</button>
       </div>
-    <p class="footer" style="justify-content: center;align-items: center; display: flex; margin-top: 60px;">
+    <p class="footer footerLogin">
         Powered by 
-        <a style="text-decoration:none; margin-left: 5px;" class="link" target="_blank" href="https://privateparty.dev/">Privateparty</a>
-        <div style="justify-content: center; display: flex; ">
-          <a style="width:100%; position: absolute; margin-bottom: 10px;" href="https://mint.zerobeings.xyz/">
-            <img style="width:100%; position: absolute; margin-bottom: 10px;" src="/images/mint.png" />
+        <a class="link footerLink" target="_blank" href="https://privateparty.dev/">Privateparty</a>
+        <div class="footerImgDiv">
+          <a class="footerImgLink" href="https://mint.zerobeings.xyz/">
+            <img class="footerImg" src="/images/mint.png" />
           </a>
         </div>
+        <!-- <div class="footerImgDiv">
+          <a href="#" class="link" onclick="window.displayPreferenceModal();return false;" id="termly-consent-preferences">Consent Preferences</a>
+        </div> -->
     </p>
   </div>
   <pre class='session hidden'></pre>
@@ -45,7 +48,7 @@
 <script>
     const userSelect = document.getElementById('userForm');
     const params = new URLSearchParams(window.location.search)
-    const party = new Privateparty({ })
+    const party = new Privateparty({})
     document.addEventListener("DOMContentLoaded", async () => {
       let session = await party.session("zerb", { fresh: true }) || await party.session("guest", { fresh: true }) || await party.session("tinydinos", { fresh: true }) || await party.session("freshfrogsNFT", { fresh: true });
       
@@ -114,7 +117,7 @@
         })
       }
      document.querySelector("#btns").classList.remove("invisible")
-     document.querySelector("#btns2").classList.remove("invisible")  
+     document.querySelector("#btns2").classList.remove("invisible")   
     })
     </script>
 </body>

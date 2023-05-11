@@ -1,0 +1,2578 @@
+@font-face {
+    font-family: 'Aldrich';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Aldrich'), url('Aldrich-Regular.ttf') format('ttf');
+    } 
+  
+    * {
+    box-sizing: border-box;
+    }
+  
+  body {
+    font-family: 'Aldrich';
+    margin: 10px 10px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: rgb(0, 0, 0);
+    color: white;
+  }
+
+  nav {
+    z-index: 1;
+    display: flex;
+    width: 100%;
+    align-items: center;
+    font-size: 20px;
+    /* padding: 0px 20px 20px 0; */
+    color: rgb(255, 255, 255);
+    opacity: 1;
+  }
+  
+  ul {
+    list-style-type: none;
+    margin-left: 30px;
+    margin-right:auto;
+    padding: 0;
+    overflow: hidden;
+    background-color: black;
+    
+  }
+  
+  .ulpage {
+    list-style-type: none;
+    margin-left: auto;
+    margin-right:auto;
+    padding: 0;
+    overflow: hidden;
+    background-color: black;
+  }
+  
+  li {
+    float: left;
+  }
+  
+  
+  .sidepanel  {
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+  }
+  
+  .sidepanel a {
+    z-index: 1;
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidepanel a:hover {
+    color: #f1f1f1;
+  }
+  
+  .sidepanel .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    cursor: pointer;
+  }
+  
+  .openbtn {
+    font-size: 36px;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    padding: 8px 9px;
+    border: none;
+    /* margin-left: 0px; */
+    margin-right: auto;
+    float: left;
+    border-radius: 10px;
+    /* justify-content: center; */
+  }
+  
+  .openbtn:hover {
+    background-color:#444;
+  }
+  
+  .sidepanelM  {
+    width: 0;
+    position: fixed;
+    z-index: 1;
+    height: 100%;
+    top: 0;
+    right: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.5s;
+    padding-top: 60px;
+    z-index:3;
+  }
+  
+  .sidepanelM a {
+    z-index: 1;
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  .sidepanelM a:hover {
+    color: #f1f1f1;
+  }
+  
+  .sidepanelM .closebtnM {
+    position: absolute;
+    top: 0;
+    left: -25px;
+    font-size: 36px;
+    cursor: pointer;
+  }
+  
+  .openbtnM {
+    font-size: 36px;
+    height: 50px;
+    width: 50px;
+    cursor: pointer;
+    background-color: black;
+    color: white;
+    padding: 8px 9px;
+    border: none;
+    /* margin-left: auto; */
+    /* margin-right: 0px; */
+    float: right;
+    border-radius: 10px;
+  }
+  
+  .openbtnM:hover {
+    background-color:#444;
+  }
+  
+  .center {
+    text-align: center;
+  }
+  
+  .pagination {
+    display: inline-block;
+  }
+  
+  .paginationButtons{
+    display: inline-block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    background-color: black;
+    font-family: 'Aldrich-Regular';
+    font-size: 16px;
+    border: none;
+    -webkit-appearance: none;
+  }
+  
+  .paginationButtons:hover {
+    background-color: #333;
+  }
+  
+  .tablePages{
+    width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+  }
+  
+  .tablePagesPort{
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+    border: none;
+  }
+  
+  @media screen and (max-width: 1000px)  {
+    .tablePages{
+      width: 100%;
+  }
+  .paginationButtons{
+    font-size: 12px;
+    padding: 7px 8px;
+  }
+  .tablePagesPort{
+    width: 100%;
+  }
+  
+  }
+
+  @media screen and (max-width: 900px)  {
+    .openbtnM {
+      font-size: 36px;
+      height: 50px;
+      width: 50px;
+      cursor: pointer;
+      background-color: black;
+      color: white;
+      padding: 8px 9px;
+      border: none;
+      margin-left: auto;
+      /* margin-right: 0px; */
+      float: right;
+      border-radius: 10px;
+    }
+
+  }
+  
+  li a {
+    display: block;
+    color: white;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+  }
+  
+  li a:hover {
+    background-color: #333;
+  }
+  
+  
+  .hidden { display: none; }
+  .imgProfile { width: 50px; height: 50px; flex-shrink: 0; margin-right: 10px; border-radius: 15px; border: 3px solid #B9F49E;}
+  img {flex-shrink: 0;}
+  pre {
+    display: flex;
+    align-items: center;
+    background-color: slategray;
+    color: #B9F49E;
+    font-size: 20px;
+    padding-left: 10px;
+  }
+  
+  .centerLogin {
+    margin: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -ms-transform: translate(-50%, -50%);
+    transform: translate(-50%, -50%);
+    margin-bottom:10px;
+    justify-content: center;
+    align-items: center;
+    display:grid; 
+  }
+
+  .accountFont{font-size: 42px;text-align: center;}
+  
+  .invisible {
+    visibility: hidden;
+  }
+  
+  .button{
+    font-family: 'Aldrich';
+    font-size: 20px;
+    font-style: normal;
+    letter-spacing: 0;
+    background: black;
+    color: white;
+    padding: 10px 10px 10px 10px;
+    margin: 10px 10px;
+    border: 3px solid #B9F49E;
+    border-radius: 15px;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 139.45px;
+    height: 51.5px;
+  }
+  
+  .listedButton{
+    font-family: 'Aldrich';
+    font-size: 20px;
+    font-style: normal;
+    letter-spacing: 0;
+    background: #333;
+    color: white;
+    padding: 10px 10px 10px 10px;
+    margin: 10px 10px;
+    border: 3px solid grey;
+    border-radius: 15px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 139.45px;
+    height: 51.5px;
+  }
+  
+  .button:hover {
+    border:3px solid rgb(65, 188, 225) ;
+  }
+  
+  .buttonlogin{
+    font-family: 'Aldrich';
+    font-size: 20px;
+    font-style: normal;
+    letter-spacing: 0;
+    background: black;
+    color: white;
+    padding: 10px 10px 10px 10px;
+    margin: 10px 10px;
+    border: 3px solid #B9F49E;
+    border-radius: 15px;
+    cursor: pointer;
+    width: 200px;
+  }
+  
+  .buttonlogout{
+    font-family: 'Aldrich';
+    font-size: 20px;
+    font-style: normal;
+    letter-spacing: 0;
+    background: #FF1C53;
+    color: #333;
+    padding: 10px 10px 10px 10px;
+    margin: 10px 10px;
+    border: 3px solid #333;
+    border-radius: 15px;
+    cursor: pointer;
+    width: 200px;
+  }
+  
+  .loginoptions{
+    width: 100%;
+    height: 51.5px;
+    font-size: 20px;
+    border-radius: 10px;
+    padding: 10px 10px 10px 10px;
+    background-color: black;
+    border: 2px solid white;
+    color: white;
+    text-align:center;
+    font-family: 'Aldrich';
+    font-style: normal;
+    letter-spacing: 0;
+    cursor: pointer;
+    margin-bottom: 10px;
+  }
+  
+  .buttonloginoptions{
+    font-family: 'Aldrich';
+    font-size: 20px;
+    font-style: normal;
+    letter-spacing: 0;
+    background: black;
+    color: white;
+    padding: 10px 10px 10px 10px;
+    border: 2px solid #02FFFB;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    height: 51.5px;
+    align-items: center;
+    position: absolute;
+  }
+  
+  .buttonlogoutoptions{
+    font-family: 'Aldrich';
+    font-size: 20px;
+    font-style: normal;
+    letter-spacing: 0;
+    background: #FF1C53;
+    color: #333;
+    padding: 10px 10px 10px 10px;
+    border: 2px solid #333;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 100%;
+    height: 51.5px;
+    align-items: center;
+    position: absolute;
+  }
+  
+  .closeauction{
+    font-family: 'Aldrich';
+    font-size: 20px;
+    font-style: normal;
+    letter-spacing: 0;
+    background: #B9F49E;
+    color: #333;
+    padding: 10px 10px 10px 10px;
+    margin: 10px 10px;
+    border: 3px solid #333;
+    border-radius: 15px;
+    cursor: pointer;
+    width: 200px;
+  }
+  
+  
+  .copyBtn{
+    background: black;
+    border:none;
+    color: white;
+    font-size: 20px;
+    z-index: 0;
+  }
+  
+  .submit{
+    font-family: 'Aldrich';
+    font-size: 16px;
+    font-style: normal;
+    letter-spacing: 0;
+    background: black;
+    color: white;
+    border: 3px solid white;
+    padding: 10px 10px 10px 10px;
+    margin-top: 10px;
+    border-radius: 3px;
+    cursor: pointer;
+    width: 100%;
+  }
+  
+  h1 {
+  text-align: center;
+  }
+  
+  h3 {
+  text-align: center;
+  }
+  
+  
+  
+  .link{
+    color:rgb(255, 255, 0);
+  }
+  
+  .needZerb{
+    text-align: center;
+  }
+  
+  .error{
+    text-align: center;
+    color:greenyellow;
+    left: 0;
+  }
+  
+  .footer {
+    background-color: black;
+    position: bottom;
+    bottom: 0px;
+    width: 100%;
+    height: 2.5rem; /* Footer height */
+    margin-top: 20px;
+  }
+
+  .footerLogin{
+    justify-content: center;align-items: center; display: flex; margin-top: 60px;
+  }
+  
+  .footerLink{text-decoration:none; margin-left: 5px;}
+  .footerImgDiv{justify-content: center; display: flex; }
+  .footerImgLink{width:100%; position: absolute; margin-bottom: 10px;}
+  .footerImg{width:100%; position: absolute; margin-bottom: 10px;}
+
+  .footerRow {
+    display: -webkit-flex;
+    display: flex;
+  }
+  
+  .footerColumn {
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    padding: 10px;
+  }
+  
+  @media screen and (max-width: 1000px) {
+    .footerRow {
+    display: -webkit-flex;
+    display: flex;
+    text-align: center;
+  }
+  
+  .footerColumn {
+    -webkit-flex: 1;
+    -ms-flex: 1;
+    flex: 1;
+    padding: 10px;
+  }
+  
+  
+  }
+  
+  /* Marketplace footer */
+  
+  .grid-footer {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 10px;
+    padding: 10px;
+    border-top: 1px solid #444;
+    border-bottom:1px solid #444;
+    max-width: 1375px;
+    margin: auto;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .grid-footer > div {
+    background-color: black;
+    padding: 5px 0;
+    font-size: 14px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  
+  .footMarket{
+    text-align: left;
+  }
+  
+  @media screen and (max-width: 1000px) {
+    .grid-footer {
+    display: grid;
+    grid-template-columns: auto; 
+    gap: 10px;
+    padding: 10px;
+    border-top: 1px solid #444;
+    border-bottom:1px solid #444;
+    width:100%;
+    margin-top: 20px;
+    text-align: center;
+  }
+  
+  .grid-footer > div {
+    background-color: black;
+    padding: 5px 0;
+    font-size: 14px;
+  }
+  
+  .footMarket{
+    text-align: center;
+  }
+  
+  }
+  
+  /* NFT Card */
+  
+  .flex {
+      display: flex;
+  }
+  
+  .flex-wrap {
+      flex-wrap: wrap;
+  }
+  
+  .justify-center {
+      justify-content: center;
+  }
+  .items-center {
+      align-items: center;
+  }
+  
+  .flex-col {
+      flex-direction: column;
+  }
+  .rounded-md {
+      border-radius: 0.375rem/* 6px */;
+  }
+  .object-cover {
+      object-fit: cover;
+  }
+  .w-full {
+      width: 100%;
+  }
+  .rounded-t-md {
+      border-top-left-radius: 0.375rem/* 6px */;
+      border-top-right-radius: 0.375rem/* 6px */;
+  }
+  .px-2 {
+      padding-left: 0.5rem/* 8px */;
+      padding-right: 0.5rem/* 8px */;
+  }
+  .py-3 {
+      padding-top: 0.75rem/* 12px */;
+      padding-bottom: 0.75rem/* 12px */;
+  }
+  .rounded-b-md {
+      border-bottom-right-radius: 0.375rem/* 6px */;
+      border-bottom-left-radius: 0.375rem/* 6px */;
+  }
+  .text-sm {
+      font-size: 0.875rem/* 14px */;
+      line-height: 1.25rem/* 20px */;
+  }
+  .text-center {
+      text-align: center;
+  }
+  .my-3 {
+      margin-top: 0.75rem/* 12px */;
+      margin-bottom: 0.75rem/* 12px */;
+  }
+  .w-full {
+      width: 100%;}
+  
+  /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    /* padding-top: auto;  */
+    /* Location of the box */
+    left: 15%;
+    top: 40%;
+    width: 70%; /* Full width */
+    height: 70%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    
+  }
+  
+  /* Modal Content */
+  .modal-content {
+    position: relative;
+    /* background-color: #fefefe; */
+    margin: auto;
+    padding: 0;
+    border: 1px solid #fefefe;
+    border-radius: 6px;
+    width: 80%;
+    /* box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19); */
+    -webkit-animation-name: animatetop;
+    -webkit-animation-duration: 0.4s;
+    animation-name: animatetop;
+    animation-duration: 0.4s
+  }
+  
+  /* Add Animation */
+  @-webkit-keyframes animatetop {
+    from {top:-300px; opacity:0} 
+    to {top:0; opacity:1}
+  }
+  
+  @keyframes animatetop {
+    from {top:-300px; opacity:0}
+    to {top:0; opacity:1}
+  }
+  
+  /* The Close Button */
+  .close {
+    color: white;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+    color: #000;
+    text-decoration: none;
+    cursor: pointer;
+  }
+  
+  .modal-header {
+    padding: 2px 16px;
+    background-color: #FF1C53;
+    color: white;
+    border-radius: 6px 6px 0 0;
+  }
+  
+  .modal-body {
+    padding: 2px 16px;
+    background-color:#34373D;}
+  
+  .modal-footer {
+    padding: 2px 16px;
+    background-color: #FF1C53;
+    color: white;
+    border-radius: 0 0 6px 6px;
+    
+  }
+  
+  /* modal grid */
+  
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: none;
+    padding: 10px;
+    
+  }
+  .grid-item1 {
+    /* border: 1px solid white; */
+    padding: 5px;
+    font-size: 20px;
+    text-align: left;
+  }
+  
+  .grid-item2 {
+    /* border: 1px solid white; */
+    padding: 5px;
+    font-size: 20px;
+    text-align: left;
+  }
+  
+  .grid-item3 {
+    /* border: 1px solid white; */
+    padding: 5px;
+    font-size: 20px;
+    text-align: right;
+  }
+  
+  .grid-item4 {
+    /* border: 1px solid white; */
+    padding: 5px;
+    /* font-size: 30px; */
+    text-align: left;
+  }
+  
+  /* Maze grid */
+  
+  .grid-containerMaze {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    background-color: none;
+    padding: 10px;
+    column-gap: 5px;
+  }
+  .grid-itemMaze1 {
+    border: 1px dashed white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /* padding: 5px; */
+    font-size: 20px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+  .grid-itemMaze2 {
+    /* border: 1px solid white; */
+    padding: 0px;
+    border: 1px dashed white;
+    align-items: center;
+    justify-content: center;
+    
+  }
+  .grid-itemMaze3 {
+    /* border: 1px solid white; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+    border: 1px dashed white;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+  .grid-itemMaze4 {
+    /* border: 1px solid white; */
+    padding-top: 10px;
+    padding-bottom: 10px;
+    font-size: 20px;
+    text-align: center;
+    padding: 10px;
+    border: 1px dashed white;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+  }
+  
+  /* tooltip */
+  
+  .tooltip {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .tooltip .tooltiptext {
+    font-style: 'Aldrich';
+    visibility: hidden;
+    width: 140px;
+    background-color: #555;
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 5px;
+    position: absolute;
+    z-index: 1;
+    bottom: 150%;
+    left: 50%;
+    margin-left: -75px;
+    opacity: 0;
+    transition: opacity 0.3s;
+  }
+  
+  .tooltip .tooltiptext::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #555 transparent transparent transparent;
+  }
+  
+  .tooltip:hover .tooltiptext {
+    visibility: visible;
+    opacity: 1;
+  }
+  
+  .minter{
+    display: flex;
+    width: 100% !important;
+    margin-bottom: 10px;
+    display: flex;
+    justify-Content: center;
+  }
+  
+  table {
+    width: 100%;
+    table-layout: fixed;
+    overflow-wrap: break-word;
+    display: table !important;
+    margin-top: 10px;
+  }
+  td, th {
+    padding: 5px;
+    font-size: 14px;
+  }
+  th {
+    border-bottom: 1px solid rgba(255,255,255,0.2);
+    border-top: 1px solid rgba(255,255,255,0.2);
+  }
+  tr {
+    width: 100%;
+    border-bottom: 1px solid white;
+  }
+  
+  .token {
+    background: rgba(0,0,0,0.3);
+    padding: 5px;
+    text-align: center;
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .lds-ripple {
+    display: inline-block;
+    position: relative;
+    width: 80px;
+    height: 80px;
+  }
+  .lds-ripple div {
+    position: absolute;
+    border: 4px solid #fff;
+    opacity: 1;
+    border-radius: 50%;
+    animation: lds-ripple 1s cubic-bezier(0, 0.2, 0.8, 1) infinite;
+  }
+  .lds-ripple div:nth-child(2) {
+    animation-delay: -0.5s;
+  }
+  @keyframes lds-ripple {
+    0% {
+      top: 36px;
+      left: 36px;
+      width: 0;
+      height: 0;
+      opacity: 1;
+    }
+    100% {
+      top: 0px;
+      left: 0px;
+      width: 72px;
+      height: 72px;
+      opacity: 0;
+    }
+  }
+  .power {
+    margin-top: 20px;
+    padding-top: 10px;
+    border-top: 1px solid rgba(255,255255,255,0.1);
+    margin-bottom: 100px;
+    padding-bottom: 50px;
+  }
+  
+  .b {
+    font-weight: bold;
+    text-transform: uppercase;
+    padding-left: 5px;
+    border-left: 10px solid white;
+    margin-bottom: 5px;
+  }
+  
+  .line {
+    margin: 20px 0;
+  }
+  .line a {
+    font-size: 12px;
+  }
+  
+  .loading {
+    padding: 20px;
+    box-sizing: border-box;
+    font-size: 15px;
+    background: rgba(255,255,255,0.1);
+    margin-top: 5px;
+    border-radius: 50px;
+  }
+  
+  /* About Page */
+  
+  html {
+    box-sizing: border-box;
+  }
+  
+  *, *:before, *:after {
+    box-sizing: inherit;
+  }
+  
+  .column {
+    float: left;
+    width: 33.3%;
+    margin-bottom: 16px;
+    padding: 0 8px;
+  }
+  
+  .column2 {
+    float: left;
+    /* width: 50%; switched to this when second game is released*/
+    width: 50%;
+    margin-bottom: 16px;
+    padding: 0 50px;
+  }
+  
+  .card {
+    /* box-shadow: 0 4px 8px 0 rgba(255, 255, 255, 0.2); */
+    margin: 8px;
+  }
+  
+  .about-section {
+    padding: 50px;
+    text-align: center;
+    background-color: #474e5d;
+    color: white;
+  }
+  
+  .container {
+    padding: 0 16px;
+  }
+  
+  .container::after, .row::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+  
+  .title {
+    color: grey;
+  }
+  
+  @media screen and (min-width: 1000px) {
+    .move-up{
+      display: none;
+    }
+    .move-left{
+      display: none;
+    }
+    .move-right{
+      display: none;
+    }
+    .move-down{
+      display: none;
+    }
+    #mobileSpace{
+      display: none;
+    }
+  }
+  
+  @media screen and (max-width: 1000px) {
+  
+    #flight{
+      display: none;
+    }
+  
+    .column {
+      width: 100%;
+      display: block;
+  
+    }
+    .footerRow {
+      -webkit-flex-direction: column;
+      flex-direction: column;
+    }
+  
+    .grid-container{
+      grid-template-columns: 1fr;
+    }
+  
+    .grid-item1 {
+    /* border: 1px solid white; */
+    padding: 5px;
+    font-size: 10px;
+    text-align: left;
+    }
+  
+    .grid-item2 {
+      /* border: 1px solid white; */
+      padding: 5px;
+      font-size: 10px;
+      text-align: left;
+    }
+  
+    .grid-item3 {
+      /* border: 1px solid white; */
+      padding: 5px;
+      font-size: 10px;
+      text-align: right;
+    }
+  
+    .grid-containerMaze {
+      grid-template-columns: 1fr;
+    }
+  
+    .cell-1
+      {
+      grid-row: 1;
+    }
+    .cell-2
+      {
+      grid-row: 2;
+      margin-bottom: 10px;
+    }
+    .maze-1
+      {
+      grid-row: 1;
+      display: none;
+    }
+    .maze-2
+      {
+      grid-row: 2;
+      margin-bottom: 10px;
+      display: none;
+    }
+    .cell-3
+      {
+      grid-row: 3;
+    }
+    .cell-4
+      {
+      grid-row: 4;
+      margin-bottom: 10px;
+    }
+    .cell-5
+      {
+      grid-row: 5;
+    }
+    .cell-6
+      {
+      grid-row: 6;
+      margin-bottom: 10px;
+    }
+    .cell-7
+      {
+      grid-row: 7;
+    }
+    .cell-8
+      {
+      grid-row: 8;
+      margin-bottom: 10px;
+    }
+    .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Sit on top */
+    /* padding-top: auto;  */
+    /* Location of the box */
+    left: 15%;
+    top: 10%;
+    width: 70%; /* Full width */
+    height: 70%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    
+  }
+    .grid-roadmap {
+      grid-template-columns: 1fr;
+    }
+    .road-1
+      {
+      grid-row: 1;
+    }
+    .road-2
+      {
+      grid-row: 2;
+    }
+    .road-3
+      {
+      grid-row: 3;
+      margin-bottom: 10px;
+    }
+    .road-4
+      {
+      grid-row: 4;
+    }
+    .road-5
+      {
+      grid-row: 5;
+    }
+    .road-6
+      {
+      grid-row: 6;
+      margin-bottom: 10px;
+    }
+    .road-7
+      {
+      grid-row: 7;
+    }
+    .road-8
+      {
+      grid-row: 8;
+    }
+    .road-9
+      {
+      grid-row: 9;
+      margin-bottom: 10px;
+    }
+    .road-10
+      {
+      grid-row: 10;
+    }
+    .road-11
+      {
+      grid-row: 11;
+    }
+    .road-12
+      {
+      grid-row: 12;
+      margin-bottom: 10px;
+    }
+  }
+  
+  @media screen and (max-width: 500px) {
+    .pagination {
+    display: inline-block;
+    font-size: 12px;
+  }
+  
+  }
+  
+  /* Roadmap grid */
+  
+  .grid-roadmap {
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    background-color: none;
+    padding: 10px;
+    column-gap: 5px;
+  }
+  
+  .grid-itemroad1 {
+    border: 1px dashed white;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    /* padding: 5px; */
+    font-size: 20px;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    
+  }
+  .grid-itemroad2 {
+    padding-top: 10px;
+    border: 1px dashed white;
+    align-items: left;
+    justify-content: left;
+    font-size: 18px;
+   
+  }
+  
+  /* Color Inversion for Unity Logos */
+  .invert { filter: invert(100%); }
+  
+  /* customizable snowflake styling */
+  .snowflake {
+    color: #fff;
+    font-size: 1em;
+    font-family: 'Aldrich';
+    text-shadow: 0 0 5px #000;
+  }
+  
+  
+  /* Music Box */
+  
+  .musicBox {
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    border: 2px solid white;
+    border-radius: 10px;
+    padding: 25px;
+    position: relative;
+    width: 325px;
+    margin: auto;
+    margin-bottom: 50px;
+    text-align: center;
+    display:grid;
+  }
+
+  .trackImg{
+    height: 30%; width: 30%;
+  }
+
+  .track-name{
+    font-size: 26px; margin-top: 15px;
+  }
+
+  .track-artist{
+    font-size: 18px; margin-top: 10px;color: rgb(65, 188, 225)"
+  }
+
+  .track-seek-vol{
+    display: flex;justify-content: center; margin-top: 20px; align-items: center;
+  }
+
+  .track-seek{
+    display: flex;justify-content: space-between; margin-top: 20px; align-items: center;
+  }
+
+  .track-controls{
+    display: flex; justify-content: center; margin-top: 20px; margin-bottom: 20px; align-items: center;
+  }
+
+  .prev-track{
+    font-size: 30px; margin-right: 10px; cursor: pointer;
+  }
+
+  .track-play{
+    color: white; font-size: 60px; cursor: pointer; margin-left:15px;
+  }
+
+  .track-pause{
+    color: white; font-size: 60px; cursor: pointer; margin-left:15px; margin-right:8px
+  }
+
+  .track-next{
+    font-size: 30px; margin-left: 20px; cursor: pointer;
+  }
+
+  .margin-bottom-20px{
+    margin-bottom: 20px;
+  }
+
+  .track-vol-down{
+    font-size: 18px; margin-right: 10px; cursor: pointer;
+  }
+
+  .track-vol-up{
+    font-size: 18px; margin-left: 10px; cursor: pointer;
+  }
+  
+  /* Slider for music */
+  
+  .trackSlider {
+    -webkit-appearance: none;
+    height: 5px;
+    background: white;
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  .trackSlider:hover {
+    opacity: .9;
+  }
+  
+  .trackSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: rgb(65, 188, 225);
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+  .trackSlider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: rgb(65, 188, 225);
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+  /* Volume Slider */
+  
+  .volSlider {
+    -webkit-appearance: none;
+    height: 5px;
+    background: white;
+    outline: none;
+    -webkit-transition: .2s;
+    transition: opacity .2s;
+    border-radius: 5px;
+    width: 100%;
+  }
+  
+  .volSlider:hover {
+    opacity: .9;
+  }
+  
+  .volSlider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 16px;
+    height: 16px;
+    background: rgb(65, 188, 225);
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+  .volSlider::-moz-range-thumb {
+    width: 16px;
+    height: 16px;
+    background: rgb(65, 188, 225);
+    cursor: pointer;
+    border-radius: 8px;
+  }
+  
+  /* Marktplace styling */
+  
+  .marketForm{
+    margin-left: 25px;
+    margin-right: 25px;
+    width: 40%;
+  }
+  
+  @media screen and (min-width: 1000px){
+    .inputMarket {
+      width: 100%;
+      box-sizing: border-box;
+      border: 3px solid #ccc;
+      border-radius: 10px;
+      font-size: 18px;
+      background-color: white;
+      background-image: url('/images/search.png');
+      background-position: 10px 10px; 
+      background-repeat: no-repeat;
+      background-size: 20px;
+      padding: 12px 20px 12px 40px;
+      display: block;
+      align-items: center;
+      justify-self: center;
+    }
+  }
+  
+  @media screen and (max-width: 1000px){
+    .inputMarket {
+      width: 100%;
+      box-sizing: border-box;
+      border: 3px solid #ccc;
+      border-radius: 10px;
+      font-size: 18px;
+      padding: 12px 20px 12px 20px;
+      display: block;
+      align-items: center;
+      justify-self: center;
+    }
+  }
+  
+  /* Slideshow container */
+  .slideshow-container {
+    max-width: 1375px;
+    position: relative;
+    margin: auto;
+  }
+  
+  /* Hide the images by default */
+  .mySlides {
+    display: none;
+  }
+  
+  .slideImages{
+    margin: 20px;
+    width: 300px;
+    height: 300px;
+    border-radius: 50px;
+  }
+  
+  /* Next & previous buttons */
+  .prev, .next {
+    cursor: pointer;
+    position: absolute;
+    top: 50%;
+    width: auto;
+    margin-top: -22px;
+    padding: 16px;
+    color: white;
+    font-weight: bold;
+    font-size: 20px;
+    transition: 0.6s ease;
+    border-radius: 15px;
+    user-select: none;
+    background-color: black;
+    border: 2px solid white;
+  }
+  
+  /* Position the "next button" to the right */
+  .next {
+    right: 0;
+    border-radius: 15px;
+  }
+  
+  /* On hover, add a black background color with a little bit see-through */
+  .prev:hover, .next:hover {
+    background-color: rgba(0,0,0,0.8);
+  }
+  
+  /* Fading animation */
+  .fade {
+    animation-name: fade;
+    animation-duration: 3s;
+  }
+  
+  
+  @media screen and (min-width: 1500px) and (max-width: 100000px) {
+    .slide2 {
+      content-visibility: hidden;
+    }
+    .slide3 {
+      content-visibility: hidden;
+    }
+    .slide4 {
+      content-visibility: hidden;
+    }
+    .marketMobile {
+      content-visibility: hidden;
+    }
+    .imgMobile {
+      display: none;
+    }
+    .editorChoice{
+      max-width: 1375px;
+      position: relative;
+      margin: auto;
+      padding-left: 20px;
+    }
+  }
+  
+  @media screen and (max-width: 1500px) {
+      .slide1 {
+      display: none;
+    }
+    .imgMobile {
+      display: none;
+    }
+  }
+  
+  @media screen and (min-width: 1200px) and (max-width: 1500px) {
+    .slide2 {
+      content-visibility: visible;
+    }
+    .slide3 {
+      display: none;
+    }
+    .slide4 {
+      display: none;
+    }
+    .slideshow-container {
+      max-width: 1030px;
+    }
+    .editorChoice{
+      max-width: 1030px;
+      position: relative;
+      margin: auto;
+      padding-left: 20px;
+    }
+    .marketMobile {
+      display: none;
+    }
+    .imgMobile {
+      display: none;
+    }
+  }
+  
+  @media screen and (min-width: 900px) and (max-width: 1200px) {
+    .slide2 {
+      display: none;
+    }
+    .slide3 {
+      content-visibility: visible;
+    }
+    .slide4 {
+      display: none;
+    }
+    .slideshow-container {
+      max-width: 685px;
+    }
+    .editorChoice{
+      max-width: 685px;
+    }
+    .marketMobile {
+      display: none;
+    }
+    .imgMobile {
+      display: none;
+    }
+  }
+  
+  @media screen and (max-width: 900px) {
+    .slide2 {
+      display: none;
+    }
+    .slide3 {
+      display: none;
+    }
+    .slide4 {
+      content-visibility: visible;
+    }
+    .slideshow-container {
+      max-width: 340px;
+    }
+    .editorChoice{
+      max-width: 340px;
+    }
+    .imgDesktop {
+      display: none;
+    }
+    .imgMobile {
+      display: flex;
+    }
+    .columnMarket1{
+      width: 100%;
+    }
+    .columnMarket2{
+      width: 100%;
+    }
+  }
+  
+  @keyframes fade {
+    from {opacity: .4}
+    to {opacity: 1}
+  }
+  
+  /* Market Layout */
+  /* Create three equal columns that floats next to each other */
+  .columnMarket1 {
+    float: left;
+    width: 343.75px;
+    padding: 15px;
+    position: -webkit-sticky; /* Safari */
+    /* position: sticky; */
+    top:5px;
+  }
+  .columnMarket2 {
+    float: left;
+    width: 75%;
+    padding: 15px;
+  }
+  .columnMarket3 {
+    float: left;
+    width: 30%;
+    padding: 10px;
+  }
+  .columnMarket4 {
+    float: left;
+    width: 70%;
+    padding: 10px;
+  }
+  /* Clear floats after the columns */
+  .rowMarket:after {
+    content: "";
+    display: table;
+    clear: both;
+    margin: 20px;
+  }
+  
+  .market1 { grid-area: info; border: 2px solid white; width: 343.75px; position: sticky; top: 5px; border-radius: 10px;}
+  .market2 { grid-area: listings; border: 2px solid white; border-radius: 10px;}
+  .market3 { grid-area: collection; border: 2px solid white; border-radius: 10px;}
+  
+  .grid-market {
+    display: grid;
+    grid-template-areas:
+      'info listings listings listings'
+      'info collection collection collection';
+    gap: 10px;
+    padding: 10px;
+    align-items: baseline;
+  }
+  
+  .grid-market > div {
+    background-color: black;
+    text-align: center;
+    padding: 5px 0;
+  }
+  
+  .logoZerb2{
+    display: none;
+  }
+  
+  @media screen and (max-width: 1000px) {
+  .market1 { grid-area: info; border: 2px solid white; width: 100%; position: relative; border-radius: 10px;}
+  .market2 { grid-area: listings; border: 2px solid white; border-radius: 10px;}
+  .market3 { grid-area: collection; border: 2px solid white; border-radius: 10px;}
+  
+  .grid-market {
+    display: grid;
+    grid-template-areas:
+      'info info info info'
+      'listings listings listings listings'
+      'collection collection collection collection';
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .grid-market > div {
+    background-color: black;
+    text-align: center;
+    padding: 5px 0;
+  }
+  .titleM{
+    font-size: 16px;
+  }
+  .logoZerb{
+    display: none;
+  }
+  .logoZerb2{
+    display: flex;
+    margin:auto;
+    margin-right: 10px;
+  }
+  .marketForm{
+   width: 100%;
+  }
+  
+  }
+  
+  .bluz{
+    color: rgb(65, 188, 225) ;
+  }
+  
+  @media screen and (min-width: 1000px) {
+  .titleM{
+    font-size: 20px;
+  }
+  }
+  
+  .grid-collectionInfo {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 10px;
+    padding: 10px;
+  }
+  
+  .grid-collectionInfo > div {
+    background-color: black;
+    padding: 5px 0;
+    font-size: 14px;
+    max-width: 200px;
+    overflow-wrap: break-word;
+  }
+  
+  .NFTdetailsImage { grid-area: NFTimage; width: 500px; position: sticky; top: 5px;}
+  .NFTdetailsInfo { grid-area: NFTinfo; width: 100%; border: 2px solid white; border-radius: 10px;}
+  
+  .grid-NFTdetails {
+    display: grid;
+    grid-template-areas:
+      'NFTimage NFTinfo';
+    gap: 10px;
+    padding: 10px;
+    /* align-items: baseline; */
+  }
+  
+  .grid-NFTdetails > div {
+    background-color: black;
+    padding: 5px 0;
+  }
+  
+  .detailsImage{
+    width: 100%; padding-left: 50px; padding-right: 50px; padding-bottom:50px;
+  }
+  
+  .listingsImage{
+    width: 100%;
+  }
+  
+  @media screen and (max-width: 1000px) {
+    .NFTdetailsImage { grid-area: NFTimage; width: 100%; position: relative;}
+    .NFTdetailsInfo { grid-area: NFTinfo; width: 100%; border: 2px solid white; border-radius: 10px;}
+    .detailsImage{ width:250px; padding-top: 30px; padding-bottom: 30px; }
+  
+    .grid-NFTdetails {
+      display: grid;
+      grid-template-areas:
+        'NFTimage'
+        'NFTinfo';
+      gap: 10px;
+      padding: 10px;
+    }
+  
+    .grid-NFTdetails > div {
+    background-color: black;
+    padding: 5px 0;
+    font-size: 14px;
+    width: 325px;
+    margin: auto;
+  }
+  
+  .grid-NFTdetails2 {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0px;
+    border-collapse: separate;
+    border-spacing: 0;
+    justify-content: center;
+    max-width: 300px;
+  }
+  
+  .grid-NFTdetails2 > div {
+    background-color: black;
+    padding: 10px;
+    font-size: 14px !important;
+    border: 0.5px solid white;
+    max-width: 150px;
+  }
+  
+  .grid-MetaData {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0px;
+    border-collapse: separate;
+    border-spacing: 0;
+    justify-content: center;
+    max-width: 300px;
+  }
+  
+  .grid-MetaData > div {
+    background-color: black;
+    padding: 0px;
+    font-size: 14px !important;
+    border: 0.5px solid white;
+    max-width: 150px;
+  }
+  
+  .buyBuy{
+    max-width: 300px;
+    text-align: center !important;
+    margin-top: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .makeBuy{
+    display: none;
+  }
+  
+}
+  
+  .grid-NFTdetails2 {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0px;
+    border-collapse: separate;
+    border-spacing: 0;
+    justify-content: center;
+    width: 550px;
+    margin: auto;
+  }
+  
+  .grid-NFTdetails2 > div {
+    background-color: black;
+    padding: 10px;
+    font-size: 20px;
+    overflow-wrap: break-word;
+    border: 0.5px solid white;
+    width: 250px;
+  }
+  
+  .grid-MetaData {
+    display: grid;
+    grid-template-columns: auto auto;
+    gap: 0px;
+    border-collapse: separate;
+    border-spacing: 0;
+    justify-content: center;
+    width: 500px;
+    margin: auto;
+  }
+  
+  .grid-MetaData > div {
+    background-color: black;
+    padding: 10px;
+    font-size: 20px;
+    overflow-wrap: break-word;
+    border: 0.5px solid white;
+    width: 250px;
+  }
+  
+  .makerOffer:hover {
+    color:rgb(65, 188, 225) ;
+  }
+  
+  .navLinks{
+    color: white;
+  }
+  
+  .navLinks:hover{
+    color:rgb(65, 188, 225) ;
+  }
+  
+  /* Loader for all pages */
+  #overlay {
+    position: fixed;
+    display: none;
+    width: 100%;
+    height: 100%;
+    top: 50%;
+    left: calc(50% - 60px);
+    z-index: 999;
+    border: 16px solid orange;
+    border-radius: 50%;
+    border-top: 16px solid rgb(65, 188, 225) ;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 2s linear infinite; /* Safari */
+    animation: spin 2s linear infinite;
+  }
+  
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }
+  
+  .borderSelectedListing{
+    border: 2px solid orange;
+    border-radius: 10px;
+  }
+  
+  .toggleListType{
+    background-color: #444;
+  }
+  
+  input::placeholder{
+    font-family: 'Aldrich';
+  }
+  input::-webkit-input-placeholder {
+    font-family: 'Aldrich';
+  }
+  input::-moz-placeholder {
+    font-family: 'Aldrich';
+  }
+  input::-moz-placeholder {
+    font-family: 'Aldrich';
+  }
+  input::-ms-input-placeholder {
+    font-family: 'Aldrich';
+  }
+  
+  .cardhover:hover{
+   border: 2px solid #444;
+   border-radius: 10px;
+  }
+  
+  /* Market Connect Button */
+  .marketbtn{
+    font-family: 'Aldrich';
+    font-size: 12px;
+    font-style: normal;
+    letter-spacing: 0;
+    background: black;
+    color: gold;
+    padding: 6px 10px 6px 10px;
+    border: 1px solid gold;
+    border-radius: 2px;
+    cursor: pointer;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 80px;
+    height: 24px;
+  }
+  
+  .marketbtn:hover{
+    background: purple;
+  }
+  
+  #map {
+      height: 500px;
+      max-width: 1200px;
+      margin: auto;
+      border-radius: 10px;
+    }
+
+
+
+  .aboutH3{text-align:center;color: rgb(65, 188, 225)}
+
+
+  .NFTcard{
+    row-gap: 3rem; column-gap: 0.5rem; margin-top: 1rem; width: 83.333333%; margin-right: auto; margin-left: auto;
+  }
+
+  .NFTcardImg{
+    border-radius: 10px ; width: 75%; height: 75%;
+  }
+
+  .NFTcardAudioImg{
+    width: 75%; height:30px; border-radius: 10px;
+  }
+
+  .NFTcardInfo{
+    font-size: 18px; margin-top: 10px; margin-bottom: 5px;
+  }
+
+  .NFT-id{
+    overflow: hidden;text-overflow: ellipsis;
+  }
+
+  .enterMaze{
+    text-align: center; margin-top: 100px; margin-bottom: auto; 
+  }
+
+  .mazeButton{
+    font-family: 'Aldrich';
+    font-size: 20px;
+    font-style: normal;
+    letter-spacing: 0;
+    background: black;
+    color: white;
+    padding: 10px 10px 10px 10px;
+    margin: 10px 10px;
+    border-radius: 15px;
+    cursor: pointer;
+    width: 139.45px;
+    height: 51.5px;
+    text-decoration: none;
+    border:3px solid gainsboro;
+  }
+
+  .mazeGenerator{
+    margin-bottom: 100px;
+  }
+
+  .dotsDiv{
+    align-items: center; display: flex; justify-content: center; margin-bottom: 100px;
+  }
+
+  .dotsImg{
+    width: 30%; height: 30%;
+  }
+
+  .yellow{
+    color:yellow;
+  }
+
+  .mazeControls{
+    justify-content: center;width: 83%; height: 83%;
+  }
+
+
+.mazePanel{
+  align-items: center; display: block; justify-Content: center;
+}
+
+.mazeControlDiv{
+  text-align:center; margin-bottom: 5px;
+}
+
+.margin-right{
+  margin-right: 50px;
+}
+
+.relative{
+  position:relative;
+}
+
+.imgCrystal{
+  justify-content: center;width: 30%; height: 30%;
+}
+
+.tableNFT{
+  align-items: center; display: flex; justify-content: center;
+}
+
+.modImg{
+  border-radius: 10px; width: 125px; height: 125px;
+}
+
+.palevioletred-color{
+  color:palevioletred !important;
+}
+
+.nowrap{
+  white-space: nowrap;
+}
+
+.orange-color{
+  color:orange !important;
+}
+
+.socialLinks{
+  display: flex; position: absolute; bottom: 3px;
+}
+
+.socialIcons{
+  color: #818181;text-decoration: none; padding-left: 5px;
+}
+
+.socialLinks-info{
+  color: white;text-decoration: none; padding-left: 5px;
+}
+
+.justify-end{
+  justify-self: end;
+}
+
+.white-color{
+  color: white !important;
+}
+
+.no-decorations{
+  text-decoration:none !important;
+}
+
+.logo-footer-div{
+  width: 325px; margin-top: 5px;
+}
+
+.logo-footer-width{
+  width: 150px;
+}
+
+.font16{
+  font-size: 16px;
+}
+
+.font12{
+  font-size: 12px;
+}
+
+.panel-width-250{
+  width: 250px;
+}
+
+.panel-width-0{
+  width:0px;
+}
+
+.zeroWidth{
+  width:18rem;
+}
+
+.hexagons{
+  width:60%; clip-path: polygon(0% 20%, 0% 80%, 50% 100%, 100% 80%, 100% 20%, 50% 0%);
+}
+
+.z-index{
+  z-index: 0;
+}
+
+.padding-left-5px{
+  padding-left: 5px;
+}
+
+.article-shadow{
+  width:60%;box-shadow:5px 5px 50px 5px grey;
+}
+
+.arcadeIcon{
+  width: 50%; border-radius: 20px; border: 2px solid rgb(65, 188, 225) ;
+}
+
+.arcade-fighter{
+  width:960px;height:600px
+}
+
+.margin-top-arcade{
+  margin-top: 80px;
+}
+
+.fighter-mobile{
+  width:480px; height:300px;transform: rotate(90deg) translate(0px, 25%); margin-top: 40%; display: block; position: relative;
+}
+
+.margin-top-80px{
+  margin-top: 80px;
+}
+
+.arcade-shooter{
+  width:279px;height:600px;
+}
+
+.error-h3{
+  text-align:center; background-color: #333;
+}
+
+.mapa-325px{
+  width: 325px;
+}
+
+.warpc-minter{
+  text-decoration:none; color:palevioletred;
+}
+
+.token-form{
+  margin-bottom: 10px; margin-top: 3px; width: 90%;
+}
+
+.padding-20px{
+  padding: 20px;
+}
+
+.margin-top-6px{
+  margin-top: 6px;
+}
+
+.margin-top-5px{
+  margin-top: 5px;
+}
+
+.contract-form{
+  margin-top: 3px;width: 90%
+}
+
+.calc-div-1{
+  align-items: center; display: flex; margin: auto;
+}
+
+.calc-div-2{
+  align-items: center; display: flex; margin: auto;position: relative;
+}
+
+.calc-title{
+  margin-right: 5px; color: rgb(65, 188, 225);
+}
+
+.calc-link{
+  text-decoration: none; margin-left: 5px;
+}
+
+.calc-error{
+  background-color: #333;
+}
+
+.width-90{
+  width: 90%;
+}
+
+.width-14rem{
+  width: 14rem;
+}
+
+.width-15px{
+  width: 15px;
+}
+
+.width-18px{
+  width:18px;
+}
+
+.width-40px{
+  width: 40px;
+}
+
+.width-40per{
+  width: 40%;
+}
+
+.width-150px{
+  width: 150px;
+}
+
+.height-20px{
+  height:20px;
+}
+
+.width-20px{
+  width:20px;
+}
+
+.roadmap-li1{
+  list-style-type: square; margin-left: 10px; margin-right: 15px;
+}
+
+.roadmap-li2{
+  list-style-type: square; margin-left: 10px; margin-top: 10px;margin-right: 15px;
+}
+
+.roadmap-li3{
+  list-style-type: square; margin-left: 10px; margin-top: 10px; margin-right: 15px;
+}
+
+.padding-0-0{
+  padding: 0px 0px;
+}
+
+.padding-0px{
+  padding:0px;
+}
+
+.width-200px{
+  width: 200px;
+}
+
+.roadmapImage{
+  max-width: 100%;
+  height: auto;
+  margin-left:auto;
+  margin-right:auto;
+}
+
+.tanksDiv{
+  height: 700px; width: 960px; margin: auto;
+}
+
+.margin-auto{
+  margin:auto;
+}
+
+.border-radius-6px{
+  border-radius: 6px;
+}
+
+.auctions-close{
+  text-align:center;
+  color: rgb(65, 188, 225);
+  font-size: 40px;
+  margin: 20px;
+  margin-bottom: 42px;
+}
+
+.margin-bottom-5px{
+  margin-bottom: 5px;
+}
+
+.margin-bottom-10px{
+  margin-bottom: 10px;
+}
+
+.auction-notice{
+  text-align: center; color: orange;
+}
+
+.error-auction{
+  overflow-wrap: break-word; font-size: 14px; text-align: center;
+}
+
+.listings-error{
+  overflow-wrap: break-word; font-size: 14px;
+}
+
+.auction-cards{
+  max-width: 1355px; position: relative; margin: auto; max-height: 100%; border: 2px solid white; border-radius: 10px;
+}
+
+.auction-align{
+  margin: 20px; text-align: left;
+}
+
+.float-right{
+  float: right;
+}
+
+.grey-color{
+  color:#818181;
+}
+
+.nft-details{
+  text-align:center;color: rgb(65, 188, 225) ; font-size: 40px; margin: 20px; margin-bottom: 42px;
+}
+
+.details-frame{
+  max-width: 1200px; position: relative; margin: auto; max-height: 100%;
+}
+
+.position-nft-details{
+  text-align: center; margin-bottom: auto;
+}
+
+.details-image-nft{
+  border-radius: 10px ; width: 75%; height: 75%;
+}
+
+.details-audio-nft{
+  width: 75%; height:30px; border-radius: 10px;
+}
+
+.details-video-nft{
+  width: 75%; height:75%; border-radius: 10px;
+}
+
+.padding-10px{
+  padding: 10px
+}
+
+.file-license{
+  margin-top: 5px; margin-bottom: 10px; text-align: center;
+}
+
+.img-file-license{
+  height: 40px; width:40px; margin-right:10px;
+}
+
+.listing-details-frame{
+  max-width: 1375px; position: relative; margin: auto; max-height: 100%;
+}
+
+.details-info{
+  text-align: center; margin-top: 30px;
+}
+
+.offers-container{
+  margin-bottom: 20px; text-align: center;
+}
+
+.offers-error{
+  overflow-wrap: break-word; font-size: 14px;
+}
+
+.offers-buy-address{
+  display: inline; text-align: center;
+}
+
+.display-inline{
+  display: inline;
+}
+
+.margin-left-20px{
+  margin-left: 20px;
+}
+
+.bids-error{
+  overflow-wrap: break-word; font-size: 14px; width: 375px;
+}
+
+.margin-top-30px{
+  margin-top: 30px;
+}
+
+.font30{
+  font-size: 30px;
+}
+
+.font20{
+  font-size: 20px;
+}
+
+.offer-form{
+  width: 139.45px;
+  height: 51.5px;
+  font-size: 20px;
+  margin: 10px 10px;
+  border-radius: 15px;
+  padding: 10px 10px 10px 10px;
+  background-color:black;
+  border: 2px solid white;
+  color: white;
+  text-align: center;
+  font-family: "Aldrich";
+}
+
+.submit-offer{
+  font-size: 20px;
+  cursor: pointer;
+  white-space: nowrap;
+  background-color: black;
+  border: 0px;
+  font-family: 'Aldrich';
+}
+
+.market-zerb-1{
+  margin-left: 12px; margin-right: 12px;text-decoration: none;
+}
+
+.market-zerb-2{
+  margin-left: 12px; margin-right: 12px; text-decoration: none;
+}
+
+.market-zerb-3{
+  margin-left: 12px; margin-right: 48px; text-decoration: none;
+}
+
+.self-end{
+  justify-self: end;
+}
+
+.margin-right-0px{
+  margin-right: 0px;
+}
+
+.margin-right-10px{
+  margin-right: 10px;
+}
+
+.margin-left-10px{
+  margin-left: 10px;
+}
+
+.market-container{
+  max-width: 1375px; position: relative; margin: auto; max-height: 100%;
+}
+
+.margin-20px{
+  margin: 20px;
+}
+
+.text-left{
+  text-align: left;
+}
+
+.text-right{
+  text-align: right;
+}
+
+.collection-view-card{
+  row-gap: 3rem; column-gap: 0.5rem; margin-top: 1rem; margin-right: auto; margin-left: auto;
+}
+
+.listings-view-card{
+  row-gap: 3rem; column-gap: 0.5rem; margin-top: 1rem; margin-right: auto; margin-left: auto; margin-bottom: 30px;
+}
+
+.margin-left-auto{
+  margin-left: auto;
+}
+
+.margin-right-auto{
+  margin-right: auto;
+}
+
+.border-2px-solid-white{
+  border: 2px solid white;
+}
+
+.price{
+  font-size: 18px; margin-top: 10px; margin-bottom: 5px;
+}
+
+.no-token{
+  font-size: 18px; margin-top: 10px; margin-bottom: 5px;
+}
+
+.collection-info-img{
+  width: 200px; border-radius: 10px; margin-bottom: 10px;
+}
+
+.collection-info-icons{
+  display: flex; margin: 10px; justify-content: space-evenly;
+}
+
+.info-fp{
+  text-decoration: none; margin-left: auto;
+}
+
+.justify-items-center{
+  justify-items: center;
+}
+
+.NFTContractAddressForm{
+  width: 75%;
+  height: 51.5px;
+  font-size: 16px;
+  margin: 10px 10px;
+  border-radius: 15px;
+  padding: 10px 10px 10px 10px;
+  background-color: black;
+  border: 2px solid white;
+  color: white;
+  text-align: left;
+  font-family: "Aldrich";
+}
+
+.NFTTokenIDForm{
+  width: 75%;
+  height: 51.5px;
+  font-size: 16px;
+  margin: 10px 10px;
+  border-radius: 15px;
+  padding: 10px 10px 10px 10px;
+  background-color: black;
+  border: 2px solid white;
+  color: white;
+  text-align: left;
+  font-family: "Aldrich";
+}
+
+.SalePriceForm{
+  width: 75%;
+  height: 51.5px;
+  font-size: 16px;
+  margin: 10px 10px;
+  border-radius: 15px;
+  padding: 10px 10px 10px 10px;
+  background-color: black !important;
+  border: 2px solid white;
+  color: white;
+  text-align: left;
+  font-family: "Aldrich";
+}
+
+.ReservePriceForm{
+  width: 75%;
+  height: 51.5px;
+  font-size: 16px;
+  margin: 10px 10px;
+  border-radius: 15px;
+  padding: 10px 10px 10px 10px;
+  background-color: black !important;
+  border: 2px solid white;
+  color: white;
+  text-align: left;
+  font-family: "Aldrich";
+}
+
+.create-listing-submit{
+  width: 70%; margin-top: 20px; margin-bottom: 20px;
+}
+
+.embed-code{
+  color:white;
+  cursor: pointer;
+}
+
+.ipfs-website-link{
+  color: white;
+  text-decoration: none;
+  padding-left: 5px;
+}
+
+.copyright{
+  max-width: 1375px;
+  margin: auto;
+}
+
+.color-black{
+  color: black;
+}
+
+.collection-description{
+  text-align: left; font: 12px;
+}
+
+.color-serpolia{
+  color: #D0B5F1 !important;
+}
+    /* Snowflakes */
+  /* @-webkit-keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@-webkit-keyframes snowflakes-shake{0%,100%{-webkit-transform:translateX(0);transform:translateX(0)}50%{-webkit-transform:translateX(80px);transform:translateX(80px)}}@keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@keyframes snowflakes-shake{0%,100%{transform:translateX(0)}50%{transform:translateX(80px)}}.snowflake{position:fixed;top:-10%;z-index:9999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:default;-webkit-animation-name:snowflakes-fall,snowflakes-shake;-webkit-animation-duration:10s,3s;-webkit-animation-timing-function:linear,ease-in-out;-webkit-animation-iteration-count:infinite,infinite;-webkit-animation-play-state:running,running;animation-name:snowflakes-fall,snowflakes-shake;animation-duration:10s,3s;animation-timing-function:linear,ease-in-out;animation-iteration-count:infinite,infinite;animation-play-state:running,running}.snowflake:nth-of-type(0){left:1%;-webkit-animation-delay:0s,0s;animation-delay:0s,0s}.snowflake:nth-of-type(1){left:10%;-webkit-animation-delay:1s,1s;animation-delay:1s,1s}.snowflake:nth-of-type(2){left:20%;-webkit-animation-delay:6s,.5s;animation-delay:6s,.5s}.snowflake:nth-of-type(3){left:30%;-webkit-animation-delay:4s,2s;animation-delay:4s,2s}.snowflake:nth-of-type(4){left:40%;-webkit-animation-delay:2s,2s;animation-delay:2s,2s}.snowflake:nth-of-type(5){left:50%;-webkit-animation-delay:8s,3s;animation-delay:8s,3s}.snowflake:nth-of-type(6){left:60%;-webkit-animation-delay:6s,2s;animation-delay:6s,2s}.snowflake:nth-of-type(7){left:70%;-webkit-animation-delay:2.5s,1s;animation-delay:2.5s,1s}.snowflake:nth-of-type(8){left:80%;-webkit-animation-delay:1s,0s;animation-delay:1s,0s}.snowflake:nth-of-type(9){left:90%;-webkit-animation-delay:3s,1.5s;animation-delay:3s,1.5s}.snowflake:nth-of-type(10){left:25%;-webkit-animation-delay:2s,0s;animation-delay:2s,0s}.snowflake:nth-of-type(11){left:65%;-webkit-animation-delay:4s,2.5s;animation-delay:4s,2.5s} */
+  

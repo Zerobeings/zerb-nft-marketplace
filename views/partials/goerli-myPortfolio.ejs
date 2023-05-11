@@ -1,155 +1,159 @@
-<div class="flex flex-wrap justify-center items-center" style="row-gap: 3rem; column-gap: 0.5rem; margin-top: 1rem; margin-right: auto; margin-left: auto;">
-    <% if(NFTs.length > 0) { %>
-      <% NFTs.forEach((nft,i) => {%> 
-        <% const IDtoken = BigInt(nft.id.tokenId); %>
-        <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-center items-center">
-          <div class="col justify-center items-center">
-            <div class="card mb-4 rounded-3 shadow-sm justify-center items-center" style="width: 14rem;">
-              <a style="text-decoration: none; color: white;" href="/goerli-collectiondetails/<%=nft.contract.address%>/<%=IDtoken%>">
-              <div id="selectedListing<%=nft.contract.address%><%=IDtoken%>" class="card-body justify-center items-center cardhover">
-                <%if (nft.title != '') {%>
-                <h2><%= nft.title %></h2>
-                <%} else {%>
-                  <h2>Unknown</h2>
-                  <%}%>
-                    <%if (nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".png"
-                      || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".svg"
-                      || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".jpeg"
-                      || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".jpg"
-                      || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".gif"
-                      || nft.media[0].raw.indexOf(".", nft.media[0].raw.length-5) === -1
-                      || nft.media[0].format === "png"
-                      || nft.media[0].format === "svg"
-                      || nft.media[0].format === "jpeg"
-                      || nft.media[0].format === "jpg"
-                      || nft.media[0].format === "gif") {%>
-                        <img class="items-center asyncImage" style="border-radius: 10px ; width: 75%; height: 75%;" src="/images/loading.png" data-src="<%=nft.media[0].gateway%>"  alt="...">
-                        <%} %>
-                      <%if (nft.metadata.animation_url != null) {%>
-                        <%if (nft.metadata.animation_url.substr(nft.metadata.animation_url.length-4).toLowerCase() === ".wav" 
-                        || nft.metadata.animation_url.substr(nft.metadata.animation_url.length-4).toLowerCase() === ".mp3" 
-                        || nft.metadata.animation_url.substr(nft.metadata.animation_url.length-4).toLowerCase() === ".ogg"){%>
-                          <audio style="width: 75%; height:30px; border-radius: 10px;" controls><source src="<%=nft.metadata.animation_url%>"></audio>
-                          <%}%>
-                      <%}%>
-                      <%if (nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".mp4"
-                      || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".webm"
-                      || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".ogg"
-                      || nft.media[0].format === "mp4"
-                      || nft.media[0].format === "webm"
-                      || nft.media[0].format === "ogg"){%>
-                          <video style="width: 75%; height:75%; border-radius: 10px;" controls><source src="<%=nft.media[0].gateway%>"></video>
-                          <%}%>
-                      <%if (nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".doc"
-                      || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".docx"
-                      || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".pdf"
-                      || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".txt"
-                      || nft.media[0].format === "doc"
-                      || nft.media[0].format === "docx"
-                      || nft.media[0].format === "pdf"
-                      || nft.media[0].format === "txt"){%>
-                          <iframe src="https://docs.google.com/gview?url=<%=nft.media[0].gateway%>&embedded=true" width="75%" height="75%" frameborder="0"></iframe>
-                          <%}%>
-                </a>
-                <div style=" font-size: 18px; margin-top: 10px; margin-bottom: 5px;">
-                <a id="token" style="overflow: hidden;text-overflow: ellipsis;">Token ID: 
-                  <% if (String(IDtoken).length > 6) {%>
-                    <%=String(IDtoken).slice(0,5) %>...
-                    <%} else {%>
-                      <%=IDtoken%>
-                      <%}%>
-                    </a>
-                    <div class="tooltip">
-                      <button class="copyBtn" onclick="copyAddr('<%=IDtoken%>', '<%=nft.contract.address%>+<%=IDtoken%>+<%=nft.id.tokenId%>')" onmouseout="copyNoticeToken('<%=nft.contract.address%>+<%=IDtoken%>+<%=nft.id.tokenId%>')">
-                        <span class="tooltiptext" id="myTooltip<%=nft.contract.address%>+<%=IDtoken%>+<%=nft.id.tokenId%>">Copy Token</span>
-                        <span><img src="/images/copy.png" style="width:15px ;"></span>
-                      </button>
-                    </div>
-                  </div>
-                  <a id="copyAddr" target="_blank" class="link" style="text-decoration: none;" value="<%=nft.contract.address%>" href="https://goerli.etherscan.io/address/<%=nft.contract.address%>"><%=nft.contract.address.substr(0,4)%>...<%=nft.contract.address.substr(nft.contract.address.length-4)%></a>
+<div class="flex flex-wrap justify-center items-center collection-view-card">
+  <% if(NFTs.length > 0) { %>
+    <% NFTs.forEach((nft,i) => {%> 
+      <% const IDtoken = BigInt(nft.id.tokenId); %>
+      <a id="selectedListingAddress" class="hidden"><%=nft.contract.address%></a>
+      <a id="selectedListingID" class="hidden"><%=IDtoken%></a>
+      <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-center items-center">
+        <div class="col justify-center items-center">
+          <div class="card mb-4 rounded-3 shadow-sm justify-center items-center width-14rem">
+            <a class="white-color no-decorations" href="/goerli-collectiondetails/<%=nft.contract.address%>/<%=IDtoken%>">
+              <div id="selectedListing<%=i%>" class="card-body justify-center items-center cardhover">
+              <%if (nft.title != '') {%>
+              <h2><%= nft.title %></h2>
+              <%} else {%>
+                <h2>Unknown</h2>
+                <%}%>
+                  <%if (nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".png"
+                    || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".svg"
+                    || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".jpeg"
+                    || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".jpg"
+                    || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".gif"
+                    || nft.media[0].raw.indexOf(".", nft.media[0].raw.length-5) === -1
+                    || nft.media[0].format === "png"
+                    || nft.media[0].format === "svg"
+                    || nft.media[0].format === "jpeg"
+                    || nft.media[0].format === "jpg"
+                    || nft.media[0].format === "gif") {%>
+                      <img class="items-center asyncImage NFTcardImg" src="/images/loading.png" data-src="<%=nft.media[0].gateway%>"  alt="...">
+                      <%} %>
+                    <%if (nft.metadata.animation_url != null) {%>
+                      <%if (nft.metadata.animation_url.substr(nft.metadata.animation_url.length-4).toLowerCase() === ".wav" 
+                      || nft.metadata.animation_url.substr(nft.metadata.animation_url.length-4).toLowerCase() === ".mp3" 
+                      || nft.metadata.animation_url.substr(nft.metadata.animation_url.length-4).toLowerCase() === ".ogg"){%>
+                        <audio class="NFTcardAudioImg" controls><source src="<%=nft.metadata.animation_url%>"></audio>
+                        <%}%>
+                    <%}%>
+                    <%if (nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".mp4"
+                    || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".webm"
+                    || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".ogg"
+                    || nft.media[0].format === "mp4"
+                    || nft.media[0].format === "webm"
+                    || nft.media[0].format === "ogg"){%>
+                        <video class="details-video-nft" controls><source src="<%=nft.media[0].gateway%>"></video>
+                        <%}%>
+                    <%if (nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".doc"
+                    || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".docx"
+                    || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".pdf"
+                    || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".txt"
+                    || nft.media[0].format === "doc"
+                    || nft.media[0].format === "docx"
+                    || nft.media[0].format === "pdf"
+                    || nft.media[0].format === "txt"){%>
+                        <iframe src="https://docs.google.com/gview?url=<%=nft.media[0].gateway%>&embedded=true" width="75%" height="75%" frameborder="0"></iframe>
+                        <%}%>
+              </a>
+              <div class="NFTcardInfo">
+              <a id="token" class="NFT-id">Token ID: 
+                <% if (String(IDtoken).length > 6) {%>
+                  <%=String(IDtoken).slice(0,5) %>...
+                  <%} else {%>
+                    <%=IDtoken%>
+                    <%}%>
+                  </a>
                   <div class="tooltip">
-                    <button class="copyBtn" onclick="copyAddr('<%=nft.contract.address%>', '<%=nft.contract.address%>+<%=IDtoken%>')" onmouseout="copyNoticeCon('<%=nft.contract.address%>+<%=IDtoken%>')">
-                      <span class="tooltiptext" id="myTooltip<%=nft.contract.address%>+<%=IDtoken%>">Copy Contract</span>
-                      <span><img src="/images/copy.png" style="width:15px ;"></span>
+                    <a id="NFTtokenID<%=i%>" class="hidden"><%=IDtoken%></a>
+                    <button id="copyToken" class="copyBtn">
+                      <span id="myTooltipToken<%=i%>" class="tooltiptext">Copy Token</span>
+                      <span><img src="/images/copy.png" class="width-15px"></span>
                     </button>
                   </div>
-                  <br>
-                  <div style="margin-top: 5px; margin-bottom: 10px;">
-                    <a href="https://goerli.looksrare.org/collections/<%=nft.contract.address%>/<%=IDtoken%>/" target="_blank" style="text-decoration: none;">
-                      <img style="height: 20px; width:20px; margin-right: 10px;" src="/images/icon-darkbg@512.png">
-                    </a>
-                    <a href="https://testnets.opensea.io/assets/goerli/<%=nft.contract.address%>/<%=IDtoken%>/" target="_blank" style="text-decoration: none;">
-                      <img style="height: 20px; width:20px;" src="https://storage.googleapis.com/opensea-static/Logomark/Logomark-Blue.svg">
-                    </a>
-                    <a href="https://testnet.rarible.com/token/<%=nft.contract.address%>:<%=IDtoken%>" target="_blank" style="text-decoration: none;">
-                      <img style="height: 20px; width:20px; margin-left:10px;" src="/images/rarible.png">
-                    </a>
-                  </div>
-                  <div style="margin-top: 5px; margin-bottom: 10px;">
-                    <%if (nft.metadata.file != null) {%>
-                        <a href="<%=nft.metadata.file%>" target="_blank" style="text-decoration: none;" rel="noopener noreferrer">
-                          <img style="height: 40px; width:40px; margin-right:10px;" src="/images/filelocation.png">
-                        </a>
-                      <%}%>
-                      <%if (nft.metadata.file != null) {%>
-                        <a href="<%=nft.metadata.license_url%>" target="_blank" style="text-decoration: none;" rel="noopener noreferrer">
-                          <img style="height: 40px; width:40px; margin-right:10px;" src="/images/NFTlicense.png">
-                        </a>
-                      <%}%>
-                  </div>
-                  
-                  <button class="button" onclick="populateListing('<%=nft.contract.address%>','<%=IDtoken%>', 'selectedListing<%=nft.contract.address%><%=IDtoken%>', '<%=i%>')">List</button>
-                      
               </div>
+                <a id="copyAddr" target="_blank" class="link no-decorations" value="<%=nft.contract.address%>" href="https://goerli.etherscan.io/address/<%=nft.contract.address%>"><%=nft.contract.address.substr(0,4)%>...<%=nft.contract.address.substr(nft.contract.address.length-4)%></a>
+                <div class="tooltip">
+                  <a id="NFTContractAddr<%=i%>" class="hidden"><%=nft.contract.address%></a>
+                  <button id="copyContract" class="copyBtn">
+                    <span id="myTooltipContract<%=i%>" class="tooltiptext">Copy Contract</span>
+                    <span><img src="/images/copy.png" class="width-15px"></span>
+                  </button>
+                </div>
+                <br>
+                <div class="margin-top-5px margin-bottom-10px">
+                  <a href="https://goerli.looksrare.org/collections/<%=nft.contract.address%>/<%=IDtoken%>/" target="_blank" class="no-decorations">
+                    <img class="height-10px width-20px margin-right-10px" src="/images/icon-darkbg@512.png">
+                  </a>
+                  <a href="https://testnets.opensea.io/assets/goerli/<%=nft.contract.address%>/<%=IDtoken%>/" target="_blank" class="no-decorations">
+                    <img class="height-20px width-20px" src="https://storage.googleapis.com/opensea-static/Logomark/Logomark-Blue.svg">
+                  </a>
+                  <a href="https://testnet.rarible.com/token/<%=nft.contract.address%>:<%=IDtoken%>" target="_blank" class="no-decorations">
+                    <img class="height-20px width-20px margin-left-10px" src="/images/rarible.png">
+                  </a>
+                </div>
+                <div class="margin-top-5px margin-bottom-10px">
+                  <%if (nft.metadata.file != null) {%>
+                      <a href="<%=nft.metadata.file%>" target="_blank" class="no-decorations" rel="noopener noreferrer">
+                        <img class="img-file-license" src="/images/filelocation.png">
+                      </a>
+                    <%}%>
+                    <%if (nft.metadata.file != null) {%>
+                      <a href="<%=nft.metadata.license_url%>" target="_blank" class="no-decorations" rel="noopener noreferrer">
+                        <img class="img-file-license" src="/images/NFTlicense.png">
+                      </a>
+                    <%}%>
+                </div>
+                
+                <button id="populateListing" class="button">List</button>
+                    
             </div>
           </div>
         </div>
-        <%})%>
-    <%}%> 
-  </div>
-  
-  
-  
-  <br></br>
-  <br></br>
-  
-  <p id="page" name="newKey" class="hidden"><%=nfts.pageKey%></p>
-  
-  <% if (pages > 0) { %>
-      <table style="margin-left: auto; margin-right: auto; border: none;" class="tablePages">
-        <tr>
-            <td>
-             <form action="/myListings" method="GET">
-                  <input type="submit" value="First Page" class="paginationButtons" onclick="return onLoading()">
-              </form>
-            </td>
-          <% if (current == 1 || current == 2) { %>
-            <td>
-              <form action="/myListings" method="GET">
-                  <input type="submit" value="Previous" class="paginationButtons" onclick="return onLoading()">
-              </form>
-            </td>
-          <% } else { %>
-            <td>
-              <form action="/myListings/<%=Number(current) - 1%>" method="POST">
-                  <input type="text" value="<%=JSON.stringify(pageKeysP)%>" name="pageKeysP" class="hidden" readonly>
-                  <input type="submit" value="Previous" class="paginationButtons" onclick="return onLoading()">
-              </form>
-            </td>
-          <% } %>
-          <td><a class="paginationButtons"><%= Number(current) %>/<%=pages%></a></td>
-          <% if (current == pages) { %>
-              <td><a class="paginationButtons">Next</a></td>
-          <% } else { %>
-            <td>
-              <form action="/myListings/<%= Number(current) + 1%>" method="POST">
-                  <input type="text" value="<%=JSON.stringify(pageKeysP)%>" name="pageKeysP" class="hidden" readonly>
-                  <input type="submit" value="Next" class="paginationButtons" onclick="return onLoading()">
-              </form>
-            </td>
-          <% } %>
-        </tr>
-      </table>
-    <% } %>
-  
-  <br></br>
+      </div>
+      <%})%>
+  <%}%> 
+</div>
+
+
+
+<br></br>
+<br></br>
+
+<p id="page" name="newKey" class="hidden"><%=nfts.pageKey%></p>
+
+<% if (pages > 0) { %>
+    <table class="tablePages">
+      <tr>
+          <td>
+           <form action="/goerli-myListings" method="GET">
+                <input type="submit" value="First Page" class="paginationButtons" id="paginationBtn">
+            </form>
+          </td>
+        <% if (current == 1 || current == 2) { %>
+          <td>
+            <form action="/goerli-myListings" method="GET">
+                <input type="submit" value="Previous" class="paginationButtons" id="paginationBtn">
+            </form>
+          </td>
+        <% } else { %>
+          <td>
+            <form action="/myListings/<%=Number(current) - 1%>" method="POST">
+                <input type="text" value="<%=JSON.stringify(pageKeysP)%>" name="pageKeysP" class="hidden" readonly>
+                <input type="submit" value="Previous" class="paginationButtons" id="paginationBtn">
+            </form>
+          </td>
+        <% } %>
+        <td><a class="paginationButtons"><%= Number(current) %>/<%=pages%></a></td>
+        <% if (current == pages) { %>
+            <td><a class="paginationButtons">Next</a></td>
+        <% } else { %>
+          <td>
+            <form action="/goerli-myListings/<%= Number(current) + 1%>" method="POST">
+                <input type="text" value="<%=JSON.stringify(pageKeysP)%>" name="pageKeysP" class="hidden" readonly>
+                <input type="submit" value="Next" class="paginationButtons" id="paginationBtn">
+            </form>
+          </td>
+        <% } %>
+      </tr>
+    </table>
+  <% } %>
+
+<br></br>

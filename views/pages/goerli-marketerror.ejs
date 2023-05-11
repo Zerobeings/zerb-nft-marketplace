@@ -8,9 +8,9 @@
 <header>
     <nav>
         <ul>
-          <li><a href="/goerli-marketgm" onclick="return onLoading()" style="color: orange;">goerli - Market gm</a></li>
+          <li><a href="/goerli-marketgm" id="footerLoader" class="orange-color">goerli - Market gm</a></li>
           <li><a href="">Learn</a></li>
-          <li><a href="/goerli-myListings" onclick="return onLoading()">My Listings</a></li>
+          <li><a href="/goerli-myListings" id="footerLoader">My Listings</a></li>
         </ul>
     </nav>
 </header>
@@ -19,7 +19,7 @@
 <main>
   <div>
     <h1>Something went wrong :(</h1>
-    <h3 style="text-align:center; background-color: #333;" class="error"></h3>
+    <h3 class="error error-h3"></h3>
   </div>
 
 <br></br>
@@ -30,6 +30,6 @@
 <footer id="footer">
   <%- include('../partials/goerli-footerMarket'); %>
 </footer>
-
+<script src="/js/date.js"></script>
 </body>
 </html>

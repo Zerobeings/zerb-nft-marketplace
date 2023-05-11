@@ -14,31 +14,31 @@
 
 <main>
   <div>
-    <h1 style="color: orange;">goerli - Market gm ☕</h1>
-    <div style="text-align: center;">0.5% Platform Fee & <a class="link" style="text-decoration: none;" href="https://eips.ethereum.org/EIPS/eip-2981">EIP-2981</a> Royalties Honored</div>
-    <div style="text-align:center;color: rgb(65, 188, 225) ; font-size: 40px; margin: 20px; margin-bottom: 42px;">Auctions to Close Overview</div>
+    <h1 class="orange-color">goerli - Market gm ☕</h1>
+    <div class="text-center">0.5% Platform Fee & <a class="link no-decorations" href="https://eips.ethereum.org/EIPS/eip-2981">EIP-2981</a> Royalties Honored</div>
+    <div class="auctions-close">Auctions to Close Overview</div>
     <div id="overlay"></div>
-    <div id="chooseListing" style="margin-bottom: 10px;" class="hidden"></div>
-    <div style="text-align: center;;color: orange;" class="titleM">⚠️ You have 7 Days to Close, otherwise Auctions must be Closed Manually</div>
+    <div id="chooseListing" class="hidden margin-bottom-10px"></div>
+    <div class="titleM auction-notice">⚠️ You have 7 Days to Close, otherwise Auctions must be Closed Manually</div>
   </div>
 <br>
 
-  <div style="overflow-wrap: break-word; font-size: 14px; text-align: center;">
+  <div class="error-auction">
     <a class='error'></a>
   </div>
 
 <br>
 
 <%if (myAuctionsToClose != null && myAuctionsToClose.length !=0) {%>
-  <div style="max-width: 1355px; position: relative; margin: auto; max-height: 100%; border: 2px solid white; border-radius: 10px;">
-    <h2 style="margin: 20px; text-align: left;" class="bluz titleM">Auctions to Close
-      <button style="float: right;" id="createlistinginput" class="marketbtn">Wallet</button>
+  <div class="auction-cards">
+    <h2 class="bluz titleM auction-align">Auctions to Close
+      <button id="createlistinginput" class="marketbtn float-right">Wallet</button>
     </h2>
     <%- include('../partials/goerli-myAuctionsToClose'); %>
   </div>
   <%} else {%>
-    <div style="max-width: 1355px; position: relative; margin: auto; max-height: 100%; border: 2px solid white; border-radius: 10px;">
-      <h2 style="margin: 20px; text-align: left; color: orange;" class="titleM">No Auctions to Close</h2>
+    <div class="auction-cards">
+      <h2 class="titleM auction-align orange-color">No Auctions to Close</h2>
     </div>
     <%}%>
 
@@ -55,5 +55,7 @@
 <script src="/js/auction.js"></script>
 <script src="/js/goerli-cancellisting.js"></script>
 <script src="https://unpkg.com/web3@1.9.0/dist/web3.min.js"></script>
+<script src="/js/date.js"></script>
+<script src="/js/navSidepanel.js"></script>
 </body>
 </html>

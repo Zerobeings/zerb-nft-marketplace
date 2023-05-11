@@ -4,6 +4,34 @@
 //
 //
 "use strict";
+
+var canceldirectlistingBtn = document.querySelectorAll("#canceldirectlisting");
+var closeAuctionBtn = document.querySelectorAll("#closeAuction");
+
+if(canceldirectlistingBtn){
+    for (var i = 0; i < canceldirectlistingBtn.length; i++){
+        let index = i;
+        canceldirectlistingBtn[i].addEventListener("click", async () => {
+            var listID = document.getElementById("directListingId"+index).innerHTML;
+            var listingType = "0";
+            var addressClose = document.getElementById("assetContractAddress"+index).innerHTML;
+            canceldListing(listID, listingType, addressClose);
+          });
+    }
+}
+
+if(closeAuctionBtn){
+    for (var i = 0; i < closeAuctionBtn.length; i++){
+        let index = i;
+        closeAuctionBtn[i].addEventListener("click", async () => {
+            var listID = document.getElementById("auctionListingId"+index).innerHTML;
+            var listingType = "1";
+            var addressClose = document.getElementById("addressClose"+index).innerHTML;
+            canceldListing(listID, listingType, addressClose);
+          });
+    }
+}
+
 async function canceldListing(listID, listingType, addressClose){ 
     let c = await fetch("/json/gbox.json").then((r) => {
       return r.json()

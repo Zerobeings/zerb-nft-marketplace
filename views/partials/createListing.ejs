@@ -1,24 +1,21 @@
 
-<div id="chooseListing" style="margin-bottom: 10px;" class="hidden">
-    <a style="margin-bottom: 20px;">Sale Duration is 7 days</a>
-    <button id="0" class="button" style="width: 40%;" onclick="listingType('0')">Direct</button> | 
-    <button id="1" class="button" style="width: 40%;" onclick="listingType('1')">Auction</button>
-</div>
-<form id="listingForm" class="hidden" action="">
-    <input id="inputType" name="typeForm" type="number" value="" style="display: none;" class="required" onkeyup="enableSubmit()" readonly>
-    <input id="NFTContractAddress" name="NFTContractAddressForm" value="" type="text" placeholder="NFT Contract Address" class="required" style="width: 75%; height: 51.5px; font-size: 16px; margin: 10px 10px;border-radius: 15px; padding: 10px 10px 10px 10px;
-            background-color: black; border: 2px solid white; color: white; text-align: left; font-family: Aldrich;" onkeyup="enableSubmit()">
-    <input id="NFTTokenID" name="NFTTokenIDForm" value="" type="text" placeholder="NFT Token ID" class="required" style="width: 75%; height: 51.5px; font-size: 16px; margin: 10px 10px;border-radius: 15px; padding: 10px 10px 10px 10px;
-            background-color: black; border: 2px solid white; color: white; text-align: left; font-family: Aldrich;" onkeyup="enableSubmit()">
-    <input id="SalePrice" name="SalePriceForm" value="" type="number" placeholder="Sale Price (ETH)" class="required" style="width: 75%; height: 51.5px; font-size: 16px; margin: 10px 10px;border-radius: 15px; padding: 10px 10px 10px 10px;
-            background-color: black; border: 2px solid white; color: white; text-align: left; font-family: Aldrich;" step=".001" onkeyup="enableSubmit()">       
-    <label id="ReservePriceLabel" for="ReservePriceForm" class="hidden">Reserve Price (ETH)</label><br>
-    <input id="ReservePrice" value="" name="ReservePriceForm" type="number" placeholder="Default = 0.01 ETH" class="hidden required" style="width: 75%; height: 51.5px; font-size: 16px; margin: 10px 10px;border-radius: 15px; padding: 10px 10px 10px 10px;
-    background-color: black; border: 2px solid white; color: white; text-align: left; font-family: Aldrich;" step=".001" onkeyup="enableSubmit()">
-    <label id="ReservePriceLabel2" class="hidden">Auction Bid Buffer is 5%</label><br>
-    <label id="ReservePriceLabel3" class="hidden">Auction Time Buffer is 60 seconds</label><br>
-    <input id="CreateListing" type="submit" value="Create Listing" class="button" style="width: 70%; margin-top: 20px; margin-bottom: 20px;" onclick="return onLoading2()" disabled>
-</form>
-
-
-
+<div id="chooseListing" class="hidden margin-bottom-10px">
+        <a class="margin-bottom-20px">Sale Duration is 7 days</a>
+        <button id="0" class="button width-40per">Direct</button> | 
+        <button id="1" class="button width-40per">Auction</button>
+    </div>
+    <form id="listingForm" class="hidden" action="">
+        <input id="inputType" name="typeForm" type="number" value="" class="required hidden" readonly>
+        <input id="NFTContractAddress" name="NFTContractAddressForm" value="" type="text" placeholder="NFT Contract Address" class="required NFTContractAddressForm">
+        <input id="NFTTokenID" name="NFTTokenIDForm" value="" type="text" placeholder="NFT Token ID" class="required NFTTokenIDForm">
+        <input id="SalePrice" name="SalePriceForm" value="" type="number" placeholder="Sale Price (ETH)" class="required SalePriceForm" step=".001">       
+        <label id="ReservePriceLabel" for="ReservePriceForm" class="hidden">Reserve Price (ETH)</label><br>
+        <input id="ReservePrice" value="" name="ReservePriceForm" type="number" placeholder="Default = 0.01 ETH" class="hidden required ReservePriceForm" step=".001">
+        <label id="ReservePriceLabel2" class="hidden">Auction Bid Buffer is 5%</label><br>
+        <label id="ReservePriceLabel3" class="hidden">Auction Time Buffer is 60 seconds</label><br>
+        <input id="CreateListing" type="submit" value="Create Listing" class="button create-listing-submit" disabled>
+    </form>
+    
+    
+    
+    

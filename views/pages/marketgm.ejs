@@ -12,32 +12,32 @@
 <main>
   <div>
     <h1>Market gm ☕</h1>
-    <div style="text-align: center;">0.5% Platform Fee & <a class="link" style="text-decoration: none;" href="https://eips.ethereum.org/EIPS/eip-2981">EIP-2981</a> Royalties Honored</div>
-    <div style="text-align:center;color: rgb(65, 188, 225) ; font-size: 40px; margin: 20px; margin-bottom: 42px;">Search, Collect, and Sell NFTs</div>
+    <div class="text-center">0.5% Platform Fee & <a class="link no-decoration;" href="https://eips.ethereum.org/EIPS/eip-2981">EIP-2981</a> Royalties Honored</div>
+    <div class="nft-details">Search, Collect, and Sell NFTs</div>
     <div id="overlay"></div>
   </div>
   
-  <h2 class="bluz editorChoice" style="max-width: 1375px; position: relative; margin: auto; padding-left: 20px;">Editor's Choice</h2>
+  <h2 class="bluz editorChoice">Editor's Choice</h2>
   <%- include('../partials/slideShow'); %>
 
 <br>
 
-<div style="max-width: 1375px; position: relative; margin: auto; max-height: 100%;">
+<div class="market-container">
 
   <div class="grid-market">
     <div class="market1">
-      <h2 class="bluz titleM" style="margin: 20px; text-align: left;">Collection Info</h2>
+      <h2 class="bluz titleM margin-20px text-left">Collection Info</h2>
       <%- include('../partials/collectionInfo'); %>
     </div>
     <div class="market2">
-      <h2 style="margin: 20px; text-align: left;" class="bluz titleM">Available Listings
-        <a style="float: right;" class="bluz titleM">Listings <%=listings.length%></a>
+      <h2 class="bluz titleM margin-20px text-left">Available Listings
+        <a class="bluz titleM float-right">Listings <%=listings.length%></a>
       </h2>
       <%- include('../partials/listingsCard'); %>
     </div>  
     <div class="market3">
-      <h2 style="margin: 20px; text-align: left;" class="bluz titleM">View Collection
-        <a style="float: right;" class="bluz titleM">Items 
+      <h2 class="bluz titleM margin-20px text-left">View Collection
+        <a class="bluz titleM float-right">Items 
           <%if(sumatt.totalSupply != 0 && sumatt.totalSupply !== ""){%>
           <%=sumatt.totalSupply%> 
           <%} else if(NFTs.length < 100 && sumatt.totalSupply != null){%>
@@ -62,52 +62,12 @@
 </footer>
 
 <script src="/js/featuredNFTs.js"></script>
-
-<script>
-  function copyAddr(address, i) { 
-    navigator.clipboard.writeText(address);
-    //alert("Copied Contract Address: " + address);
-    var copyAddy = document.getElementById("myTooltip"+i);
-    copyAddy.innerHTML = "Copied"
-  }
-  
-  function copyNoticeToken(i){
-    var copyAddy = document.getElementById("myTooltip"+i);
-    copyAddy.innerHTML = "Copy Token";
-  }
-  
-  function copyNoticeCon(i){
-    var copyAddy = document.getElementById("myTooltip"+i);
-    copyAddy.innerHTML = "Copy Contract";
-  }
-  
-  function enableSubmit(){
-  let inputs = document.getElementsByClassName('required'); // Enter your class name for a required field, this should also be reflected within your form fields.
-  let search = document.querySelector('input[type="submit"]');
-  let isValid = true;
-  
-  for (var i = 0; i < inputs.length; i++){
-    let changedInput = inputs[i];
-        if (changedInput.value.trim() === "" || changedInput.value === null){
-          isValid = false;
-          break;
-          }
-    } 
-    search.disabled = !isValid;
-  }
-
-  var frames = window.frames;
-  for (var i = 0; i < frames.length; i++) { 
-  var sounds = frames[i].document.getElementsByTagName('audio');
-  var videos = frames[i].document.getElementsByTagName('video');
-  for(j=0; j<sounds.length; j++){
-    sounds[j].pause();
-    videos[j].pause();
-    }
-  }
-
-  </script>
-  <script src="/js/imgLoader.js"></script>
-  <script src="/js/imLoading.js"></script>
+<script src="/js/imgLoader.js"></script>
+<script src="/js/imLoading.js"></script>
+<script src="/js/date.js"></script>
+<script src="/js/navSidepanel.js"></script>
+<script src="/js/enableSubmit.js"></script>
+<script src="/js/copypaste.js"></script>
+<script src="/js/iframepauser.js"></script>
 </body>
 </html>

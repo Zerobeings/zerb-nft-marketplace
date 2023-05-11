@@ -3,7 +3,6 @@
 <head>
   <%- include('../partials/head'); %>
  
-
 </head>
 <body class="container">
 
@@ -15,17 +14,22 @@
 <main>
   <div>
     <h1>Market gm ☕</h1>
-    <div style="text-align: center;">0.5% Platform Fee & <a class="link" style="text-decoration: none;" href="https://eips.ethereum.org/EIPS/eip-2981">EIP-2981</a> Royalties Honored</div>
-    <div style="text-align:center;color: rgb(65, 188, 225) ; font-size: 40px; margin: 20px; margin-bottom: 42px;">NFT Details</div>
+    <div class="text-center">0.5% Platform Fee & <a class="link no-decorations" href="https://eips.ethereum.org/EIPS/eip-2981">EIP-2981</a> Royalties Honored</div>
+    <div class="nft-details">NFT Details</div>
     <div id="overlay"></div>
   </div>
-<div style="max-width: 1200px; position: relative; margin: auto; max-height: 100%;">
+
+
+  <br>
+
+
+<div class="details-frame">
   
             <% if (BigInt(nft.id.tokenId) === BigInt(IDToken)){%> 
             <% const IDtoken = BigInt(nft.id.tokenId); %>
            
   <div class="grid-NFTdetails">
-    <div class="NFTdetailsImage" style="text-align: center; margin-bottom: auto;">
+    <div class="NFTdetailsImage position-nft-details">
       <h1><%=nft.title%></h1>
             <a href="https://opensea.io/assets/ethereum/<%=nft.contract.address%>/<%=IDtoken%>/" target="_blank">
               <%if (nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".png"
@@ -39,13 +43,13 @@
                 || nft.media[0].format === "jpeg"
                 || nft.media[0].format === "jpg"
                 || nft.media[0].format === "gif") {%>
-                <img class="items-center asyncImage" style="border-radius: 10px ; width: 75%; height: 75%;" src="/images/loading.png" data-src="<%=nft.media[0].gateway%>"  alt="...">
+                <img class="items-center asyncImage details-image-nft" src="/images/loading.png" data-src="<%=nft.media[0].gateway%>"  alt="...">
                   <%} %>
                 <%if (nft.metadata.animation_url != null) {%>
                   <%if (nft.metadata.animation_url.substr(nft.metadata.animation_url.length-4).toLowerCase() === ".wav" 
                   || nft.metadata.animation_url.substr(nft.metadata.animation_url.length-4).toLowerCase() === ".mp3" 
                   || nft.metadata.animation_url.substr(nft.metadata.animation_url.length-4).toLowerCase() === ".ogg"){%>
-                    <audio style="width: 75%; height:30px; border-radius: 10px;" controls><source src="<%=nft.metadata.animation_url%>"></audio>
+                    <audio class="details-audio-nft" controls><source src="<%=nft.metadata.animation_url%>"></audio>
                     <%}%>
                 <%}%>
                 <%if (nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".mp4"
@@ -54,7 +58,7 @@
                 || nft.media[0].format === "mp4"
                 || nft.media[0].format === "webm"
                 || nft.media[0].format === "ogg"){%>
-                    <video style="width: 75%; height:75%; border-radius: 10px;" controls><source src="<%=nft.media[0].gateway%>"></video>
+                    <video class="detilas-video-nft" controls><source src="<%=nft.media[0].gateway%>"></video>
                     <%}%>
                 <%if (nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".doc"
                 || nft.media[0].raw.substr(nft.media[0].raw.length-4).toLowerCase() === ".docx"
@@ -74,12 +78,12 @@
             <h1>NFT Attributes</h1>
             <% const IDtoken = BigInt(nft.id.tokenId);%>
             <% const attributes = Object.keys(nft.metadata.attributes);%>
-                <div style="margin-bottom: 10px;">
+                <div class="margin-bottom-10px">
                 <%for (p=0; p<attributes.length; p++){%>
                     
                         <div class="grid-MetaData">
-                            <div class="bluz" style="padding: 10px;"><%= nft.metadata.attributes[p].trait_type%>:</div>
-                            <div style="padding: 10px;"><%= nft.metadata.attributes[p].value%></div>
+                            <div class="bluz padding-10px"><%= nft.metadata.attributes[p].trait_type%>:</div>
+                            <div class="padding-10px"><%= nft.metadata.attributes[p].value%></div>
                         </div>
                     
                 <%}%>
@@ -88,20 +92,20 @@
                 <%} else {%>
                   <h1>NFT Info</h1>
                   <div class="grid-MetaData">
-                            <div class="bluz" style="padding: 10px;">About:</div>
-                            <div style="padding: 10px;"><%= nft.metadata.description%></div>
+                            <div class="bluz padding-10px">About:</div>
+                            <div class="padding-10px"><%= nft.metadata.description%></div>
                   </div>
                   <%}%>
 
-                  <div style="margin-top: 5px; margin-bottom: 10px; text-align: center;">
+                  <div class="file-license">
                     <%if (nft.metadata.file != null) {%>
-                        <a href="<%=nft.metadata.file%>" target="_blank" style="text-decoration: none;" rel="noopener noreferrer">
-                          <img style="height: 40px; width:40px; margin-right:10px;" src="/images/filelocation.png">
+                        <a href="<%=nft.metadata.file%>" target="_blank" class="no-decoration" rel="noopener noreferrer">
+                          <img class="img-file-license" src="/images/filelocation.png">
                         </a>
                       <%}%>
                       <%if (nft.metadata.file != null) {%>
-                        <a href="<%=nft.metadata.license_url%>" target="_blank" style="text-decoration: none;" rel="noopener noreferrer">
-                          <img style="height: 40px; width:40px; margin-right:10px;" src="/images/NFTlicense.png">
+                        <a href="<%=nft.metadata.license_url%>" target="_blank" class="no-decoration" rel="noopener noreferrer">
+                          <img class="img-file-license" src="/images/NFTlicense.png">
                         </a>
                       <%}%>
                   </div>
@@ -116,7 +120,7 @@
 
  
 
-
+<div id="NFTarr" class="hidden"><%=JSON.stringify(nft)%></div>
 </main>
 
 
@@ -124,9 +128,9 @@
     <%- include('../partials/footerMarket'); %>
 </footer>
 
-<script>
-</script>
 <script src="/js/imgLoader.js"></script>
 <script src="/js/imLoading.js"></script>
+<script src="/js/date.js"></script>
+<script src="/js/navSidepanel.js"></script>
 </body>
 </html>

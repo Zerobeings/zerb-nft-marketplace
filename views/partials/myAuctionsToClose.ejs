@@ -1,4 +1,4 @@
-<div class="flex flex-wrap justify-center items-center" style="row-gap: 3rem; column-gap: 0.5rem; margin-top: 1rem; margin-right: auto; margin-left: auto; margin-bottom: 30px;">
+<div class="flex flex-wrap justify-center items-center listings-view-card">
   <% if(myAuctionsToClose.length > 0) {%>
     <%myAuctionsToClose.forEach((listings,i) => {%>
       <% let timeLeft = Math.round(parseInt(listings.endTimeInEpochSeconds - (Math.floor(Date.now()/1000)))/86400)%>
@@ -6,9 +6,9 @@
           <% const IDtoken = listings.asset.id; %>
               <div class="row row-cols-1 row-cols-md-3 mb-3 text-center justify-center items-center">
                 <div class="col justify-center items-center">
-                  <div class="card mb-4 rounded-3 shadow-sm justify-center items-center" style="width: 14rem;">
+                  <div class="card mb-4 rounded-3 shadow-sm justify-center items-center width-14rem">
                     <div class="card-body justify-center items-center">
-                      <h2 style="font-size: 20px;">Token #
+                      <h2 class="font20">Token #
                         <% if (String(IDtoken).length > 6) {%>
                         <%=String(IDtoken).slice(0,5) %>...
                         <%} else {%>
@@ -21,19 +21,19 @@
                             || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".jpg"
                             || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".gif"
                             || listings.asset.image.indexOf(".", listings.asset.image.length-5) === -1){%>
-                              <img class="items-center asyncImage" style="border-radius: 10px ; width: 75%; height: 75%;" src="/images/loading.png" data-src="<%=listings.asset.image%>"  alt="...">
+                              <img class="items-center asyncImage NFTcardImg" src="/images/loading.png" data-src="<%=listings.asset.image%>"  alt="...">
                               <%} %>
                             
                               <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".wav" 
                               || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".mp3" 
                               || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".ogg"){%>
-                                <audio style="width: 75%; height:30px; border-radius: 10px;" controls><source src="<%=listings.asset.image%>"></audio>
+                                <audio class="NFTcardAudioImg" controls><source src="<%=listings.asset.image%>"></audio>
                                 <%}%>
                            
                             <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".mp4"
                             || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".webm"
                             || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".ogg"){%>
-                                <video style="width: 75%; height:75%; border-radius: 10px;" controls><source src="<%=listings.asset.image%>"></video>
+                                <video class="details-video-nft" controls><source src="<%=listings.asset.image%>"></video>
                                 <%}%>
                             <%if (listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".doc"
                             || listings.asset.image.substr(listings.asset.image.length-4).toLowerCase() === ".docx"
@@ -42,17 +42,25 @@
                                 <iframe src="https://docs.google.com/gview?url=<%=listings.asset.image%>&embedded=true" width="75%" height="75%" frameborder="0"></iframe>
                                 <%}%>
                         
-                        <div style=" font-size: 18px; margin-top: 10px; margin-bottom: 5px;">
-                            <div style="margin-bottom: 5px;" ><a class="bluz">Listing ID: </a>#<%=listings.id%></div>
-                            <div style="margin-bottom: 5px;" ><a class="bluz">Time to Close: </a><%=timeLeft + 7%> days</div>
+                        <div class="NFTcardInfo">
+                            <div class="margin-bottom-5px" ><a class="bluz">Listing ID: </a>#<%=listings.id%></div>
+                            <div class="margin-bottom-5px" ><a class="bluz">Time to Close: </a><%=timeLeft + 7%> days</div>
                             <% if (session.zerb) { %>
-                                <button type="submit" id="closeAuction" class="closeauction" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.zerb.account%>')">Close Auction</button>
+                              <a id="addressClose<%=i%>" class="hidden"><%=session.zerb.account%></a>
+                              <a id="auctionListingId<%=i%>" class="hidden"><%=listings.id%></a>
+                                <button type="submit" id="closeAuction" class="closeauction">Close Auction</button>
                             <%} else if (session.guest) {%>
-                                <button type="submit" id="closeAuction" class="closeauction" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.guest.account%>')">Close Auction</button>
-                                <%} else if (session.tinydinos) {%>
-                                <button type="submit" id="closeAuction" class="closeauction" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.tinydinos.account%>')">Close Auction</button>
-                                <%} else if (session.freshfrogsNFT) {%>
-                                <button type="submit" id="closeAuction" class="closeauction" onclick="canceldListing('<%=listings.id%>', '1', '<%=session.freshfrogsNFT.account%>')">Close Auction</button>
+                                <a id="addressClose<%=i%>" class="hidden"><%=session.guest.account%></a>
+                                <a id="auctionListingId<%=i%>" class="hidden"><%=listings.id%></a>
+                                <button type="submit" id="closeAuction" class="closeauction">Close Auction</button>
+                            <%} else if (session.tinydinos) {%>
+                                <a id="addressClose<%=i%>" class="hidden"><%=session.tinydinos.account%></a>
+                                <a id="auctionListingId<%=i%>" class="hidden"><%=listings.id%></a>
+                                <button type="submit" id="closeAuction" class="closeauction">Close Auction</button>
+                            <%} else if (session.freshfrogsNFT) {%>
+                                <a id="addressClose<%=i%>" class="hidden"><%=session.freshfrogsNFT.account%></a>
+                                <a id="auctionListingId<%=i%>" class="hidden"><%=listings.id%></a>
+                                <button type="submit" id="closeAuction" class="closeauction">Close Auction</button>
                             <% }%>
                         </div>
                     </div>
