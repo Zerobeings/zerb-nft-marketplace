@@ -175,8 +175,7 @@ frameborder="0"></iframe>
 # More Info
 If you would like to take a deep dive into the tools used to build this marketplace, review the reference documents. The additional resources section is a list of tools to help you launch and manage your NFT collections. Enjoy!
 
-If this repository has been helpful, please consider buying me coffee 😀 or even better [mint](https://mint.zerobeings.xyz) a Zero Being.
-ETH Address: 0xf65baD529b42f1014A901665353B7538432e4663
+If this repository has been helpful, please consider [minting](https://mint.zerobeings.xyz) a Zero Being.
 
 ## FAQs
 * Can any collection be listed on the marketplace?
