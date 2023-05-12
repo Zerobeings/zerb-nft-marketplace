@@ -202,7 +202,7 @@ If this repository has been helpful, please consider [minting](https://mint.zero
 ## Data Structures
 Below is a summary of the data structures fetched to build market gm.
 
-### Alchemy 
+### Alchemy NFT api Endpoint V2
 nfts Data Structure
 
 ```
