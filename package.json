@@ -14,7 +14,7 @@
   "dependencies": {
     "@thirdweb-dev/sdk": "^3.10.14",
     "body-parser": "^1.20.2",
-    "dotenv": "^16.0.3",
+    "dotenv": "^16.1.4",
     "ejs": "^3.1.9",
     "ethers": "^5.7.2",
     "express": "^4.18.2",
